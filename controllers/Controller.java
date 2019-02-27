@@ -18,8 +18,34 @@ public class Controller {
 		
 	}
 	
+	private static void initPlayers() {
+		boolean isInvalid = true;
+		int numOfPlayers = 0;
+		
+		while(isInvalid) {
+			//TODO prompt for number of players through G.U.I.
+			numOfPlayers = 0;
+			
+			isInvalid = numOfPlayers >= 2 && numOfPlayers <= 4;
+		}
+		
+		players = new Player[numOfPlayers];
+		for(int p = 0; p < numOfPlayers; p++) {
+			//TODO prompt for player name through G.U.I.
+			String name = "";
+			
+			if(name.trim().isEmpty()) {
+				players[p] = new Player();
+			} else {
+				players[p] = new Player(name);				
+			}
+		}
+			
+	}
+	
 	//for every person playing a game, make them a character. Set all their stats to the default
 	private static void initCharacters() {
+		
 		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 	}
 	
@@ -35,8 +61,8 @@ public class Controller {
 	
 	//to be run when all surviving players reach the end of the board, or only one remains
 	//declare the winner
-	private static void checkForWin() {
-		
+	private static boolean checkForWin() {
+		return false;
 	}
 	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
