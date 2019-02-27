@@ -3,7 +3,15 @@ package models;
 public class Dragon extends BoardChar {
 
 	private int turn;
+	public final int[] ATTACK;
 	
+	
+	public Dragon(int[] attack) {
+		if(attack.length != 5) {
+			throw new ArrayIndexOutOfBoundsException("Error: A dragon must have attack values for each of the tiles it attacks.");
+		}
+		this.ATTACK = attack;
+	}
 	
 	public int getTurn() {
 		return turn;
@@ -12,21 +20,20 @@ public class Dragon extends BoardChar {
 	public void increaseTurn() {
 		this.turn += 1;
 	}
-	
-	public void attack() {
-		//TODO add body.
-	}
 
 	@Override
 	public void setOccupiedTile(int occupiedTile) {
-		//TODO add logic and restrictions for dragons
-		
+		if(occupiedTile < 4 || occupiedTile > 94) {
+			throw new IllegalArgumentException("Error: The dragon may only occupy a tile at least five spaces away from the start and the end.");
+		}
 	}
 
 	@Override
 	public void setHealth(int health) {
-		//TODO add logic and restrictions for dragons
+		if(health < 0 || health > 500) {
+			throw new IllegalArgumentException("Error: A dragon's health ranges from 0 to 500.");
+		}
 		
+		this.health = health;
 	}
-
 }
