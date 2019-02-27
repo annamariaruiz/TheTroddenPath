@@ -11,6 +11,11 @@ public class Player {
 		this.NAME = name;
 		
 	}
+	
+	public Player() {
+		playerNum+=1;
+		this.NAME = "Player " + playerNum;
+	}
 
 
 	public PlayerChar[] getChars() {
