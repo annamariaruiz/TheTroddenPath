@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import models.enums.*;
 import models.Player;
+import models.PlayerChar;
 import models.Dragon;
 
 public class Controller {
@@ -45,7 +46,9 @@ public class Controller {
 	
 	//for every person playing a game, make them a character. Set all their stats to the default
 	private static void initCharacters() {
-		
+		for(int p = 0; p < players.length; p++) {
+			players[p].setChars(new PlayerChar[] {new PlayerChar()});
+		}
 		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 	}
 	
@@ -72,8 +75,25 @@ public class Controller {
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-	private static void rankUpPlayer(Player player, CharClass charClass) {
+	private static void rankUpChar(PlayerChar pc) {
+		CharClass charChoice;
 		
+		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
+			throw new IllegalStateException("Error: It should not be possible to rank up a character with less than 500 shekels or prestige.");
+		}
+		
+		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
+			//TODO G.U.I. with knight, priest, merchant, and duke choices
+			charChoice = null;
+		} else if(pc.getPrestige() >= 500) {
+			//TODO G.U.I. with knight and priest choices
+			charChoice = null;
+		} else {
+			//TODO G.U.I. with merchant and duke choices
+			charChoice = null;
+		}
+		
+		pc.setCharClass(charChoice);
 	}
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color

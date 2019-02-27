@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Arrays;
 
 public class Player {
 	final String NAME;
