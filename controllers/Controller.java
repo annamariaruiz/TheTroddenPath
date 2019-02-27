@@ -1,16 +1,18 @@
-package controller;
+package controllers;
 
 import java.util.HashMap;
 
-import enums.TileColor;
+import models.enums.*;
 import models.Player;
+import models.Dragon;
 
 public class Controller {
-	private int turn;
-	private Player[] players;
-	private boolean gameOver;
-	private TileColor[] tiles;
-	private HashMap<Player, Integer> currentEffects;
+	private static int turn;
+	private static Player[] players;
+	private static boolean gameOver;
+	private static TileColor[] tiles;
+	private static HashMap<Player, Integer> currentEffects;
+	private static Dragon drago;
 	
 	public static void run() {
 		
@@ -18,7 +20,7 @@ public class Controller {
 	
 	//for every person playing a game, make them a character. Set all their stats to the default
 	private static void initCharacters() {
-		
+		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 	}
 	
 	//create the board with its tiles. Set dragon's location?, if that is added
@@ -44,7 +46,7 @@ public class Controller {
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-	private static void rankUpPlayer(Player player, charClass charClass) {
+	private static void rankUpPlayer(Player player, CharClass charClass) {
 		
 	}
 	
