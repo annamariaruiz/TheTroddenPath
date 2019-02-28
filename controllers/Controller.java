@@ -2,10 +2,8 @@ package controllers;
 
 import java.util.HashMap;
 
+import models.*;
 import models.enums.*;
-import models.Player;
-import models.PlayerChar;
-import models.Dragon;
 
 public class Controller {
 	private static int turn;
@@ -64,7 +62,7 @@ public class Controller {
 	
 	//to be run when all surviving players reach the end of the board, or only one remains
 	//declare the winner
-	private static boolean checkForWin() {
+	public static boolean checkForWin() {
 		return false;
 	}
 	
@@ -100,5 +98,13 @@ public class Controller {
 			//(enum TileColor)
 	private static void drawCard() {
 		
+	}
+
+	public int spinWheelPassThrough(int numOfPlayers) {
+		return Wheel.spinWheel(numOfPlayers);
+	}
+
+	public int spinWheelPassThrough() {
+		return Wheel.spinWheel();
 	}
 }

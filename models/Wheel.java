@@ -10,7 +10,7 @@ public class Wheel {
 	
 	
 	//Determine who goes first
-	public int spinWheel(int numOfPlayers) {
+	public static int spinWheel(int numOfPlayers) {
 		//Player 1 turn
 			ArrayList<Integer> spins = new ArrayList<Integer>();
 			int player1Spin = rng.nextInt(10)+1;
@@ -61,7 +61,7 @@ public class Wheel {
 	}
 
 	//Spin on player's turn
-	public int spinWheel() {
+	public static int spinWheel() {
 		return rng.nextInt(10)+1;
 	}
 }
