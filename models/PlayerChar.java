@@ -11,8 +11,9 @@ public class PlayerChar extends BoardChar {
 	private int shekels;
 	private int prestige;
 	private static int playerNum = 0;
-	private final String CHARNAME;
+	public final String CHARNAME;
 	private Random rng = new Random();
+	private String role = "";
 	
 	//True = male, false = female
 	private final boolean gender;
@@ -133,11 +134,6 @@ public class PlayerChar extends BoardChar {
 
 	public static void setPlayerNum(int playerNum) {
 		PlayerChar.playerNum = playerNum;
-	}
-
-
-	public String getCHARNAME() {
-		return CHARNAME;
 	}
 }
 

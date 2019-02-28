@@ -8,13 +8,18 @@ import models.enums.*;
 public class Controller {
 	private static int turn;
 	private static Player[] players;
+	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static TileColor[] tiles;
-	private static HashMap<Player, Integer> currentEffects;
+	
+	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
+	// private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
 	
 	public static void run() {
-		
+		initPlayers();
+		initCharacters();
+		initBoard();
 	}
 	
 	private static void initPlayers() {
@@ -52,12 +57,51 @@ public class Controller {
 	
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
+		turn = 0;
+		tiles = new TileColor[100];
+		int nextSpecial = 0;
+		int[] specials = new int[] {0, 11, 22, 36, 44, 51, 61, 68, 80, 92, 98, 99};
 		
+		for(int t = 0; t < tiles.length; t++) {
+			if(t == specials[nextSpecial]) {
+				tiles[t] = TileColor.SPECIAL;
+				nextSpecial++;
+			} else {
+				switch(t % 3) {
+					case 1:
+						tiles[t] = TileColor.GREEN;
+						break;
+					case 2:
+						tiles[t] = TileColor.BLUE;
+						break;
+					case 0:
+						tiles[t] = TileColor.RED;
+				}
+			}
+			System.out.println(tiles[t]);
+		}
 	}
 	
 	//logic for what a player would need to do during their turn
 	private static void playGame() {
-		
+		do {
+			turn++;
+			int cycle = 0;
+			currentPlayer = players[(turn - 1) % players.length];
+			
+			while(currentPlayer.getChars().length < 1 && cycle < players.length) {
+				turn++;
+				currentPlayer = players[(turn - 1) % players.length];
+				cycle++;
+			}
+			
+			if(cycle >= players.length) {
+				gameOver = true;
+				//TODO add G.U.I. message that everyone has died.
+			} else {
+				
+			}
+		} while(!gameOver);
 	}
 	
 	//to be run when all surviving players reach the end of the board, or only one remains

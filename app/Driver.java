@@ -1,6 +1,6 @@
 package app;
 
-import controller.Controller;
+import controllers.Controller;
 
 public class Driver {
 
