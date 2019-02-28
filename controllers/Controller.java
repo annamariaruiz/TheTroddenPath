@@ -55,10 +55,8 @@ public class Controller {
 	//for every person playing a game, make them a character. Set all their stats to the default
 	private static void initCharacters() {
 		for(int p = 0; p < players.length; p++) {
-//			players[p].setChars(new PlayerChar[] {new PlayerChar()});
 			players[p].setChars(new ArrayList<PlayerChar>());
-			//TODO I was a little unsure how to change this code to accommodate an arrayList, so I left the old code in comments
-					//in case someone else was more confident - Zoe
+			players[p].getChars().add(new PlayerChar());
 		}
 		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 	}
@@ -93,22 +91,7 @@ public class Controller {
 	//logic for what a player would need to do during their turn
 	private static void playGame() {
 		do {
-			turn++;
-			int cycle = 0;
-			currentPlayer = players[(turn - 1) % players.length];
-			
-			while(currentPlayer.getChars().length < 1 && cycle < players.length) {
-				turn++;
-				currentPlayer = players[(turn - 1) % players.length];
-				cycle++;
-			}
-			
-			if(cycle >= players.length) {
-				gameOver = true;
-				//TODO add G.U.I. message that everyone has died.
-			} else {
-				
-			}
+			changeTurn();
 		} while(!gameOver);
 	}
 	
@@ -120,7 +103,20 @@ public class Controller {
 	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
+		turn++;
+		int cycle = 0;
+		currentPlayer = players[(turn - 1) % players.length];
 		
+		while(currentPlayer.getChars().size() < 1 && cycle < players.length) {
+			turn++;
+			currentPlayer = players[(turn - 1) % players.length];
+			cycle++;
+		}
+		
+		if(cycle >= players.length) {
+			gameOver = true;
+			//TODO add G.U.I. message that everyone has died.
+		}
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
