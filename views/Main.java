@@ -1,46 +1,44 @@
-package views;
+package application;
 	
+import java.io.IOException;
+import controllers.Controller;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 
 public class Main extends Application {
 	
+	private Stage window = new Stage();
+	private Scene startScene, boardGame;
 	
-	Stage window;
-	Button startGame, sellChildren, spinWheel, giveUP;
-	Scene startScene, boardGame, win;
-	
+	public static void main(String[] args) {
+		launch(args);
+	}
 	
 	@Override
-	public void start(Stage primaryStage) {
-		//setting window as stage
+	public void start(Stage primaryStage) throws IOException {
 		window = primaryStage;
 		window.setTitle("The Trodden Path");
+		Parent start = FXMLLoader.load(getClass().getResource("Start.fxml"));
 		
-		//button to run game
-		startGame = new Button("Start Game");
-		startGame.setOnAction(e -> {
-			System.out.println("Controller.run()");
-			window.setScene(boardGame);
-		});
-		
-		//layout and scene
-		VBox startLayout = new VBox(5);
-		startLayout.setPadding(new Insets(30, 40, 30, 40));
-		startLayout.getChildren().add(startGame);
-		startScene = new Scene(startLayout, 1300, 700);		
-		
-		//show stage
+		startScene = new Scene(start, 600, 300);
 		window.setScene(startScene);
 		window.show();
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
+	public void startGame() throws IOException {
+		
+		if(Controller.checkForWin()) {
+			Parent winner = FXMLLoader.load(getClass().getResource("Game.fxml"));
+			window.setScene(new Scene(winner, 400, 300));
+			window.show();
+		}
+		
+		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
+		boardGame = new Scene(root, 1300, 700);
+		window.setScene(boardGame);
+		window.show();
 	}
 }
