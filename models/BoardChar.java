@@ -2,7 +2,7 @@ package models;
 
 public abstract class BoardChar {
 	protected int occupiedTile;
-	protected int health;
+	protected int wellness;
 	
 	
 	public int getOccupiedTile() {
@@ -11,17 +11,17 @@ public abstract class BoardChar {
 	
 	public abstract void setOccupiedTile(int occupiedTile);
 	
-	public int getHealth() {
-		return health;
+	public int getWellness() {
+		return wellness;
 	}
 	
-	public abstract void setHealth(int health);
+	public abstract void setWellness(int wellness);
 	
 	public void changeTile(int advance) {
 		setOccupiedTile(getOccupiedTile() + advance);
 	}
 	
-	public void changeHealth(int HPGain) {
-		setHealth(getHealth() + HPGain);
+	public void changeWellness(int wellnessGain) {
+		setWellness(getWellness() + wellnessGain);
 	}
 }

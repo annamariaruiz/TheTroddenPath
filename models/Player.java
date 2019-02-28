@@ -1,9 +1,11 @@
 package models;
 
+import java.util.ArrayList;
 
 public class Player {
 	final String NAME;
-	private PlayerChar[] chars;
+	private ArrayList<PlayerChar> chars;
+	//player at index 0 is the current character being played
 	private static int playerNum = 0;
 	
 	
@@ -18,11 +20,11 @@ public class Player {
 	}
 
 
-	public PlayerChar[] getChars() {
+	public ArrayList<PlayerChar> getChars() {
 		return chars;
 	}
 
-	public void setChars(PlayerChar[] chars) {
+	public void setChars(ArrayList<PlayerChar> chars) {
 		this.chars = chars;
 	}
 
@@ -33,7 +35,7 @@ public class Player {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Player Name: ").append(NAME)
-		.append("\nAmount of characters: ").append(chars.length);
+		.append("\nAmount of characters: ").append(chars.size());
 		return builder.toString();
 	}
 }

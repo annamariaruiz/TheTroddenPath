@@ -29,11 +29,11 @@ public class Dragon extends BoardChar {
 	}
 
 	@Override
-	public void setHealth(int health) {
-		if(health < 0 || health > 500) {
+	public void setWellness(int wellness) {
+		if(wellness < 0 || wellness > 500) {
 			throw new IllegalArgumentException("Error: A dragon's health ranges from 0 to 500.");
 		}
 		
-		this.health = health;
+		this.wellness = wellness;
 	}
 }

@@ -136,4 +136,3 @@ public class PlayerChar extends BoardChar {
 		PlayerChar.playerNum = playerNum;
 	}
 }
-
