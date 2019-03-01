@@ -51,6 +51,7 @@ public class PlayerChar extends BoardChar {
 		this.shekels = 0;
 		this.prestige = 0;
 		playerNum+=1;
+		this.role = "player";
 	}
 	
 	
@@ -105,11 +106,11 @@ public class PlayerChar extends BoardChar {
 	}
 
 	@Override
-	public void setHealth(int health) {
-		if(health > 100) {
+	public void setWellness(int wellness) {
+		if(wellness > 100) {
 			throw new IllegalArgumentException("A player's health must not exceed 100");
 		}
-		this.health = health;
+		this.wellness = wellness;
 		
 	}
 
