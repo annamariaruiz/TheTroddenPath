@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import models.enums.CharClass;
 import models.enums.TileColor;
+import views.Main;
 import models.Dragon;
 import models.Player;
 import models.PlayerChar;
@@ -22,26 +23,17 @@ public class Controller {
 	private static Dragon drago;
 	
 	public static void run() {
-		initPlayers();
 		initCharacters();
 		initBoard();
 	}
 	
-	private static void initPlayers() {
-		boolean isInvalid = true;
-		int numOfPlayers = 0;
-		
-		while(isInvalid) {
-			//TODO prompt for number of players through G.U.I.
-			numOfPlayers = 0;
-			
-			isInvalid = numOfPlayers >= 2 && numOfPlayers <= 4;
-		}
+	public static void initPlayers(int playerNum) {
+		int numOfPlayers = playerNum;
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			//TODO prompt for player name through G.U.I.
-			String name = "";
+			Main.playerName("Player", "What is your name?");
+			String name = Main.getName();
 			
 			if(name.trim().isEmpty()) {
 				players[p] = new Player();
@@ -97,7 +89,7 @@ public class Controller {
 	
 	//to be run when all surviving players reach the end of the board, or only one remains
 	//declare the winner
-	private static boolean checkForWin() {
+	public static boolean checkForWin() {
 		return false;
 	}
 	
