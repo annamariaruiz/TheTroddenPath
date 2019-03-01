@@ -114,7 +114,23 @@ public class PlayerChar extends BoardChar {
 		
 	}
 
-
+	public static int getPlayerNum() {
+		return playerNum;
+	}
+	
+	
+	public static void setPlayerNum(int playerNum) {
+		PlayerChar.playerNum = playerNum;
+	}
+		
+	public String getRole() {
+		return role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 	@Override
 	public String toString() {
 				StringBuilder builder = new StringBuilder();
@@ -125,15 +141,5 @@ public class PlayerChar extends BoardChar {
 		.append("\nPrestige: ").append(prestige)
 		.append("\nPlayer number: ").append(playerNum);
 		return builder.toString();
-	}
-
-
-	public static int getPlayerNum() {
-		return playerNum;
-	}
-
-
-	public static void setPlayerNum(int playerNum) {
-		PlayerChar.playerNum = playerNum;
 	}
 }
