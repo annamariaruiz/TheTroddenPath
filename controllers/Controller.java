@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import models.enums.CharClass;
 import models.enums.TileColor;
@@ -16,6 +17,7 @@ public class Controller {
 	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static TileColor[] tiles;
+		private static Random rng = new Random();
 	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
 	// private static HashMap<Player, Integer> currentEffects;
 	//TODO talk to Mr. Krebs about getting away with no HashMap, or find a different way to incorporate it
@@ -80,11 +82,86 @@ public class Controller {
 		}
 	}
 	
-	//logic for what a player would need to do during their turn
-	private static void playGame() {
-		do {
-			changeTurn();
-		} while(!gameOver);
+//	//logic for what a player would need to do during their turn
+//	private static void playGame() {
+//		do {
+//			changeTurn();
+//			// Options - give up / declare self witch/warlock, sell family, spin
+//			int menuInput = 0; //TODO return menu input from G.U.I.
+//			switch(menuInput) {
+//				case 0:
+//					// spin wheel
+//				case 1:
+//					// sell family
+//				case
+//					// give up
+//			}
+//		} while(!gameOver);
+//	}
+	
+		private static void sellFamily(int familyMem) {
+		boolean isMale = false;
+		boolean familyMemTypeExists = false;
+		switch(familyMem) {
+			case 1:
+				isMale = true;
+				ArrayList<PlayerChar> sons = new ArrayList<>();
+				currentPlayer.getChars().forEach(ch -> { if(ch.getRole().equals("son")) sons.add(ch); });
+				familyMemTypeExists = sons.size() > 0;
+				if(familyMemTypeExists) {
+					currentPlayer.getChars().remove(sons.get(0));					
+				}
+				break;
+			case 2:
+				ArrayList<PlayerChar> daughters = new ArrayList<>();
+				currentPlayer.getChars().forEach(ch -> { if(ch.getRole().equals("daughter")) daughters.add(ch); });
+				familyMemTypeExists = daughters.size() > 0;
+				if(familyMemTypeExists) {
+					currentPlayer.getChars().remove(daughters.get(0));					
+				}
+				break;
+			case 3:
+				ArrayList<PlayerChar> spouses = new ArrayList<>();
+				currentPlayer.getChars().forEach(ch -> { if(ch.getRole().equals("spouse")) spouses.add(ch); });
+				familyMemTypeExists = spouses.size() > 0;
+				if(familyMemTypeExists) {
+					currentPlayer.getChars().remove(spouses.get(0));					
+				}
+				break;
+		}
+		
+		if(familyMemTypeExists) {
+			PlayerChar currentChar = currentPlayer.getChars().get(0);
+			currentChar.setShekels(currentChar.getShekels() + (isMale ? (rng.nextInt(71) + 20) : (rng.nextInt(66) + 15)));			
+		}
+	}
+	
+	public static void checkForFam() {
+		if(currentPlayer.getChars().size() > 1) {
+			Main.sellFamily();
+		} else {
+			Main.familyError();
+		}
+	}
+	
+	public static void sellSon() {
+		sellFamily(1);
+	}
+	
+	public static void sellDaughter() {
+		sellFamily(2);
+	}
+	
+	public static void sellSpouse() {
+		sellFamily(3);
+	}
+	
+	public static void giveUp() {
+		gameOver = true;
+	}
+	
+	public static boolean hasGivenUp() {
+		return gameOver;
 	}
 	
 	//to be run when all surviving players reach the end of the board, or only one remains

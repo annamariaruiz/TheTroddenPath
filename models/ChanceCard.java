@@ -6,7 +6,7 @@ import java.util.Random;
 //when the player lands on a tile, they draw a card related to the color of the tile
 //after drawing a card, an effect will be given to the player
 
-import enums.TileColor;
+import models.enums.TileColor;
 
 public class ChanceCard {
 	public final TileColor TILECOLOR;
@@ -325,7 +325,7 @@ public class ChanceCard {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(pChar.getCHARNAME()).append(" draws a card.\n\n").append(getEffectString());
+		builder.append(pChar.CHARNAME).append(" draws a card.\n\n").append(getEffectString());
 		return builder.toString();
 	}
 }
