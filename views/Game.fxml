@@ -42,7 +42,7 @@
       <Pane layoutX="167.0" layoutY="77.0" prefHeight="523.0" prefWidth="1009.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="512.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ad1eff" height="140.0" layoutX="52.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" width="140.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ad1eff" height="140.0" layoutX="52.0" layoutY="67.0" stroke="BLACK" strokeType="INSIDE" width="140.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ad1eff" height="100.0" layoutX="372.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="192.0" layoutY="327.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="232.0" layoutY="127.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
@@ -131,7 +131,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00d34e" height="40.0" layoutX="712.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00d34e" height="40.0" layoutX="592.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="872.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="152.0" layoutY="247.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="152.0" layoutY="207.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="232.0" layoutY="247.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="312.0" layoutY="327.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="552.0" layoutY="327.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
@@ -140,6 +140,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="712.0" layoutY="287.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="792.0" layoutY="127.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="912.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="152.0" layoutY="247.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
          </children>
       </Pane>
    </children>
