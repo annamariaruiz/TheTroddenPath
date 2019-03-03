@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Main">
+   <children>
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#360a0aa8" height="306.0" layoutY="-29.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+            <Label alignment="CENTER" layoutX="27.0" layoutY="63.0" prefHeight="74.0" prefWidth="547.0" text="The Trodden Path" textFill="#cdcdcd">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="55.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="init" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>
