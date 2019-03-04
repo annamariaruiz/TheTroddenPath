@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Main">
+<Canvas fx:id="canvas" width = "1300" height = "700">
+	<!-- TODO Add Nodes -->
+</AnchorPane>
+
