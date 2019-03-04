@@ -204,16 +204,19 @@ public class Controller {
 		}
 		
 		checkForLife();
+		rankUpChar(currentPlayer);
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-	private static void rankUpChar(PlayerChar pc) {
-		CharClass charChoice;
+	private static void rankUpChar(Player playerToRankUp) {
+		PlayerChar pc = playerToRankUp.getChars().get(0);
+		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
-			throw new IllegalStateException("Error: It should not be possible to rank up a character with less than 500 shekels or prestige.");
-		}
+//		Useless to check because we're only upgrading if they have the right number of shekels or prestige points
+//		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
+//			
+//		}
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			//TODO G.U.I. with knight, priest, merchant, and duke choices
@@ -224,6 +227,32 @@ public class Controller {
 		} else {
 			//TODO G.U.I. with merchant and duke choices
 			charChoice = null;
+		}
+				
+		switch(charChoice) {
+			case DUKE:
+				pc.setShekels(pc.getShekels() + 100);
+				break;
+			case MERCHANT:
+				pc.setShekels(pc.getShekels() + 100);
+				break;
+			case PRIEST:
+				pc.setPrestige(pc.getPrestige() + 100);
+				if(playerToRankUp.getChars().size() > 1) {
+					//TODO G.U.I. message that priest's aren't allowed to have wives and children
+					boolean trashFam = true; //TODO prompt for whether to throw away family
+					if(trashFam) {
+						for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
+							playerToRankUp.getChars().remove(f);
+						}
+						
+						//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
+					}
+				}
+				break;
+			case KNIGHT:
+				pc.setPrestige(pc.getPrestige() + 200);
+				break;
 		}
 		
 		pc.setCharClass(charChoice);
