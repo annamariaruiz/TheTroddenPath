@@ -177,6 +177,7 @@ public class Controller {
 				currentPlayer.getChars().remove(0);
 				//TODO include G.U.I. message about character being removed and successor's role
 				
+			} else {
 				allCharsAreDead = true;
 				//TODO include G.U.I. message about all characters being dead and the player losing
 			}
