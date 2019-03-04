@@ -1,10 +1,10 @@
 package models;
 
+//MAKE SURE X, Y VALUE GETS CHANGED FROM 0 WHEN PRINTING STRING
+
+
 import java.util.ArrayList;
 import java.util.Random;
-
-//when the player lands on a tile, they draw a card related to the color of the tile
-//after drawing a card, an effect will be given to the player
 
 import models.enums.TileColor;
 
@@ -21,6 +21,11 @@ public class ChanceCard {
 	private boolean repeatTurn, skipTurn;
 	private static Random rng = new Random();
 
+	
+	private int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
+	private int y = 0; //y refers to the random number generated to represent the string's index that is used in the effect String
+	
+	
 	//add "repeatTurn" boolean, "skipTurn" boolean
 	public ChanceCard(TileColor tileColor, Player player) {
 		playerChars = player.getChars();
@@ -33,24 +38,23 @@ public class ChanceCard {
 		
 		//from the tile color, determine the effect related to the type of effect (positive, neutral, negative, or random).
 		//this logic is to determine the effect based on its index in the overall array.
+		
 		if(TILECOLOR == TileColor.GREEN) {
 			effectIndex = rng.nextInt(8);
-		}else if(TILECOLOR == TileColor.BLUE) {
-			effectIndex = rng.nextInt(8) + 8;
 		}else if(TILECOLOR == TileColor.RED) {
+			effectIndex = rng.nextInt(8) + 8;
+		}else if(TILECOLOR == TileColor.BLUE){
 			effectIndex = rng.nextInt(4) + 16;
 		}else {
-			effectIndex = rng.nextInt(3);
+			effectIndex = rng.nextInt(20);
 		}
 		
 		//from the determined effect int, find the card the player will draw and return it as a string via...
-		findEffect(effectIndex);
+		findEffect();
 	}
 	
 	//this is the logic to find the specific string for the effect
-	public void findEffect(int effectIndex) {
-		int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
-		int y = 0; //y refers to the random number generated to represent the string's index that is used in the effect String
+	public void findEffect() {
 		String[] effects = {
 				"Gain " + (x * 3) + " shekels",
 				"Gain " + (x * 3) + " prestige", 
@@ -65,7 +69,7 @@ public class ChanceCard {
 				"You got in a bar fight and lost. Lose " + x + " wellness and " + (x * 2) + " prestige.",
 				"You " + yValues[y] + "Lose " + x + " wellness.", 
 				"Oops! You have contracted " + yValues[y], 
-				"Your wife is declared a witch and is burned at the stake, lose your wife.", 
+				"Your spouse is declared a witch and is burned at the stake. Lose your spose.", 
 				"You forgot one of your children at the last town. Lose a child.", 
 				"Uh oh, you got tarred and feathered. Lose your next turn.",
 				"You sell your daugther off for marriage. Lose a daughter, but gain " + (x * 3) + " prestige and shekels.", 
@@ -88,11 +92,11 @@ public class ChanceCard {
 		
 		effectString = effects[effectIndex];
 		setEffectString(effectString);
-		applyEffect(pChar, x, y, effectIndex);
+		applyEffect(pChar, effectIndex);
 	}
 	
 	//this is applied when the card is "drawn" / created
-	public void applyEffect(PlayerChar pChar, int x, int y, int effectIndex) {
+	public void applyEffect(PlayerChar pChar, int effectIndex) {
 		int shekels, prestige, wellness, familyNum;
 		String role;
 		boolean has;
@@ -124,9 +128,9 @@ public class ChanceCard {
 			pChar.setWellness(wellness);
 			break;
 		case 5:
-			has = checkFamily("wife");
+			has = checkFamily("spouse");
 			if(!has) {
-				addFamily("wife");
+				addFamily("spouse");
 			}
 			break;
 		case 6:
@@ -184,9 +188,9 @@ public class ChanceCard {
 			}
 			break;
 		case 13:
-			has = checkFamily("wife");
+			has = checkFamily("spouse");
 			if(has) {
-				removeFamily("wife");
+				removeFamily("spouse");
 			}
 			break;
 		case 14:
@@ -242,8 +246,20 @@ public class ChanceCard {
 	}
 	
 	public void addFamily(String role) {
-		PlayerChar newChar = new PlayerChar();
-		newChar.setRole(role);
+		boolean gender = false;
+		int genderNum;
+		
+		if(role.equals("son")) {
+			gender = true;
+		}else if(role.equals("daughter")){
+			gender = false;
+		}else {
+			genderNum = rng.nextInt(2);
+			if(genderNum == 0) {
+				gender = true;
+			}
+		}
+		PlayerChar newChar = new PlayerChar(gender, role);
 		playerChars.add(newChar);
 		player.setChars(playerChars);
 	}
@@ -273,7 +289,6 @@ public class ChanceCard {
 		return has;
 	}
 	
-	
 	public String getEffectString() {
 		return effectString;
 	}
@@ -287,6 +302,9 @@ public class ChanceCard {
 	}
 	
 	public void setEffectNum(int effectNum) {
+		if(effectNum < 0 || effectNum > 19) {
+			throw new IllegalArgumentException("The value of effectNum must be between 0 and 19.");
+		}
 		this.effectIndex = effectNum;
 	}
 	
@@ -325,7 +343,7 @@ public class ChanceCard {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(pChar.CHARNAME).append(" draws a card.\n\n").append(getEffectString());
+		builder.append(player.NAME).append(" draws a card.\n").append(getEffectString());
 		return builder.toString();
 	}
 }

@@ -52,8 +52,28 @@ public class PlayerChar extends BoardChar {
 		this.prestige = 0;
 		playerNum+=1;
 		this.role = "player";
+		setWellness(100);
 	}
 	
+	public PlayerChar(boolean gender, String role) {
+		super();
+		this.limbs = new ArrayList<Boolean>();
+			limbs.add(true);
+			limbs.add(true);
+			limbs.add(true);
+			limbs.add(true);
+		if(gender) {
+			CHARNAME = mNames[rng.nextInt(mNames.length)];
+		}else {
+			CHARNAME = fNames[rng.nextInt(fNames.length)];
+		}
+		this.charClass = CharClass.CITIZEN;
+		this.shekels = 0;
+		this.prestige = 0;
+		this.gender = gender;
+		this.role = role;
+		setWellness(100);
+	}
 	
 	public PlayerChar(String CHARNAME, boolean gender, ArrayList<Boolean> limbs, CharClass charClass, int shekels, int prestige) {
 		super();
@@ -63,6 +83,7 @@ public class PlayerChar extends BoardChar {
 		this.prestige = prestige;
 		this.CHARNAME = CHARNAME;
 		this.gender = gender;
+		setWellness(100);
 	}
 
 
@@ -108,8 +129,13 @@ public class PlayerChar extends BoardChar {
 	@Override
 	public void setWellness(int wellness) {
 		if(wellness > 100) {
-			throw new IllegalArgumentException("A player's health must not exceed 100");
+			wellness = 100;
 		}
+		
+		if(wellness < 0) {
+			wellness = 0;
+		}
+		
 		this.wellness = wellness;
 		
 	}
@@ -136,7 +162,8 @@ public class PlayerChar extends BoardChar {
 				StringBuilder builder = new StringBuilder();
 		builder.append("Player Character: ")
 		.append("\nName: ").append(CHARNAME)
-		.append("\nGender: ").append(gender)
+		.append("\nRole: ").append(role)
+		.append("\nWellness: ").append(wellness)
 		.append("\nShekels: ").append(shekels)
 		.append("\nPrestige: ").append(prestige)
 		.append("\nPlayer number: ").append(playerNum);

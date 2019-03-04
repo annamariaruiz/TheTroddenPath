@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import models.enums.CharClass;
-import models.enums.TileColor;
+import models.*;
 import views.Main;
-import models.ChanceCard;
-import models.Dragon;
-import models.Player;
-import models.PlayerChar;
+import views.PlayerInit;
+import views.SellFamily;
 
 public class Controller {
 	private static int turn;
@@ -35,8 +32,8 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			Main.playerName("Player", "What is your name?");
-			String name = Main.getName();
+			PlayerInit.playerName("Player", "What is your name?");
+			String name = PlayerInit.getName();
 			
 			if(name.trim().isEmpty()) {
 				players[p] = new Player();
@@ -139,9 +136,9 @@ public class Controller {
 	
 	public static void checkForFam() {
 		if(currentPlayer.getChars().size() > 1) {
-			Main.sellFamily();
+			SellFamily.sellFamily();
 		} else {
-			Main.familyError();
+			SellFamily.familyError();
 		}
 	}
 	
