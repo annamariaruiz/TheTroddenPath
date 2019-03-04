@@ -55,6 +55,19 @@ public class ChanceCard {
 	
 	//this is the logic to find the specific string for the effect
 	public void findEffect() {
+		//the logic below is to determine the specific numerical values and random strings
+				if((effectIndex >= 0 && effectIndex <= 3) || (effectIndex >= 8 && effectIndex <= 11) || (effectIndex >= 16 && effectIndex <= 19)) {
+					x = rng.nextInt(20) + 1;
+				}
+				
+				if(effectIndex == 11) {
+					y = rng.nextInt(3) + 7;
+				}
+				
+				if(effectIndex == 12) {
+					y = rng.nextInt(7);
+				}
+		
 		String[] effects = {
 				"Gain " + (x * 3) + " shekels",
 				"Gain " + (x * 3) + " prestige", 
@@ -75,20 +88,9 @@ public class ChanceCard {
 				"You sell your daugther off for marriage. Lose a daughter, but gain " + (x * 3) + " prestige and shekels.", 
 				"You sell your son off for work. Lose a son, but gain " + (x * 3) + " shekels.", 
 				"You had too much fun at the local tavern and have ended up with a child. Lose " + (x * 3) + " prestige, but gain a child.", 
-				"You got in a bar fight, but won! Lose " + x + " wellness, but gain " + (x * 3) + " prestige."};
+				"You got in a bar fight and won! Lose " + x + " wellness, but gain " + (x * 3) + " prestige."};
 		
-		//the logic below is to determine the specific numerical values and random strings
-		if((effectIndex >= 0 && effectIndex <= 3) || (effectIndex >= 8 && effectIndex <= 11) || (effectIndex >= 16 && effectIndex <= 19)) {
-			x = rng.nextInt(20) + 1;
-		}
 		
-		if(effectIndex == 11) {
-			y = rng.nextInt(3) + 7;
-		}
-		
-		if(effectIndex == 12) {
-			y = rng.nextInt(7);
-		}
 		
 		effectString = effects[effectIndex];
 		setEffectString(effectString);

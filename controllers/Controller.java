@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import models.*;
+import models.enums.*;
 import views.Main;
 import views.PlayerInit;
 import views.SellFamily;
@@ -15,7 +16,7 @@ public class Controller {
 	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static TileColor[] tiles;
-		private static Random rng = new Random();
+	private static Random rng = new Random();
 	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
 	// private static HashMap<Player, Integer> currentEffects;
 	//TODO talk to Mr. Krebs about getting away with no HashMap, or find a different way to incorporate it
@@ -168,6 +169,22 @@ public class Controller {
 		return false;
 	}
 	
+	private static boolean checkForLife() {
+		boolean allCharsAreDead = false;
+		
+		if(currentPlayer.getChars().get(0).getWellness() == 0) {
+			if(currentPlayer.getChars().size() > 1) {
+				currentPlayer.getChars().remove(0);
+				//TODO include G.U.I. message about character being removed and successor's role
+				
+				allCharsAreDead = true;
+				//TODO include G.U.I. message about all characters being dead and the player losing
+			}
+		}
+		
+		return allCharsAreDead;
+	}
+	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
 		turn++;
@@ -184,6 +201,8 @@ public class Controller {
 			gameOver = true;
 			//TODO add G.U.I. message that everyone has died.
 		}
+		
+		checkForLife();
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
