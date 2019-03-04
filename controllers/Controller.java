@@ -7,6 +7,7 @@ import java.util.Random;
 import models.enums.CharClass;
 import models.enums.TileColor;
 import views.Main;
+import models.ChanceCard;
 import models.Dragon;
 import models.Player;
 import models.PlayerChar;
@@ -214,6 +215,7 @@ public class Controller {
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
 	private static void drawCard() {
-		
+		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
+		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
 	}
 }
