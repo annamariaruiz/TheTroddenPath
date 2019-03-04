@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import views.enums.NextTileDirection;
 
@@ -44,6 +45,15 @@ public class Main extends Application {
 		boardGame = new Scene(root, 1300, 700);
 		window.setScene(boardGame);
 		window.show();
+	}
+	
+	public void changeInfo() {
+		Label playerName = new Label();
+		Label wellness = new Label();
+		Label limbsRemaining = new Label();
+		Label shekels = new Label();
+		Label prestige = new Label();
+		Label family = new Label();
 	}
 	
 	private static void createTileArrayList() {

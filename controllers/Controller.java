@@ -3,10 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import models.*;
 import models.enums.*;
-import views.Main;
 import views.PlayerInit;
 import views.SellFamily;
 

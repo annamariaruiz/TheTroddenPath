@@ -19,6 +19,9 @@ public class Player {
 		this.NAME = "Player " + playerNum;
 	}
 
+	public String getNAME() {
+		return NAME;
+	}
 
 	public ArrayList<PlayerChar> getChars() {
 		return chars;
