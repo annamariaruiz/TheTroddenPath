@@ -233,4 +233,12 @@ public class Controller {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
 	}
+	
+	public static int spinWheel() {
+		return Wheel.spinWheel();
+	}
+	
+	public static int spinWheel(int numOfPlayers) {
+		return Wheel.spinWheel(numOfPlayers);
+	}
 }
