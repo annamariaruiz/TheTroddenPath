@@ -22,7 +22,7 @@ public class Controller {
 	private static Dragon drago;
 	
 	public static void run() {
-		initCharacters();
+		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 		initBoard();
 	}
 	
@@ -42,16 +42,7 @@ public class Controller {
 		}
 			
 	}
-	
-	//for every person playing a game, make them a character. Set all their stats to the default
-	private static void initCharacters() {
-		for(int p = 0; p < players.length; p++) {
-			players[p].setChars(new ArrayList<PlayerChar>());
-			players[p].getChars().add(new PlayerChar());
-		}
-		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
-	}
-	
+		
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
@@ -79,24 +70,7 @@ public class Controller {
 		}
 	}
 	
-//	//logic for what a player would need to do during their turn
-//	private static void playGame() {
-//		do {
-//			changeTurn();
-//			// Options - give up / declare self witch/warlock, sell family, spin
-//			int menuInput = 0; //TODO return menu input from G.U.I.
-//			switch(menuInput) {
-//				case 0:
-//					// spin wheel
-//				case 1:
-//					// sell family
-//				case
-//					// give up
-//			}
-//		} while(!gameOver);
-//	}
-	
-		private static void sellFamily(int familyMem) {
+	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
 		switch(familyMem) {
@@ -164,7 +138,30 @@ public class Controller {
 	//to be run when all surviving players reach the end of the board, or only one remains
 	//declare the winner
 	public static boolean checkForWin() {
-		return false;
+		boolean allTurnsAreFin = true;
+		
+		for(Player p : players) {
+			if(p.getChars().get(0).getOccupiedTile() != 99 && p.getChars().get(0).getWellness() > 0) {
+				allTurnsAreFin = false;
+			}
+		}
+		
+		if(allTurnsAreFin) {
+			Player temp = null;
+			for(int i = 0; i < players.length - 1; i++) {
+				for(int j = i + 1; j < players.length; j++) {
+					PlayerChar charI = players[i].getChars().get(0);
+					PlayerChar charJ = players[j].getChars().get(0);
+					if(charI.getPrestige() + charI.getShekels()  > charJ.getPrestige() + charJ.getShekels()) {
+						temp = players[j];
+						players[j] = players[i];
+						players[i] = temp;
+					}
+				}
+			}
+		}
+		
+		return !allTurnsAreFin;
 	}
 	
 	private static boolean checkForLife() {
