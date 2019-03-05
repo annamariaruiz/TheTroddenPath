@@ -3,9 +3,16 @@ package controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import models.*;
-import models.enums.*;
+
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
 import views.PlayerInit;
+import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
@@ -31,7 +38,7 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName("Player", "What is your name?");
+			PlayerInit.playerName();
 			String name = PlayerInit.getName();
 			
 			if(name.trim().isEmpty()) {
@@ -40,8 +47,11 @@ public class Controller {
 				players[p] = new Player(name);				
 			}
 		}
-		
-		determineTurnOrder(players);
+//<<<<<<< HEAD
+//		
+//		determineTurnOrder(players);
+//=======
+//>>>>>>> Anna
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
@@ -133,6 +143,7 @@ public class Controller {
 	}
 	
 	public static void checkForFam() {
+		System.out.println("Fam checked");
 		if(currentPlayer.getChars().size() > 1) {
 			SellFamily.sellFamily();
 		} else {
@@ -153,6 +164,7 @@ public class Controller {
 	}
 	
 	public static void giveUp() {
+		System.out.println("Giving up");
 		gameOver = true;
 	}
 	
@@ -239,13 +251,13 @@ public class Controller {
 //		}
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
-			//TODO G.U.I. with knight, priest, merchant, and duke choices
+			RankUp.rankUpBoth();
 			charChoice = null;
 		} else if(pc.getPrestige() >= 500) {
-			//TODO G.U.I. with knight and priest choices
+			RankUp.rankUpPrestige();
 			charChoice = null;
 		} else {
-			//TODO G.U.I. with merchant and duke choices
+			RankUp.rankUpShekels();
 			charChoice = null;
 		}
 				
@@ -286,6 +298,7 @@ public class Controller {
 	}
 	
 	public static int spinWheel() {
+		System.out.println("Wheel spun");
 		return Wheel.spinWheel();
 	}
 	
