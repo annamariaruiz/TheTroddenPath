@@ -2,7 +2,7 @@ package views;
 	
 import java.io.IOException;
 import java.util.ArrayList;
-
+import views.PlayerInit;
 import controllers.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +34,6 @@ public class Main extends Application {
 	}
 	
 	public void startGame() throws IOException {
-		
 		if(Controller.checkForWin()) {
 			Parent winner = FXMLLoader.load(getClass().getResource("Game.fxml"));
 			window.setScene(new Scene(winner, 400, 300));
@@ -45,6 +44,7 @@ public class Main extends Application {
 		boardGame = new Scene(root, 1300, 700);
 		window.setScene(boardGame);
 		window.show();
+		PlayerInit.playerNum();
 	}
 	
 	public void changeInfo() {
@@ -129,7 +129,6 @@ public class Main extends Application {
 		for(int i = 0; i<6; i++) {
 			Tile up = new Tile(NextTileDirection.UP);
 		}
-		
 		// 85 tiles
 		for(int i = 0; i<2; i++) {
 			Tile left = new Tile(NextTileDirection.LEFT);
