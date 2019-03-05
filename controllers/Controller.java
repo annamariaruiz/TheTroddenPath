@@ -40,8 +40,33 @@ public class Controller {
 				players[p] = new Player(name);				
 			}
 		}
-			
+		
+		determineTurnOrder(players);
 	}
+	
+	public static void determineTurnOrder(Player[] players) {
+		int order, spin = 0, numOfPlayers = players.length;
+		Player[] orderedPlayers = new Player[players.length];
+		
+		do {
+			order = Wheel.spinWheel(numOfPlayers);
+			if(order != 0 && players[order] != null) {
+				orderedPlayers[spin] = players[order];
+				players[order] = null;
+				numOfPlayers -= 1;
+				spin += 1;
+			}
+		}while(numOfPlayers > 1);
+		
+		for(Player player : players) {
+			if(player != null) {
+				orderedPlayers[3] = player;
+			}
+		}
+		
+		players = orderedPlayers;
+	}
+
 		
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
