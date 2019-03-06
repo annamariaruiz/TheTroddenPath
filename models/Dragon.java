@@ -3,14 +3,9 @@ package models;
 public class Dragon extends BoardChar {
 
 	private int turn;
-	public final int[] ATTACK;
 	
-	
-	public Dragon(int[] attack) {
-		if(attack.length != 5) {
-			throw new ArrayIndexOutOfBoundsException("Error: A dragon must have attack values for each of the tiles it attacks.");
-		}
-		this.ATTACK = attack;
+	public Dragon() {
+		setOccupiedTile(49);
 	}
 	
 	public int getTurn() {
@@ -19,6 +14,15 @@ public class Dragon extends BoardChar {
 
 	public void increaseTurn() {
 		this.turn += 1;
+	}
+	
+	public int[] getDragonTiles() {
+		int[] dragonTiles = new int[5];
+		for (int i = 0; i < dragonTiles.length; i++) {
+			dragonTiles[i] = getOccupiedTile() + i - 2;
+		}
+		
+		return dragonTiles;
 	}
 
 	@Override

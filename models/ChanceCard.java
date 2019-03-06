@@ -18,7 +18,7 @@ public class ChanceCard {
 	private ArrayList<PlayerChar> playerChars;
 	private boolean repeatTurn, skipTurn;
 	private static Random rng = new Random();
-	
+
 	private int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
 	private int y = 0; //y refers to the random number generated to represent the string's index that is used in the effect String
 	
