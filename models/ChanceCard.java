@@ -1,11 +1,9 @@
 package models;
 
-//MAKE SURE X, Y VALUE GETS CHANGED FROM 0 WHEN PRINTING STRING
-
-
 import java.util.ArrayList;
 import java.util.Random;
 
+import models.enums.CharClass;
 import models.enums.TileColor;
 
 public class ChanceCard {
@@ -20,11 +18,9 @@ public class ChanceCard {
 	private ArrayList<PlayerChar> playerChars;
 	private boolean repeatTurn, skipTurn;
 	private static Random rng = new Random();
-
 	
 	private int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
 	private int y = 0; //y refers to the random number generated to represent the string's index that is used in the effect String
-	
 	
 	//add "repeatTurn" boolean, "skipTurn" boolean
 	public ChanceCard(TileColor tileColor, Player player) {
@@ -90,8 +86,6 @@ public class ChanceCard {
 				"You had too much fun at the local tavern and have ended up with a child. Lose " + (x * 3) + " prestige, but gain a child.", 
 				"You got in a bar fight and won! Lose " + x + " wellness, but gain " + (x * 3) + " prestige."};
 		
-		
-		
 		effectString = effects[effectIndex];
 		setEffectString(effectString);
 		applyEffect(pChar, effectIndex);
@@ -99,7 +93,7 @@ public class ChanceCard {
 	
 	//this is applied when the card is "drawn" / created
 	public void applyEffect(PlayerChar pChar, int effectIndex) {
-		int shekels, prestige, wellness, familyNum;
+		int shekels, prestige, wellness, familyNum, modifier = 1;
 		String role;
 		boolean has;
 		
@@ -112,14 +106,23 @@ public class ChanceCard {
 		switch(effectIndex) {
 		case 0:
 			shekels += (x * 3);
+			if(pChar.getCharClass() == CharClass.MERCHANT || pChar.getCharClass() == CharClass.DUKE) {
+				shekels *= 2;
+			}
 			pChar.setShekels(shekels);
 			break;
 		case 1:
 			prestige += (x * 3);
+			if(pChar.getCharClass() == CharClass.PRIEST || pChar.getCharClass() == CharClass.DUKE) {
+				prestige *= 2;
+			}
 			pChar.setPrestige(prestige);
 			break;
 		case 2:
 			wellness += x;
+			if(pChar.getCharClass() == CharClass.PRIEST) {
+				wellness *= 2;
+			}
 			pChar.setWellness(wellness);
 			break;
 		case 3:
@@ -127,72 +130,94 @@ public class ChanceCard {
 			break;
 		case 4:
 			wellness += (x * 2);
+			if(pChar.getCharClass() == CharClass.PRIEST) {
+				wellness *= 2;
+			}
 			pChar.setWellness(wellness);
 			break;
 		case 5:
 			has = checkFamily("spouse");
-			if(!has) {
+			if(!has && pChar.getCharClass() != CharClass.PRIEST) {
 				addFamily("spouse");
+			}else {
+				setEffectString("Your card had no effect.");
 			}
 			break;
 		case 6:
-			addFamily("daughter");
+			if(pChar.getCharClass() != CharClass.PRIEST) {
+				addFamily("daughter");				
+			}
 			break;
 		case 7:
-			addFamily("son");
+			if(pChar.getCharClass() != CharClass.PRIEST) {
+				addFamily("son");				
+			}
 			break;
 		case 8:
+			if(pChar.getCharClass() == CharClass.MERCHANT) {
+				shekels -= x;
+			}
 			shekels -= ( x * 3);
 			pChar.setShekels(shekels);
 			break;
 		case 9:
+			if(pChar.getCharClass() == CharClass.DUKE) {
+				prestige -= x;
+			}
 			prestige -= (x * 3);
 			pChar.setPrestige(prestige);
 			break;
 		case 10:
-			wellness -= x;
-			prestige -= (x * 2);
+			if(pChar.getCharClass() == CharClass.KNIGHT) {
+				setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + (x * 5) + " prestige.");
+				prestige += (x * 5);
+			}else {
+				wellness -= x;
+				prestige -= (x * 2);				
+			}
 			pChar.setWellness(wellness);
 			pChar.setPrestige(prestige);
 			break;
 		case 11:
+			if(pChar.getCharClass() == CharClass.KNIGHT) {
+				modifier = 2;
+			}
 			if(y == 7) {
-				wellness -= 15; 
+				wellness -= (15 / modifier); 
 			}else if(y == 8) {
-				wellness -= 10;
+				wellness -= (10 / modifier);
 			}else {
-				wellness -= 5;
+				wellness -= (5 / modifier);
 			}
 			pChar.setWellness(wellness);
 			break;
 		case 12:
-			if(y == 0) {
-				wellness -= 5;
-				pChar.setWellness(wellness);
-			}else if(y == 1) {
-				wellness -= 10;
-				pChar.setWellness(wellness);
-			}else if(y == 2) {
-				wellness -= 15;
-				pChar.setWellness(wellness);
-			}else if(y == 3) {
-				wellness -= 20;
-				pChar.setWellness(wellness);
-			}else if(y == 4) {
-				wellness -= 30;
-				pChar.setWellness(wellness);
-			}else if(y == 5) {
-				wellness -= 40;
-				pChar.setWellness(wellness);
-			}else if(y == 6) {
-				wellness -= 50;
-				pChar.setWellness(wellness);
+			if(pChar.getCharClass() == CharClass.KNIGHT) {
+				modifier = 2;
 			}
+			if(y == 0) {
+				wellness -= (5 / modifier);
+			}else if(y == 1) {
+				wellness -= (10 / modifier);
+			}else if(y == 2) {
+				wellness -= (15 / modifier);
+			}else if(y == 3) {
+				wellness -= (20 / modifier);
+			}else if(y == 4) {
+				wellness -= (30 / modifier);
+			}else if(y == 5) {
+				wellness -= (40 / modifier);
+			}else if(y == 6) {
+				wellness -= (50 / modifier);
+			}
+			pChar.setWellness(wellness);
 			break;
 		case 13:
 			has = checkFamily("spouse");
 			if(has) {
 				removeFamily("spouse");
+			}else {
+				setEffectString("Your card had no effect.");
 			}
 			break;
 		case 14:
@@ -203,6 +228,8 @@ public class ChanceCard {
 				has = checkFamily("daughter");
 				if(has) {
 					removeFamily("daughter");
+				}else {
+					setEffectString("Your card had no effect.");
 				}
 			}
 			break;
@@ -215,6 +242,12 @@ public class ChanceCard {
 				removeFamily("daughter");
 				prestige += (x * 3);
 				shekels += (x * 3);
+				if(pChar.getCharClass() == CharClass.DUKE) {
+					prestige *= 2;
+					shekels *= 2;
+				}else if(pChar.getCharClass() == CharClass.MERCHANT) {
+					shekels *= 2;
+				}
 				pChar.setPrestige(prestige);
 				pChar.setShekels(shekels);
 			}
@@ -224,25 +257,40 @@ public class ChanceCard {
 			if(has) {
 				removeFamily("son");
 				shekels += (x * 3);
+				if(pChar.getCharClass() == CharClass.MERCHANT) {
+					shekels *= 2;
+				}
 				pChar.setShekels(shekels);
 			}
 			break;
 		case 18:
-			familyNum = rng.nextInt(2);
-			if(familyNum == 0) {
-				role = "son";
+			if(pChar.getCharClass() != CharClass.PRIEST) {
+				familyNum = rng.nextInt(2);
+				if(familyNum == 0) {
+					role = "son";
+				}else {
+					role = "daughter";
+				}
+				addFamily(role);
+				prestige -= (x * 3);
+				if(pChar.getCharClass() == CharClass.KNIGHT) {
+					prestige *= 2;
+				}
+				pChar.setPrestige(prestige);				
 			}else {
-				role = "daughter";
+				setEffectString("Your card had no effect.");
 			}
-			addFamily(role);
-			prestige -= (x * 3);
-			pChar.setPrestige(prestige);
 			break;
 		case 19:
-			wellness -= x;
-			prestige -= (x * 3);
-			pChar.setWellness(wellness);
-			pChar.setPrestige(prestige);
+			if(pChar.getCharClass() == CharClass.KNIGHT) {
+				setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + (x * 5) + " prestige.");
+				prestige += (x * 5);
+			}else {
+				wellness -= x;
+				prestige -= (x * 3);
+				pChar.setWellness(wellness);
+				pChar.setPrestige(prestige);				
+			}
 			break;
 		}
 	}

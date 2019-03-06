@@ -14,14 +14,14 @@ public class PlayerInit {
 	private static String name;
 	
 	//ask for number of players
-	public static void playerNum(String title, String message) {
+	public static void playerNum() {
 		Stage prompt = new Stage();
 		
 		prompt.initModality(Modality.APPLICATION_MODAL);
-		prompt.setTitle(title);
+		prompt.setTitle("Players");
 		
 		Text label = new Text();
-		label.setText(message);
+		label.setText("How many players?");
 		TextField playerNum = new TextField();
 		Button submit = new Button("Submit");
 		Text error = new Text();
@@ -54,15 +54,15 @@ public class PlayerInit {
 	}
 	
 	//ask for Player name
-	public static void playerName(String title, String message) {
+	public static void playerName() {
 		String name ="";
 		Stage prompt = new Stage();
 		
 		prompt.initModality(Modality.APPLICATION_MODAL);
-		prompt.setTitle(title);
+		prompt.setTitle("Player name?");
 		
 		Text label = new Text();
-		label.setText(message);
+		label.setText("What is your name?");
 		TextField playerName = new TextField();
 		Button submit = new Button("Submit");
 		
