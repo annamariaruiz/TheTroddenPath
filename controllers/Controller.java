@@ -3,8 +3,16 @@ package controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import models.*;
-import models.enums.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
@@ -22,9 +30,14 @@ public class Controller {
 	private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
 	
+	public void initialize() {
+		run();
+	}
+	
 	public static void run() {
-		initCharacters();
+		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 		initBoard();
+		determineTurnOrder(players);
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -32,26 +45,50 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName("Player", "What is your name?");
-			String name = PlayerInit.getName();
-			
-			if(name.trim().isEmpty()) {
-				players[p] = new Player();
-			} else {
-				players[p] = new Player(name);				
+			PlayerInit.playerName();
+			players[p] = new Player();
+		}
+//<<<<<<< HEAD
+//		
+//		determineTurnOrder(players);
+//=======
+//>>>>>>> Anna
+	}
+	
+	public static void initPlayers(ArrayList<String> playerNames) {
+		int numOfPlayers = playerNames.size();
+		players = new Player[numOfPlayers];
+		for(int i = 0; i<numOfPlayers; i++) {
+			Player player = new Player(playerNames.get(i));
+			players[i] = player;
+		}
+	}
+	
+	public static void determineTurnOrder(Player[] players) {
+		int order, spin = 0, numOfPlayers = players.length;
+		Player[] orderedPlayers = new Player[players.length];
+		
+		do {
+			order = Wheel.spinWheel(numOfPlayers);
+			if(order != 0 && players[order] != null) {
+				orderedPlayers[spin] = players[order];
+				players[order] = null;
+				numOfPlayers -= 1;
+				spin += 1;
+			}
+		}while(numOfPlayers > 1);
+		
+		for(Player player : players) {
+			if(player != null) {
+				orderedPlayers[players.length - 1] = player;
 			}
 		}
+		
+		players = orderedPlayers;
+		System.out.println("test");
 	}
-	
-	//for every person playing a game, make them a character. Set all their stats to the default
-	private static void initCharacters() {
-		for(int p = 0; p < players.length; p++) {
-			players[p].setChars(new ArrayList<PlayerChar>());
-			players[p].getChars().add(new PlayerChar());
-		}
-		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
-	}
-	
+
+		
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
@@ -75,28 +112,11 @@ public class Controller {
 						tiles[t] = TileColor.RED;
 				}
 			}
-			System.out.println(tiles[t]);
+//			System.out.println(tiles[t]);
 		}
 	}
 	
-//	//logic for what a player would need to do during their turn
-//	private static void playGame() {
-//		do {
-//			changeTurn();
-//			// Options - give up / declare self witch/warlock, sell family, spin
-//			int menuInput = 0; //TODO return menu input from G.U.I.
-//			switch(menuInput) {
-//				case 0:
-//					// spin wheel
-//				case 1:
-//					// sell family
-//				case
-//					// give up
-//			}
-//		} while(!gameOver);
-//	}
-	
-		private static void sellFamily(int familyMem) {
+	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
 		switch(familyMem) {
@@ -166,7 +186,30 @@ public class Controller {
 	//to be run when all surviving players reach the end of the board, or only one remains
 	//declare the winner
 	public static boolean checkForWin() {
-		return false;
+		boolean allTurnsAreFin = true;
+		
+		for(Player p : players) {
+			if(p.getChars().get(0).getOccupiedTile() != 99 && p.getChars().get(0).getWellness() > 0) {
+				allTurnsAreFin = false;
+			}
+		}
+		
+		if(allTurnsAreFin) {
+			Player temp = null;
+			for(int i = 0; i < players.length - 1; i++) {
+				for(int j = i + 1; j < players.length; j++) {
+					PlayerChar charI = players[i].getChars().get(0);
+					PlayerChar charJ = players[j].getChars().get(0);
+					if(charI.getPrestige() + charI.getShekels()  > charJ.getPrestige() + charJ.getShekels()) {
+						temp = players[j];
+						players[j] = players[i];
+						players[i] = temp;
+					}
+				}
+			}
+		}
+		
+		return !allTurnsAreFin;
 	}
 	
 	private static boolean checkForLife() {
@@ -204,16 +247,29 @@ public class Controller {
 		}
 		
 		checkForLife();
+		rankUpChar(currentPlayer);
+	}
+	
+	private static void updateView() {
+		playerName.setText(currentPlayer.NAME);
+		shekels.setText(String.valueOf(currentPlayer.getChars().get(0).getShekels()));
+		prestige.setText("");
+		wellness.setText("");
+		limbsRemaining.setText("");
+		family.setText("");
+		position.setText("");
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-	private static void rankUpChar(PlayerChar pc) {
-		CharClass charChoice;
+	private static void rankUpChar(Player playerToRankUp) {
+		PlayerChar pc = playerToRankUp.getChars().get(0);
+		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
-			throw new IllegalStateException("Error: It should not be possible to rank up a character with less than 500 shekels or prestige.");
-		}
+//		Useless to check because we're only upgrading if they have the right number of shekels or prestige points
+//		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
+//			
+//		}
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			RankUp.rankUpBoth();
@@ -224,6 +280,32 @@ public class Controller {
 		} else {
 			RankUp.rankUpShekels();
 			charChoice = null;
+		}
+				
+		switch(charChoice) {
+			case DUKE:
+				pc.setShekels(pc.getShekels() + 100);
+				break;
+			case MERCHANT:
+				pc.setShekels(pc.getShekels() + 100);
+				break;
+			case PRIEST:
+				pc.setPrestige(pc.getPrestige() + 100);
+				if(playerToRankUp.getChars().size() > 1) {
+					//TODO G.U.I. message that priest's aren't allowed to have wives and children
+					boolean trashFam = true; //TODO prompt for whether to throw away family
+					if(trashFam) {
+						for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
+							playerToRankUp.getChars().remove(f);
+						}
+						
+						//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
+					}
+				}
+				break;
+			case KNIGHT:
+				pc.setPrestige(pc.getPrestige() + 200);
+				break;
 		}
 		
 		pc.setCharClass(charChoice);
@@ -244,4 +326,35 @@ public class Controller {
 	public static int spinWheel(int numOfPlayers) {
 		return Wheel.spinWheel(numOfPlayers);
 	}
+	
+	//FXML Controls
+    @FXML
+    private static Label playerName;
+
+    @FXML
+    private static Label shekels;
+
+    @FXML
+    private static Label prestige;
+
+    @FXML
+    private static Label wellness;
+
+    @FXML
+    private static Label limbsRemaining;
+
+    @FXML
+    private static Label family;
+
+    @FXML
+    private static Label position;
+
+    @FXML
+    private static Button spinWheel;
+    
+    @FXML
+    private static Button sellFamily;
+
+    @FXML
+    private static Button giveUp;
 }
