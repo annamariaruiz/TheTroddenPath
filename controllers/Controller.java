@@ -2,7 +2,11 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import models.ChanceCard;
 import models.Dragon;
@@ -17,15 +21,11 @@ import views.SellFamily;
 
 public class Controller {
 	private static int turn;
-	private static Player[] players;
+	public static Player[] players;
 	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static TileColor[] tiles;
 	private static Random rng = new Random();
-	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
-	// private static HashMap<Player, Integer> currentEffects;
-	//TODO talk to Mr. Krebs about getting away with no HashMap, or find a different way to incorporate it
-	private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
 	
 	public static void run() {
@@ -47,11 +47,6 @@ public class Controller {
 				players[p] = new Player(name);				
 			}
 		}
-//<<<<<<< HEAD
-//		
-//		determineTurnOrder(players);
-//=======
-//>>>>>>> Anna
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
@@ -177,6 +172,7 @@ public class Controller {
 	public static boolean checkForWin() {
 		boolean allTurnsAreFin = true;
 		
+		// If there is one player who is not at the end and is alive, there is one turn that's not finished.
 		for(Player p : players) {
 			if(p.getChars().get(0).getOccupiedTile() != 99 && p.getChars().get(0).getWellness() > 0) {
 				allTurnsAreFin = false;
@@ -184,21 +180,69 @@ public class Controller {
 		}
 		
 		if(allTurnsAreFin) {
-			Player temp = null;
-			for(int i = 0; i < players.length - 1; i++) {
-				for(int j = i + 1; j < players.length; j++) {
-					PlayerChar charI = players[i].getChars().get(0);
-					PlayerChar charJ = players[j].getChars().get(0);
-					if(charI.getPrestige() + charI.getShekels()  > charJ.getPrestige() + charJ.getShekels()) {
-						temp = players[j];
-						players[j] = players[i];
-						players[i] = temp;
+			// Map players to their scores
+			HashMap<Player, Integer> playersToScores = new HashMap<>();
+						
+			for(int p = 0; p < players.length; p++) {
+				PlayerChar pChar = players[p].getChars().get(0);
+				
+				// Derive scores from PlayerChar prestige and shekels.
+				playersToScores.put(players[p], pChar.getPrestige() + pChar.getShekels());
+			}
+			
+			// Create an array from the hashmap so that it's orderable.
+			Map.Entry<Player, Integer>[] pScoresToSort = (Entry<Player, Integer>[]) playersToScores.entrySet().toArray();
+			
+			// Resolve duplicates and sort the players based on their scores.
+			Map.Entry<Player, Integer>[] sortedPScores = resolveDups(pScoresToSort);
+
+			//			LinkedHashMap<Player, Integer> sortedPlayers = playersToScores.entrySet().stream().sorted(Entry.comparingByValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			
+			// Update the player array to reflect the sort.
+			for(int orderedP = 0; orderedP < sortedPScores.length; orderedP++) {
+				players[orderedP] = sortedPScores[orderedP].getKey();
+			}
+		}
+		
+		return !allTurnsAreFin;
+	}
+
+	private static Map.Entry<Player, Integer>[] resolveDups(Map.Entry<Player, Integer>[] arrayToDedup) {
+		// ArrayList of Integers already found and checked for duplication
+		ArrayList<Integer> intsIndexed = new ArrayList<>();
+		
+		// Deep copy of array so that the original array is not modified
+		Map.Entry<Player, Integer>[] dedupedArray = arrayToDedup.clone();
+		
+		// Temporary value used to swap array elements
+		Map.Entry<Player, Integer> temp = null;
+		
+		// Check each value in the array, except the last one, against all following values 
+		for(Integer s = 0; s < dedupedArray.length - 1; s++) {
+			if(!intsIndexed.contains(dedupedArray[s].getValue())) {
+				intsIndexed.add(s);
+				for(Integer t = s + 1; s < dedupedArray.length; t++) {
+					
+					// If two values are the same, then have the players spin to see who gets to go first
+					if(dedupedArray[s].getValue().equals(dedupedArray[t].getValue())) {
+						int sSpin = -1;
+						int tSpin = -1;
+						while(sSpin == tSpin) {
+							sSpin = spinWheel();
+							tSpin = spinWheel();
+						}
+						//TODO G.U.I. message about who won spin
+						if(sSpin < tSpin) {
+							temp = dedupedArray[t];
+							dedupedArray[t] = dedupedArray[s];
+							dedupedArray[s] = temp;
+						}
 					}
 				}
 			}
 		}
 		
-		return !allTurnsAreFin;
+		return dedupedArray;
 	}
 	
 	private static boolean checkForLife() {
@@ -217,7 +261,7 @@ public class Controller {
 		
 		return allCharsAreDead;
 	}
-	
+		
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
 		turn++;
@@ -292,17 +336,14 @@ public class Controller {
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
-	private static void drawCard() {
+	private static ChanceCard drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
+		return chanceCard;
 	}
 	
 	public static int spinWheel() {
 		System.out.println("Wheel spun");
 		return Wheel.spinWheel();
-	}
-	
-	public static int spinWheel(int numOfPlayers) {
-		return Wheel.spinWheel(numOfPlayers);
 	}
 }

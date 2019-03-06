@@ -10,12 +10,12 @@ public class Player {
 	
 	
 	public Player(String name) {
+		playerNum += 1;
 		this.NAME = name;
-		
 	}
 	
 	public Player() {
-		playerNum+=1;
+		playerNum += 1;
 		this.NAME = "Player " + playerNum;
 	}
 
