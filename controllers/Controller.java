@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import models.ChanceCard;
-import models.Dragon;
-import models.Player;
-import models.PlayerChar;
-import models.Wheel;
-import models.enums.CharClass;
-import models.enums.TileColor;
+import models.*;
+import models.enums.*;
+import views.Main;
 import views.PlayerInit;
-import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
@@ -22,14 +17,11 @@ public class Controller {
 	private static boolean gameOver;
 	private static TileColor[] tiles;
 	private static Random rng = new Random();
-	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
-	// private static HashMap<Player, Integer> currentEffects;
-	//TODO talk to Mr. Krebs about getting away with no HashMap, or find a different way to incorporate it
 	private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
 	
 	public static void run() {
-		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
+		initCharacters();
 		initBoard();
 	}
 	
@@ -38,7 +30,7 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName();
+			PlayerInit.playerName("Player", "What is your name?");
 			String name = PlayerInit.getName();
 			
 			if(name.trim().isEmpty()) {
@@ -46,12 +38,9 @@ public class Controller {
 			} else {
 				players[p] = new Player(name);				
 			}
-		}
-//<<<<<<< HEAD
-//		
-//		determineTurnOrder(players);
-//=======
-//>>>>>>> Anna
+		}		
+		
+		determineTurnOrder(players);
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
@@ -70,15 +59,24 @@ public class Controller {
 		
 		for(Player player : players) {
 			if(player != null) {
-				orderedPlayers[3] = player;
+				orderedPlayers[players.length - 1] = player;
 			}
 		}
 		
 		players = orderedPlayers;
 	}
-
+	
+	//for every person playing a game, make them a character. Set all their stats to the default
+	private static void initCharacters() {
+		for(int p = 0; p < players.length; p++) {
+			players[p].setChars(new ArrayList<PlayerChar>());
+			players[p].getChars().add(new PlayerChar());
+		}
 		
-	//create the board with its tiles. Set dragon's location?, if that is added
+		drago = new Dragon();
+	}
+	
+	//create the board with its tiles
 	private static void initBoard() {
 		turn = 0;
 		tiles = new TileColor[100];
@@ -104,6 +102,23 @@ public class Controller {
 			System.out.println(tiles[t]);
 		}
 	}
+	
+//	//logic for what a player would need to do during their turn
+//	private static void playGame() {
+//		do {
+//			changeTurn();
+//			// Options - give up / declare self witch/warlock, sell family, spin
+//			int menuInput = 0; //TODO return menu input from G.U.I.
+//			switch(menuInput) {
+//				case 0:
+//					// spin wheel
+//				case 1:
+//					// sell family
+//				case
+//					// give up
+//			}
+//		} while(!gameOver);
+//	}
 	
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
@@ -143,7 +158,6 @@ public class Controller {
 	}
 	
 	public static void checkForFam() {
-		System.out.println("Fam checked");
 		if(currentPlayer.getChars().size() > 1) {
 			SellFamily.sellFamily();
 		} else {
@@ -164,7 +178,6 @@ public class Controller {
 	}
 	
 	public static void giveUp() {
-		System.out.println("Giving up");
 		gameOver = true;
 	}
 	
@@ -221,12 +234,21 @@ public class Controller {
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
 		turn++;
-		int cycle = 0;
+		int cycle = 0; //cycle increases by 1 for each character-less player. 
+							//If it reaches the total count of players, game over.
 		currentPlayer = players[(turn - 1) % players.length];
 		
 		while(currentPlayer.getChars().size() < 1 && cycle < players.length) {
+			//(if the current player has no characters, skip their turn && if you haven't cycled through all players yet)
 			turn++;
 			currentPlayer = players[(turn - 1) % players.length];
+			
+			
+			if(currentPlayer == players[0]) {
+				dragonTurn();
+			}
+		
+			
 			cycle++;
 		}
 		
@@ -236,19 +258,115 @@ public class Controller {
 		}
 		
 		checkForLife();
-		rankUpChar(currentPlayer);
 	}
 	
+	private static void dragonTurn() {
+		int movement, direction, currentTile;
+		boolean forward = true;
+		
+		movement = Wheel.spinWheel();
+		movement /= 2;
+		
+		direction = rng.nextInt(2);
+		if(direction == 1) {
+			forward = false;
+			movement *= -1;
+		}
+		
+		currentTile = drago.getOccupiedTile();
+		drago.setOccupiedTile(currentTile + movement);
+		
+		dragonAttack();
+	}
+	
+	private static void dragonAttack() {
+		int[] dragonTiles = drago.getDragonTiles();
+		PlayerChar pChar;
+		
+		for(Player player : players) {
+			pChar = player.getChars().get(0);
+			for(int tile : dragonTiles) {
+				if(tile == pChar.getOccupiedTile()) {
+					dragonAttackMenu(pChar);					
+				}
+			}
+		}
+	}
+	
+	private static void dragonAttackMenu(PlayerChar pChar){
+		int chance;
+		boolean runaway = true;
+		//if runaway == false, inform the player that they failed to
+				//escape and were attacked by the dragon
+		//if runaway == true, inform the player that they succeeded
+				//in running away
+		
+		chance = rng.nextInt(2);
+		if(chance == 1) {
+			runaway = false;
+			dragonAttackDamage(pChar);
+		}
+		
+		//if included, give the player the option to choose their
+				//class-specific dragon-related action
+		//otherwise, it's just a 50- 50 chance to run away
+		
+	}
+	
+	private static void dragonAttackDamage(PlayerChar pChar) {
+		int count = 0;
+
+		if(drago.getOccupiedTile() == pChar.getOccupiedTile()) {
+			do {
+				applyDamage(pChar);
+			}while(count < 2);
+		}else {
+			applyDamage(pChar);
+		}
+	}
+	
+	private static int availableLimbs(PlayerChar pChar) {
+		int limbIndex = 0;
+		boolean limb = true;
+		ArrayList<Boolean> limbs = pChar.getLimbs();
+		
+		for(int i = 0; i < limbs.size(); i++) {
+			if(limbs.get(i) == true) {
+				limbIndex = i;
+				limbs.get(i).equals(false);
+				i = limbs.size();
+			}
+		}
+		
+		return limbIndex;
+	}
+	
+	
+	public static int determineDamage(int limbIndex) {
+		int limbDamage = 0;
+		
+		if(limbIndex == 0) {
+			limbDamage = 10;
+		}else {
+			limbDamage = determineDamage(limbIndex - 1) * 2;
+		}
+		
+		return limbDamage;
+	}
+	
+	public static void applyDamage(PlayerChar pChar) {
+		int limbIndex, damage, wellness;
+		
+		limbIndex = availableLimbs(pChar);
+		damage = determineDamage(limbIndex);
+		wellness = pChar.getWellness();
+		pChar.setWellness(wellness - damage);
+	}
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
-		
-//		Useless to check because we're only upgrading if they have the right number of shekels or prestige points
-//		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
-//			
-//		}
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			RankUp.rankUpBoth();
@@ -260,32 +378,32 @@ public class Controller {
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
-				
+		
 		switch(charChoice) {
-			case DUKE:
-				pc.setShekels(pc.getShekels() + 100);
-				break;
-			case MERCHANT:
-				pc.setShekels(pc.getShekels() + 100);
-				break;
-			case PRIEST:
-				pc.setPrestige(pc.getPrestige() + 100);
-				if(playerToRankUp.getChars().size() > 1) {
-					//TODO G.U.I. message that priest's aren't allowed to have wives and children
-					boolean trashFam = true; //TODO prompt for whether to throw away family
-					if(trashFam) {
-						for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-							playerToRankUp.getChars().remove(f);
-						}
-						
-						//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
+		case DUKE:
+			pc.setShekels(pc.getShekels() + 100);
+			break;
+		case MERCHANT:
+			pc.setShekels(pc.getShekels() + 100);
+			break;
+		case PRIEST:
+			pc.setPrestige(pc.getPrestige() + 100);
+			if(playerToRankUp.getChars().size() > 1) {
+				//TODO G.U.I. message that priest's aren't allowed to have wives and children
+				boolean trashFam = true; //TODO prompt for whether to throw away family
+				if(trashFam) {
+					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
+						playerToRankUp.getChars().remove(f);
 					}
+					
+					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
 				}
-				break;
-			case KNIGHT:
-				pc.setPrestige(pc.getPrestige() + 200);
-				break;
-		}
+			}
+			break;
+		case KNIGHT:
+			pc.setPrestige(pc.getPrestige() + 200);
+			break;
+	}
 		
 		pc.setCharClass(charChoice);
 	}
@@ -300,9 +418,5 @@ public class Controller {
 	public static int spinWheel() {
 		System.out.println("Wheel spun");
 		return Wheel.spinWheel();
-	}
-	
-	public static int spinWheel(int numOfPlayers) {
-		return Wheel.spinWheel(numOfPlayers);
 	}
 }
