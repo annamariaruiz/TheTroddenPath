@@ -37,7 +37,21 @@ public class SellFamily {
 	}
 	
 	public static void familyError() {
-		// TODO Auto-generated method stub
+		Stage prompt = new Stage();
 		
+		prompt.initModality(Modality.APPLICATION_MODAL);
+		prompt.setTitle("Wait a Minute!");
+		prompt.setResizable(false);
+		
+		Text label = new Text();
+		label.setText("You don't have any family to sell.");
+		Button close = new Button("Close");
+		close.setOnAction(e -> prompt.close());
+		
+		VBox layout = new VBox(15);
+		layout.getChildren().addAll(label, close);
+		Scene scene = new Scene(layout, 300, 300);
+		prompt.setScene(scene);
+		prompt.show();
 	}
 }
