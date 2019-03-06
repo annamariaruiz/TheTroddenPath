@@ -1,24 +1,36 @@
 package views;
 	
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import views.PlayerInit;
 import controllers.Controller;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import views.enums.NextTileDirection;
 
 public class Main extends Application {
 	
 	private Stage window = new Stage();
-	private Scene startScene, boardGame;
+	private Scene startScene, boardGame, animationScene;
 	private ArrayList<Tile> tiles = new ArrayList<>();
+	private Canvas animationCanvas;
 	
 	public static void main(String[] args) {
+		createTileArrayList();
 		launch(args);
 	}
 	
@@ -31,6 +43,15 @@ public class Main extends Application {
 		startScene = new Scene(start, 600, 300);
 		window.setScene(startScene);
 		window.show();
+		
+//		URL paUrl = this.getClass().getClassLoader().getResource("PlayerAnimation.fxml").toExternalForm();
+//		FXMLLoader loader = new FXMLLoader(paUrl);
+//		AnchorPane anchor = FXMLLoader.load(getClass().getResource("PlayerAnimation.fxml"));
+//		Parent animate = anchor.
+//		animationScene = new Scene(animate);
+//		Main controller = loader.getController();
+//		controller.init(primaryStage);
+//		primaryStage.setScene(animationScene);
 	}
 	
 	public void startGame() throws IOException {
@@ -149,4 +170,26 @@ public class Main extends Application {
 		
 		Tile last = new Tile(NextTileDirection.LAST);
 		}
+	
+
+	private void drawPlayer(int playerNum) {
+		switch(playerNum) {
+		case 1:
+		GraphicsContext player1 = animationCanvas.getGraphicsContext2D();
+		player1.setFill(Color.BLACK);
+		player1.fillOval(500, 350, 10, 10);
+		}
 	}
+	
+	private void loopAnimation(ActionEvent e) {
+		drawPlayer(1);
+	}
+	
+	private void init(Stage window) {
+		this.window = window;
+		this.window.show();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(15), e->loopAnimation(e)));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
+	}
+}
