@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
@@ -12,7 +13,6 @@ import views.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
 import views.PlayerInit;
 import views.SellFamily;
 
@@ -21,7 +21,8 @@ public class Controller {
 	public static Player[] players;
 	private static Player currentPlayer;
 	private static boolean gameOver;
-	private static TileColor[] tiles;
+//	private static TileColor[] tiles;
+	private static Map.Entry<TileColor, TileDirection>[] tiles;
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
@@ -32,7 +33,7 @@ public class Controller {
 	public static void run() {
 		initCharacters();
 		initBoard();
-		determineTurnOrder(players);
+//		determineTurnOrder(players);
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -40,7 +41,7 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName();
+			PlayerInit.playerName(); // TODO change this such that bot initPlayers() methods have this
 			players[p] = new Player();
 		}
 	}
@@ -81,27 +82,35 @@ public class Controller {
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
-		tiles = new TileColor[100];
+		LinkedHashMap<TileColor, TileDirection> mappedTiles = new LinkedHashMap<>();
 		int nextSpecial = 0;
+		// These are the white tiles on the board, including the start and end tiles.
 		int[] specials = new int[] {0, 11, 22, 36, 44, 51, 61, 68, 80, 92, 98, 99};
+		TileDirection currentDirection = TileDirection.RIGHT;
+		TileColor currentColor = null;
 		
-		for(int t = 0; t < tiles.length; t++) {
+		for(int t = 0; t < 100; t++) {
 			if(t == specials[nextSpecial]) {
-				tiles[t] = TileColor.SPECIAL;
+				currentColor = TileColor.SPECIAL;
 				nextSpecial++;
 			} else {
 				switch(t % 3) {
 					case 1:
-						tiles[t] = TileColor.GREEN;
+						currentColor = TileColor.GREEN;
 						break;
 					case 2:
-						tiles[t] = TileColor.BLUE;
+						currentColor = TileColor.BLUE;
 						break;
 					case 0:
-						tiles[t] = TileColor.RED;
+						currentColor = TileColor.RED;
 				}
 			}
-//			System.out.println(tiles[t]);
+			if(t == 13) {
+				currentDirection = TileDirection.UP;
+			} else {
+				(t - 14) %  
+			}
+			System.out.println(tiles[t]);
 		}
 	}
 	
