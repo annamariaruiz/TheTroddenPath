@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 
 public class Player {
-	final String NAME;
+	public final String NAME;
 	private ArrayList<PlayerChar> chars;
 	//player at index 0 is the current character being played
 	private static int playerNum = 0;

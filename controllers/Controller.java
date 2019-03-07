@@ -63,8 +63,8 @@ public class Controller {
 		Player[] orderedPlayers = new Player[players.length];
 		
 		do {
-			order = Wheel.spinWheel(numOfPlayers);
-			if(order != 0 && players[order] != null) {
+			order = Wheel.spinWheel(numOfPlayers) - 1;
+			if(order >= 0 && order < numOfPlayers && players[order] != null) {
 				orderedPlayers[spin] = players[order];
 				players[order] = null;
 				numOfPlayers -= 1;
@@ -82,7 +82,6 @@ public class Controller {
 		System.out.println("test");
 	}
 
-		
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
