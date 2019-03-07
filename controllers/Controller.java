@@ -244,7 +244,8 @@ public class Controller {
 			currentPlayer = players[(turn - 1) % players.length];
 			
 			
-			if(currentPlayer == players[0]) {
+//account for the circumstance in which the first player is dead		
+			if(currentPlayer.equals(players[0])) {
 				dragonTurn();
 			}
 		
