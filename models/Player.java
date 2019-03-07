@@ -12,16 +12,17 @@ public class Player {
 	public Player(String name) {
 		playerNum += 1;
 		this.NAME = name;
+		chars = new ArrayList<>();
+		chars.add(new PlayerChar());
 	}
 	
 	public Player() {
 		playerNum += 1;
 		this.NAME = "Player " + playerNum;
+		chars = new ArrayList<>();
+		chars.add(new PlayerChar());
 	}
 
-	public String getNAME() {
-		return NAME;
-	}
 
 	public ArrayList<PlayerChar> getChars() {
 		return chars;
