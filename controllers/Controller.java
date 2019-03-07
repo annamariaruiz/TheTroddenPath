@@ -2,27 +2,37 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import models.*;
 import models.enums.*;
 import views.Main;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+
 import views.PlayerInit;
 import views.SellFamily;
 
 public class Controller {
 	private static int turn;
-	private static Player[] players;
+	public static Player[] players;
 	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static TileColor[] tiles;
 	private static Random rng = new Random();
-	private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
+	
+	public void initialize() {
+		run();
+	}
 	
 	public static void run() {
 		initCharacters();
 		initBoard();
+		determineTurnOrder(players);
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -30,17 +40,18 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName("Player", "What is your name?");
-			String name = PlayerInit.getName();
-			
-			if(name.trim().isEmpty()) {
-				players[p] = new Player();
-			} else {
-				players[p] = new Player(name);				
-			}
-		}		
-		
-		determineTurnOrder(players);
+			PlayerInit.playerName();
+			players[p] = new Player();
+		}
+	}
+	
+	public static void initPlayers(ArrayList<String> playerNames) {
+		int numOfPlayers = playerNames.size();
+		players = new Player[numOfPlayers];
+		for(int i = 0; i<numOfPlayers; i++) {
+			Player player = new Player(playerNames.get(i));
+			players[i] = player;
+		}
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
@@ -64,6 +75,7 @@ public class Controller {
 		}
 		
 		players = orderedPlayers;
+		System.out.println("test");
 	}
 	
 	//for every person playing a game, make them a character. Set all their stats to the default
@@ -99,7 +111,7 @@ public class Controller {
 						tiles[t] = TileColor.RED;
 				}
 			}
-			System.out.println(tiles[t]);
+//			System.out.println(tiles[t]);
 		}
 	}
 	
@@ -190,6 +202,7 @@ public class Controller {
 	public static boolean checkForWin() {
 		boolean allTurnsAreFin = true;
 		
+		// If there is one player who is not at the end and is alive, there is one turn that's not finished.
 		for(Player p : players) {
 			if(p.getChars().get(0).getOccupiedTile() != 99 && p.getChars().get(0).getWellness() > 0) {
 				allTurnsAreFin = false;
@@ -197,32 +210,106 @@ public class Controller {
 		}
 		
 		if(allTurnsAreFin) {
-			Player temp = null;
-			for(int i = 0; i < players.length - 1; i++) {
-				for(int j = i + 1; j < players.length; j++) {
-					PlayerChar charI = players[i].getChars().get(0);
-					PlayerChar charJ = players[j].getChars().get(0);
-					if(charI.getPrestige() + charI.getShekels()  > charJ.getPrestige() + charJ.getShekels()) {
-						temp = players[j];
-						players[j] = players[i];
-						players[i] = temp;
-					}
-				}
+			// Map players to their scores
+			HashMap<Player, Integer> playersToScores = new HashMap<>();
+						
+			for(int p = 0; p < players.length; p++) {
+				PlayerChar pChar = players[p].getChars().get(0);
+				
+				// Derive scores from PlayerChar prestige and shekels.
+				playersToScores.put(players[p], pChar.getPrestige() + pChar.getShekels());
+			}
+			
+			// Create an array from the hashmap so that it's orderable.
+			Map.Entry<Player, Integer>[] pScoresToSort = (Entry<Player, Integer>[]) playersToScores.entrySet().toArray();
+			
+			// Resolve duplicates and sort the players based on their scores.
+			Map.Entry<Player, Integer>[] sortedPScores = resolveDups(pScoresToSort);
+
+			//			LinkedHashMap<Player, Integer> sortedPlayers = playersToScores.entrySet().stream().sorted(Entry.comparingByValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			
+			// Update the player array to reflect the sort.
+			for(int orderedP = 0; orderedP < sortedPScores.length; orderedP++) {
+				players[orderedP] = sortedPScores[orderedP].getKey();
 			}
 		}
 		
 		return !allTurnsAreFin;
 	}
 	
+	private static Map.Entry<Player, Integer>[] resolveDups(Map.Entry<Player, Integer>[] arrayToDedup) {
+		// ArrayList of Integers already found and checked for duplication
+		ArrayList<Integer> intsIndexed = new ArrayList<>();
+		
+		// Deep copy of array so that the original array is not modified
+		Map.Entry<Player, Integer>[] dedupedArray = arrayToDedup.clone();
+		
+		// Temporary value used to swap array elements
+		Map.Entry<Player, Integer> temp = null;
+		
+		// Check each value in the array, except the last one, against all following values 
+		for(Integer s = 0; s < dedupedArray.length - 1; s++) {
+			if(!intsIndexed.contains(dedupedArray[s].getValue())) {
+				intsIndexed.add(s);
+				for(Integer t = s + 1; s < dedupedArray.length; t++) {
+					
+					// If two values are the same, then have the players spin to see who gets to go first
+					if(dedupedArray[s].getValue().equals(dedupedArray[t].getValue())) {
+						int sSpin = -1;
+						int tSpin = -1;
+						while(sSpin == tSpin) {
+							sSpin = spinWheel();
+							tSpin = spinWheel();
+						}
+						//TODO G.U.I. message about who won spin
+						if(sSpin < tSpin) {
+							temp = dedupedArray[t];
+							dedupedArray[t] = dedupedArray[s];
+							dedupedArray[s] = temp;
+						}
+					}
+				}
+			}
+		}
+		
+		return dedupedArray;
+	}
+	
 	private static boolean checkForLife() {
 		boolean allCharsAreDead = false;
 		
-		if(currentPlayer.getChars().get(0).getWellness() == 0) {
+		// If the current character's wellness is zero, then make his heir the current character, assuming he has one.
+		if(currentPlayer.getChars().get(0).getWellness() <= 0) {
+			
+			// Does the player have more than one character? If not, doesn't have an heir.
 			if(currentPlayer.getChars().size() > 1) {
-				currentPlayer.getChars().remove(0);
+				PlayerChar heir = null;
+				int numOfHeirs = 0;
+				
+				// Make the first spouse or child found the next heir and count the number of heirs so that the current character's money can be divided later.
+				for(int pc = 1; pc < currentPlayer.getChars().size() && heir == null; pc++) {
+					String role = currentPlayer.getChars().get(pc).getRole();
+					if(heir == null && (role.equals("son") || role.equals("daughter") || role.equals("spouse"))) {
+						heir = currentPlayer.getChars().get(pc);
+					}
+					numOfHeirs++;
+				}
+				
+				// If an heir has been found, give him his portion of the inheritance and make him the current character with no family.
+				if(heir != null) {
+					int shekels = currentPlayer.getChars().get(0).getShekels() / numOfHeirs;
+					ArrayList<PlayerChar> resetChars = new ArrayList<>();
+					resetChars.add(heir);
+					resetChars.get(0).setShekels(shekels);
+					currentPlayer.setChars(resetChars);
+				} else {
+					currentPlayer.getChars().remove(0);
+				}
+				
 				//TODO include G.U.I. message about character being removed and successor's role
 				
 			} else {
+				currentPlayer.getChars().remove(0);
 				allCharsAreDead = true;
 				//TODO include G.U.I. message about all characters being dead and the player losing
 			}
@@ -363,6 +450,7 @@ public class Controller {
 		wellness = pChar.getWellness();
 		pChar.setWellness(wellness - damage);
 	}
+
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {

@@ -10,27 +10,32 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/8.0.181" fx:controller="controllers.Controller">
+<Pane prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Controller">
    <children>
       <VBox layoutX="419.0" layoutY="600.0" prefHeight="190.0" prefWidth="100.0">
          <children>
-            <Label fx:id="playerName" text="Player Name" />
-            <Label fx:id="prestige" text="Prestige" />
+            <Label fx:id="playerName" prefHeight="17.0" prefWidth="101.0" />
+            <Label fx:id="shekels" prefHeight="17.0" prefWidth="101.0" />
+            <Label fx:id="prestige" prefHeight="17.0" prefWidth="102.0" />
+            <Label fx:id="wellness" prefHeight="17.0" prefWidth="101.0" />
+            <Label fx:id="limbsRemaining" prefHeight="17.0" prefWidth="101.0" />
+            <Label fx:id="family" prefHeight="17.0" prefWidth="101.0" />
+            <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="1176.0" layoutY="300.0" prefHeight="200.0" prefWidth="110.0" spacing="35.0">
          <children>
-            <Button fx:id="spinWheel" mnemonicParsing="false" onAction="#spinWheel" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
+            <Button fx:id="spinWheel" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
                <font>
                   <Font name="Calibri" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#checkForFam" prefHeight="45.0" prefWidth="100.0" text="Sell Family Member" textAlignment="CENTER" wrapText="true">
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Sell Family Member" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Calibri" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#giveUp" prefHeight="45.0" prefWidth="100.0" text="Declare self Witch/Warlock" textAlignment="CENTER" wrapText="true">
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Declare self Witch/Warlock" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Calibri" size="12.0" />
                </font>
