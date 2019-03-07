@@ -108,6 +108,10 @@ public class PlayerChar extends BoardChar {
 	}
 
 	public void setShekels(int shekels) {
+		if(shekels < 0) {
+			shekels = 0;
+		}
+		
 		this.shekels = shekels;
 	}
 
@@ -116,6 +120,10 @@ public class PlayerChar extends BoardChar {
 	}
 
 	public void setPrestige(int prestige) {
+		if(prestige < 0) {
+			prestige = 0;
+		}
+		
 		this.prestige = prestige;
 	}
 
