@@ -258,12 +258,38 @@ public class Controller {
 	private static boolean checkForLife() {
 		boolean allCharsAreDead = false;
 		
-		if(currentPlayer.getChars().get(0).getWellness() == 0) {
+		// If the current character's wellness is zero, then make his heir the current character, assuming he has one.
+		if(currentPlayer.getChars().get(0).getWellness() <= 0) {
+			
+			// Does the player have more than one character? If not, doesn't have an heir.
 			if(currentPlayer.getChars().size() > 1) {
-				currentPlayer.getChars().remove(0);
+				PlayerChar heir = null;
+				int numOfHeirs = 0;
+				
+				// Make the first spouse or child found the next heir and count the number of heirs so that the current character's money can be divided later.
+				for(int pc = 1; pc < currentPlayer.getChars().size() && heir == null; pc++) {
+					String role = currentPlayer.getChars().get(pc).getRole();
+					if(heir == null && (role.equals("son") || role.equals("daughter") || role.equals("spouse"))) {
+						heir = currentPlayer.getChars().get(pc);
+					}
+					numOfHeirs++;
+				}
+				
+				// If an heir has been found, give him his portion of the inheritance and make him the current character with no family.
+				if(heir != null) {
+					int shekels = currentPlayer.getChars().get(0).getShekels() / numOfHeirs;
+					ArrayList<PlayerChar> resetChars = new ArrayList<>();
+					resetChars.add(heir);
+					resetChars.get(0).setShekels(shekels);
+					currentPlayer.setChars(resetChars);
+				} else {
+					currentPlayer.getChars().remove(0);
+				}
+				
 				//TODO include G.U.I. message about character being removed and successor's role
 				
 			} else {
+				currentPlayer.getChars().remove(0);
 				allCharsAreDead = true;
 				//TODO include G.U.I. message about all characters being dead and the player losing
 			}
