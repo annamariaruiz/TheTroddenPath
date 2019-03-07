@@ -2,12 +2,13 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Map.Entry;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import models.ChanceCard;
 import models.Dragon;
 import models.Player;
@@ -28,9 +29,14 @@ public class Controller {
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
+	public void initialize() {
+		run();
+	}
+	
 	public static void run() {
 		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
 		initBoard();
+		determineTurnOrder(players);
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -39,13 +45,16 @@ public class Controller {
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
 			PlayerInit.playerName();
-			String name = PlayerInit.getName();
-			
-			if(name.trim().isEmpty()) {
-				players[p] = new Player();
-			} else {
-				players[p] = new Player(name);				
-			}
+			players[p] = new Player();
+		}
+	}
+	
+	public static void initPlayers(ArrayList<String> playerNames) {
+		int numOfPlayers = playerNames.size();
+		players = new Player[numOfPlayers];
+		for(int i = 0; i<numOfPlayers; i++) {
+			Player player = new Player(playerNames.get(i));
+			players[i] = player;
 		}
 	}
 	
@@ -65,11 +74,12 @@ public class Controller {
 		
 		for(Player player : players) {
 			if(player != null) {
-				orderedPlayers[3] = player;
+				orderedPlayers[players.length - 1] = player;
 			}
 		}
 		
 		players = orderedPlayers;
+		System.out.println("test");
 	}
 
 		
@@ -96,7 +106,7 @@ public class Controller {
 						tiles[t] = TileColor.RED;
 				}
 			}
-			System.out.println(tiles[t]);
+//			System.out.println(tiles[t]);
 		}
 	}
 	
@@ -206,7 +216,7 @@ public class Controller {
 		
 		return !allTurnsAreFin;
 	}
-
+	
 	private static Map.Entry<Player, Integer>[] resolveDups(Map.Entry<Player, Integer>[] arrayToDedup) {
 		// ArrayList of Integers already found and checked for duplication
 		ArrayList<Integer> intsIndexed = new ArrayList<>();
@@ -261,7 +271,7 @@ public class Controller {
 		
 		return allCharsAreDead;
 	}
-		
+	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
 		turn++;
@@ -281,6 +291,16 @@ public class Controller {
 		
 		checkForLife();
 		rankUpChar(currentPlayer);
+	}
+	
+	private static void updateView() {
+		playerName.setText(currentPlayer.NAME);
+		shekels.setText(String.valueOf(currentPlayer.getChars().get(0).getShekels()));
+		prestige.setText("");
+		wellness.setText("");
+		limbsRemaining.setText("");
+		family.setText("");
+		position.setText("");
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
@@ -336,14 +356,49 @@ public class Controller {
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
-	private static ChanceCard drawCard() {
+	private static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
-		return chanceCard;
 	}
 	
 	public static int spinWheel() {
 		System.out.println("Wheel spun");
 		return Wheel.spinWheel();
 	}
+	
+	public static int spinWheel(int numOfPlayers) {
+		return Wheel.spinWheel(numOfPlayers);
+	}
+	
+	//FXML Controls
+    @FXML
+    private static Label playerName;
+
+    @FXML
+    private static Label shekels;
+
+    @FXML
+    private static Label prestige;
+
+    @FXML
+    private static Label wellness;
+
+    @FXML
+    private static Label limbsRemaining;
+
+    @FXML
+    private static Label family;
+
+    @FXML
+    private static Label position;
+
+    @FXML
+    private static Button spinWheel;
+    
+    @FXML
+    private static Button sellFamily;
+
+    @FXML
+    private static Button giveUp;
 }
+
