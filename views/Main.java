@@ -55,7 +55,7 @@ public class Main extends Application {
 	}
 	
 	public void startGame() throws IOException {
-		if(Controller.checkForWin()) {
+		if(Controller.players != null && Controller.checkForWin()) {
 			Parent winner = FXMLLoader.load(getClass().getResource("Game.fxml"));
 			window.setScene(new Scene(winner, 400, 300));
 			window.show();
