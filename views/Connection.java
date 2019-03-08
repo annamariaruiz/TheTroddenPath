@@ -93,7 +93,9 @@ public class Connection {
 	private static double player4Y = 0;
 	
 	public void animatePiece() {
+		
 		Player currentPlayer = Controller.currentPlayer;
+		currentPlayer.getChars().get(0).changeTile(1);
 		int playerNum = currentPlayer.getPlayerID();
 		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
 		TileDirection ntd = Controller.TILES.get(occupiedTile).getValue();
@@ -137,8 +139,8 @@ public class Connection {
 			currentY -= 40;
 			break;
 		case RIGHT:
-			transition.setToX(currentY + 40);
-			currentY += 40;
+			transition.setToX(currentX + 40);
+			currentX += 40;
 			break;
 		}
 		transition.play();

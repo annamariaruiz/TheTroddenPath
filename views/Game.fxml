@@ -11,6 +11,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <Pane prefHeight="643.0" prefWidth="1125.0" style="-fx-background-color: linear-gradient(#ffffa8, white);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Connection">
    <children>
@@ -215,15 +216,19 @@
             <Font name="Calibri" size="12.0" />
          </font>
       </Button>
-      <VBox layoutX="513.0" layoutY="466.0" prefHeight="190.0" prefWidth="100.0">
+      <VBox layoutX="513.0" layoutY="461.0" prefHeight="190.0" prefWidth="100.0">
          <children>
-            <Label fx:id="playerName" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="shekels" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="prestige" prefHeight="17.0" prefWidth="102.0" text="Placehold" />
-            <Label fx:id="wellness" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="limbsRemaining" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="family" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="shekels" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="prestige" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="wellness" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="limbsRemaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="family" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>
