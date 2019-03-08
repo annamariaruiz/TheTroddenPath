@@ -1,11 +1,14 @@
 package views;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
 import models.Wheel;
+import views.enums.NextTileDirection;
 
 public class Connection {
 	
@@ -57,6 +60,52 @@ public class Connection {
 		
 	}
 	
+	public void animatePiece1(int currentX, int currentY, Tile currentTile, int playerNum) {
+		TranslateTransition transition = new TranslateTransition();
+		transition.setDuration(Duration.millis(2000));
+		NextTileDirection ntd = currentTile.getNtd();
+	
+		
+		transition.setNode(player1);
+		switch(playerNum) {
+		case 2:
+			transition.setNode(player2);
+			break;
+		case 3:
+			transition.setNode(player3);
+			break;
+		case 4:
+			transition.setNode(player4);
+			break;
+		}
+		
+		switch(ntd) {
+		case UP:
+			transition.setToY(currentY+40);
+			break;
+		case DOWN:
+			transition.setToY(currentY-40);
+			break;
+		case LEFT:
+			transition.setToX(currentX-40);
+			break;
+		case RIGHT:
+			transition.setToX(currentY+40);
+			break;
+		case LAST:
+			transition.setToX(currentX+20);
+			transition.setToY(currentY+20);
+			transition.setToX(currentX-20);
+			transition.setToY(currentY-20);
+			transition.setToX(currentX+10);
+			transition.setToY(currentY+10);
+			transition.setToX(currentX-10);
+			transition.setToY(currentY-10);
+		
+		}
+		transition.play();
+		
+	}
 	public void sellFamily() {
 		controllers.Controller.checkForFam();
 	}
