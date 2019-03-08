@@ -4,9 +4,11 @@ import models.Wheel;
 
 public class Connection {
 	
-	public void spinWheel() {
+	public int spinWheel() {
 		int spunNumber = Wheel.spinWheel();
+		return spunNumber;
 		//animation to move that many spaces
+		
 	}
 	
 	public void sellFamily() {
