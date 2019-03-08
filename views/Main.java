@@ -36,7 +36,7 @@ public class Main extends Application {
 	}
 	
 	public void startGame() throws IOException {
-		Controller.initPlayers(PlayerInit.getNames());
+		Controller.initPlayers(PlayerInit.getName());
 		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 		boardGame = new Scene(root, 1300, 700);
 		window.setResizable(false);

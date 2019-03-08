@@ -77,12 +77,14 @@ public class PlayerInit {
 		prompt.setScene(scene);
 		prompt.show();
 	}
-	
+
 	public static String getName() {
 		return name;
 	}
 
-	public static void setName(String playerName) {
-		name = playerName;
+	public static void setName(String name) {
+		PlayerInit.name = name;
 	}
+	
+
 }

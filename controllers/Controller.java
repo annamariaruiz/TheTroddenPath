@@ -103,9 +103,13 @@ public class Controller {
 			if(t == 13) {
 				currentDirection = TileDirection.UP;
 			} else if(t >= 15) {
+				
+				// There used to be 100 tiles, but Mr. McManus wrote a very long for-loop 
 				if(t == 98) {
 					tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
 				}
+				
+				// The board follows a regular pattern from [15] onwards, which can be predicted mathematically.
 				switch((t - 14 + offset) % 17) {
 					case 7:
 						currentDirection = TileDirection.LEFT;
@@ -127,12 +131,13 @@ public class Controller {
 			
 		}
 		
-		
-		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
-			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
-		}
+
+		// Print statement for testing purposes
+//		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
+//			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
+//		}
 	}
-		
+	
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
@@ -213,7 +218,6 @@ public class Controller {
 		if(allTurnsAreFin) {
 			// Map players to their scores
 			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> playersToScores = new ArrayList<>();
-//			HashMap<Player, Integer> playersToScores = new HashMap<>();
 						
 			for(int p = 0; p < players.length; p++) {
 				PlayerChar pChar = players[p].getChars().get(0);
@@ -224,8 +228,6 @@ public class Controller {
 			
 			// Resolve duplicates and sort the players based on their scores.
 			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> sortedPScores = resolveDups(playersToScores);
-
-			//			LinkedHashMap<Player, Integer> sortedPlayers = playersToScores.entrySet().stream().sorted(Entry.comparingByValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 			
 			// Update the player array to reflect the sort.
 			for(int orderedP = 0; orderedP < sortedPScores.size(); orderedP++) {
