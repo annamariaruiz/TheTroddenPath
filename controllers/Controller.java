@@ -121,6 +121,22 @@ public class Controller {
 //		} while(!gameOver);
 //	}
 	
+	private static void rankUpKnight() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
+	}
+	
+	private static void rankUpPriest() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.PRIEST);
+	}
+	
+	private static void rankUpMerchant() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.MERCHANT);
+	}
+	
+	private static void rankUpDuke() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
+	}
+	
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
