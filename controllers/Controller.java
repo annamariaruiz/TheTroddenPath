@@ -15,7 +15,7 @@ public class Controller {
 	private static ArrayList<Player> skippedPlayers = new ArrayList<>();
 	private static Player currentPlayer;
 	private static boolean gameOver;
-	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
+	public final static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
@@ -216,7 +216,7 @@ public class Controller {
 				currentDirection = TileDirection.UP;
 			} else if(t >= 15) {
 				if(t == 98) {
-					tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
+					TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
 				}
 				switch((t - 14 + offset) % 17) {
 					case 7:
@@ -235,12 +235,12 @@ public class Controller {
 				}
 			}
 			
-			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
 			
 		}
 		
 		
-		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
+		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : TILES) {
 			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
 		}
 		System.out.println("Board Initialized");
@@ -505,7 +505,7 @@ public class Controller {
 			//(enum TileColor)
 	private static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
-		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
+		ChanceCard chanceCard = new ChanceCard(TILES.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
 	}
 	
