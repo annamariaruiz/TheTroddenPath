@@ -81,23 +81,8 @@ public class Controller {
 		System.out.println(currentPlayer.NAME);
 	}
 
-	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void dragonTurn() {
-		int movement, direction, currentTile;
-		boolean forward = true;
-		
-		movement = Wheel.spinWheel();
-		movement /= 2;
-		
-		direction = rng.nextInt(2);
-		if(direction == 1) {
-			forward = false;
-			movement *= -1;
-		}
-		
-		currentTile = drago.getOccupiedTile();
-		drago.setOccupiedTile(currentTile + movement);
-		
+		drago.setOccupiedTile(rng.nextInt(90) + 5);
 		dragonAttack();
 	}
 	
@@ -473,6 +458,7 @@ public class Controller {
 	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
+		dragonTurn();
 		turn++;
 		int cycle = 0;
 		currentPlayer = players[(turn - 1) % players.length];

@@ -39,7 +39,7 @@ public class Player {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Player Name: ").append(NAME)
-		.append("\nAmount of characters: ").append(chars.size());
+		.append("\nAmount of characters: ").append(getChars().size());
 		return builder.toString();
 	}
 }
