@@ -54,7 +54,7 @@ public class Connection {
     private static Label position = new Label();
     
     public static void updateView() {
-    	playerName.setText(Controller.currentPlayer.toString());
+//    	playerName.setText(Controller.currentPlayer.toString());
     }
 
     
@@ -67,7 +67,7 @@ public class Connection {
 		for(int i = 0; i<spunNumber; i++) {
 			animatePiece();
 		}
-
+		Controller.drawCard();
 	}
 
 	public void animateWheel(int spinAmount) {
@@ -83,7 +83,6 @@ public class Connection {
 
 	}
 
-	
 	private static double player1X = 0;
 	private static double player1Y = 0;
 	private static double player2X = 0;
@@ -162,7 +161,6 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
-
 	}
 
 	public void sellFamily() {
