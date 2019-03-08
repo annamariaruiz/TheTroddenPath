@@ -90,7 +90,7 @@ public class ChanceCard {
 				"You did something naughty. Lose " + (x * 2) + " prestige.",
 				"You had too much fun at the local tavern and have ended up with a child. Lose " + (x * 3) + " prestige, but gain a child.", 
 				"You sell your son off for work. Lose a son, but gain " + (x * 3) + " shekels.", 
-				"You sell your daugther off for marriage. Lose a daughter, but gain " + (x * 3) + " prestige and shekels.",
+				"You sell your daughter off for marriage. Lose a daughter, but gain " + (x * 3) + " prestige and shekels.",
 				"You got in a bar fight and won! Lose " + x + " wellness, but gain " + (x * 3) + " prestige."};
 		
 		effectString = effects[effectIndex];
