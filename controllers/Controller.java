@@ -3,8 +3,18 @@ package controllers;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
-import models.*;
-import models.enums.*;
+
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
+import models.enums.TileDirection;
+import views.CardEffects;
+import views.Connection;
+import views.DragonPopups;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
@@ -24,6 +34,7 @@ public class Controller {
 	}
 	
 	public static void run() {
+		drago = new Dragon();
 		initBoard();
 	}
 	
@@ -61,41 +72,29 @@ public class Controller {
 	}
 	
 	public static void determineTurnOrder() {
-//		int order, spin = 0, numOfPlayers = players.length;
-//		Player[] orderedPlayers = new Player[players.length];
-//		
-//		do {
-//			order = Wheel.spinWheel(numOfPlayers) - 1;
-//			if(order >= 0 && order < numOfPlayers && players[order] != null) {
-//				orderedPlayers[spin] = players[order];
-//				players[order] = null;
-//				numOfPlayers -= 1;
-//				spin += 1;
-//			}
-//		}while(numOfPlayers > 1);
+		int order, spin = 0, numOfPlayers = players.length;
+		Player[] orderedPlayers = new Player[players.length];
 		
-		// Remove a player from playersToSpin as they are called
-		ArrayList<Player> playersToSpin = new ArrayList<>();
+		do {
+			order = Wheel.spinWheel(numOfPlayers) - 1;
+			if(order >= 0 && order < numOfPlayers && players[order] != null) {
+				orderedPlayers[spin] = players[order];
+				players[order] = null;
+				numOfPlayers -= 1;
+				spin += 1;
+			}
+		}while(numOfPlayers > 1);
 		
-		for(int p = 0; p < players.length; p++) {
-			playersToSpin.add(players[p]);
+		for(Player player : players) {
+			if(player != null) {
+				orderedPlayers[players.length - 1] = player;
+			}
 		}
 		
-		ArrayList<Player> orderedPlayers = new ArrayList<>();
-		
-		while(playersToSpin.size() > 0) {
-			int spin = Wheel.spinWheel(playersToSpin.size());
-			orderedPlayers.add(playersToSpin.get(spin - 1));
-			playersToSpin.remove(spin - 1);
-		}
-		
-		for(int p = 0; p < players.length; p++) {
-			players[p] = orderedPlayers.get(p);
-		}
+		players = orderedPlayers;
 		System.out.println("Turn order made");
 		
 		changeTurn();
-		System.out.println(currentPlayer.NAME);
 	}
 
 	private static void dragonTurn() {
@@ -129,6 +128,7 @@ public class Controller {
 		if(chance == 1) {
 			runaway = false;
 			dragonAttackDamage(pChar);
+			DragonPopups.attackMessage(pChar);
 		}
 		
 		//if included, give the player the option to choose their
@@ -246,6 +246,7 @@ public class Controller {
 		System.out.println("Board Initialized");
 	}
 		
+	
 	public static void rankUpKnight() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
 	}
@@ -261,7 +262,7 @@ public class Controller {
 	public static void rankUpDuke() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
 	}
-
+	
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
@@ -339,8 +340,6 @@ public class Controller {
 		return gameOver;
 	}
 	
-	//to be run when all surviving players reach the end of the board, or only one remains
-	//declare the winner
 	public static boolean checkForWin() {
 		boolean allTurnsAreFin = true;
 		
@@ -458,8 +457,7 @@ public class Controller {
 		return allCharsAreDead;
 	}
 	
-	//change the turn. If a player is dead or has reached the end of the board, skip them
-	private static void changeTurn() {
+	private static void changeTurn() {		
 		dragonTurn();
 		turn++;
 		int cycle = 0;
@@ -480,13 +478,12 @@ public class Controller {
 			skippedPlayers.remove(skippedPlayers.indexOf(currentPlayer));
 		} else {
 			checkForLife();
-			System.out.println("Turn changed");			
+			System.out.println("Turn changed");
+			System.out.println("Current Player: " + currentPlayer.NAME);
 		}
-		
+		Connection.updateView();
 	}
 	
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
-			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		
@@ -501,12 +498,12 @@ public class Controller {
 		}
 	}
 	
-	//draw a chance card after the player makes their movement. Chance card is related to the tile color
-			//(enum TileColor)
-	private static void drawCard() {
-		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
+	public static void drawCard() {
 		ChanceCard chanceCard = new ChanceCard(TILES.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
+		rankUpChar(currentPlayer);
+		changeTurn();
+		CardEffects.message(chanceCard);
 	}
 	
 	public static int spinWheel() {
