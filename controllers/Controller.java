@@ -15,6 +15,7 @@ import models.enums.TileDirection;
 import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
+import views.Main;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
@@ -29,12 +30,9 @@ public class Controller {
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
-	public void initialize() {
-		run();
-	}
-	
 	public static void run() {
 		drago = new Dragon();
+		System.out.println("Drago born");
 		initBoard();
 	}
 	
@@ -235,7 +233,7 @@ public class Controller {
 				}
 			}
 			
-			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+//			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
 			
 		}
 		
@@ -370,6 +368,7 @@ public class Controller {
 			for(int orderedP = 0; orderedP < sortedPScores.size(); orderedP++) {
 				players[orderedP] = sortedPScores.get(orderedP).getKey();
 			}
+			Main.winScreen();
 		}
 		
 		System.out.println("Checked for win");
