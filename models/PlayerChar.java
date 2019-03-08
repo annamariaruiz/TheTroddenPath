@@ -171,6 +171,7 @@ public class PlayerChar extends BoardChar {
 		builder.append("Player Character: ")
 		.append("\nName: ").append(CHARNAME)
 		.append("\nRole: ").append(role)
+		.append("\nClass: ").append(charClass)
 		.append("\nWellness: ").append(wellness)
 		.append("\nShekels: ").append(shekels)
 		.append("\nPrestige: ").append(prestige)
