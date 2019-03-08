@@ -501,13 +501,16 @@ public class Controller {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
+		if(pc.getPrestige() >= 200 && pc.getShekels() >= 200) {
+			RankUp.rankUpDuke();
+			charChoice = null;
+		}else if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
 			RankUp.rankUpBoth();
 			charChoice = null;
-		} else if(pc.getPrestige() >= 500) {
+		} else if(pc.getPrestige() >= 50) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else if (pc.getShekels() >= 500) {
+		} else if (pc.getShekels() >= 50) {
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
@@ -515,6 +518,7 @@ public class Controller {
 		switch(charChoice) {
 		case DUKE:
 			pc.setShekels(pc.getShekels() + 100);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 		case MERCHANT:
 			pc.setShekels(pc.getShekels() + 100);
