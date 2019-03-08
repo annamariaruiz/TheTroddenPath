@@ -51,9 +51,11 @@ public class Controller {
 			Player player = new Player(playerNames.get(i));
 			players[i] = player;
 		}
+		determineTurnOrder();
+
 	}
 	
-	public static void determineTurnOrder(Player[] players) {
+	public static void determineTurnOrder() {
 		int order, spin = 0, numOfPlayers = players.length;
 		Player[] orderedPlayers = new Player[players.length];
 		
@@ -454,20 +456,18 @@ public class Controller {
 		wellness = pChar.getWellness();
 		pChar.setWellness(wellness - damage);
 	}
-
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
-			//"class" to "charClass" as Java already does its own thing with "class"
+	
 	private static void rankUpChar() {
 		PlayerChar pc = currentPlayer.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
+		if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
 			RankUp.rankUpBoth();
 			charChoice = null;
-		} else if(pc.getPrestige() >= 500) {
+		} else if(pc.getPrestige() >= 50) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else if (pc.getShekels() >= 500) {
+		} else if(pc.getShekels() >= 50){
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
@@ -475,6 +475,7 @@ public class Controller {
 		switch(charChoice) {
 		case DUKE:
 			pc.setShekels(pc.getShekels() + 100);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 		case MERCHANT:
 			pc.setShekels(pc.getShekels() + 100);
@@ -494,7 +495,7 @@ public class Controller {
 			}
 			break;
 		case KNIGHT:
-			pc.setPrestige(pc.getPrestige() + 200);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 	}
 		
