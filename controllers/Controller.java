@@ -535,14 +535,6 @@ public class Controller {
 		System.out.println("Turn changed");
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
-			//"class" to "charClass" as Java already does its own thing with "class"
-=======
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
-=======
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();

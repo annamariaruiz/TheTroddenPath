@@ -92,15 +92,6 @@ public class Connection {
 		case RIGHT:
 			transition.setToX(currentY+40);
 			break;
-		case LAST:
-			transition.setToX(currentX+20);
-			transition.setToY(currentY+20);
-			transition.setToX(currentX-20);
-			transition.setToY(currentY-20);
-			transition.setToX(currentX+10);
-			transition.setToY(currentY+10);
-			transition.setToX(currentX-10);
-			transition.setToY(currentY-10);
 		
 		}
 		transition.play();
