@@ -142,10 +142,6 @@ public class Connection {
 			transition.setToX(currentX + 40);
 			currentX += 40;
 			break;
-<<<<<<< HEAD
-		
-=======
->>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 		}
 		transition.play();
 
