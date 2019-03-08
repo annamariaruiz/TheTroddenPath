@@ -222,7 +222,6 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="charName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                   <Text fx:id="shekels" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                   <Text fx:id="prestige" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                   <Text fx:id="wellness" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
