@@ -54,7 +54,7 @@ public class Connection {
     private static Label position = new Label();
     
     public static void updateView() {
-    	playerName.setText(Controller.currentPlayer.toString());
+//    	playerName.setText(Controller.currentPlayer.toString());
     }
 
 	public void spinWheel() {
@@ -63,14 +63,14 @@ public class Connection {
 		Tile t = new Tile(NextTileDirection.RIGHT);
 		animateWheel(1);
 		for(int i = 0; i<4; i++) {
-			animatePiece(t, 2);
+			animatePiece(t, 3);
 		}
-
+		Controller.drawCard();
 	}
 
 	public void animateWheel(int spinAmount) {
 		if(counter < 1) {
-			movePivot(spinner, 0, -10);
+//			movePivot(spinner, 0, -10);
 		}
 		counter++;
 		RotateTransition transition = new RotateTransition(Duration.seconds(2.5), spinner);
@@ -84,7 +84,6 @@ public class Connection {
 
 	}
 
-	
 	private static double player1X = 0;
 	private static double player1Y = 0;
 	private static double player2X = 0;
@@ -170,7 +169,6 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
-
 	}
 
 	public void sellFamily() {
@@ -179,11 +177,5 @@ public class Connection {
 
 	public void giveUp() {
 		controllers.Controller.giveUp();
-	}
-
-	private void movePivot(Node node, double x, double y) {
-		node.getTransforms().add(new Translate(-x, -y));
-		node.setTranslateX(x);
-		node.setTranslateY(y);
 	}
 }
