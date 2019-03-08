@@ -15,11 +15,10 @@ public class Dragon extends BoardChar {
 	public void increaseTurn() {
 		this.turn += 1;
 	}
-
-
+	
 	public int[] getDragonTiles() {
 		int[] dragonTiles = new int[5];
-		for(int i = 0; i < dragonTiles.length; i++) {
+		for (int i = 0; i < dragonTiles.length; i++) {
 			dragonTiles[i] = getOccupiedTile() + i - 2;
 		}
 		
