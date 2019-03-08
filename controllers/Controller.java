@@ -483,7 +483,7 @@ public class Controller {
 		Connection.updateView();
 	}
 	
-	private static void rankUpChar(Player playerToRankUp) {
+	public static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
@@ -500,7 +500,6 @@ public class Controller {
 	public static void drawCard() {
 		ChanceCard chanceCard = new ChanceCard(TILES.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
-		rankUpChar(currentPlayer);
 		changeTurn();
 		CardEffects.message(chanceCard);
 	}
