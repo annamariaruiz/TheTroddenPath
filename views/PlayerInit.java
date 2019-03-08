@@ -1,5 +1,7 @@
 package views;
 
+import java.util.ArrayList;
+
 import controllers.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,7 +13,7 @@ import javafx.stage.Stage;
 
 public class PlayerInit {
 	
-	private static String name;
+	private static ArrayList<String> names = new ArrayList<>();
 	
 	//ask for number of players
 	public static void playerNum() {
@@ -29,7 +31,7 @@ public class PlayerInit {
 		submit.setOnAction(e -> {
 			try {
 				int number = Integer.parseInt(playerNum.getText());
-				if(number<5 && number>0) {
+				if(number<5 && number>1) {
 					Controller.initPlayers(number);
 					prompt.close();
 				}
@@ -67,7 +69,7 @@ public class PlayerInit {
 		Button submit = new Button("Submit");
 		
 		submit.setOnAction(e -> {
-			setName(playerName.getText());
+			names.add(playerName.getText());
 			prompt.close();
 		});
 		
@@ -78,13 +80,7 @@ public class PlayerInit {
 		prompt.show();
 	}
 
-	public static String getName() {
-		return name;
+	public static ArrayList<String> getNames() {
+		return names;
 	}
-
-	public static void setName(String name) {
-		PlayerInit.name = name;
-	}
-	
-
 }
