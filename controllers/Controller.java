@@ -1,33 +1,29 @@
 package controllers;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import models.ChanceCard;
-import models.Dragon;
-import models.Player;
-import models.PlayerChar;
-import models.Wheel;
-import models.enums.CharClass;
-import models.enums.TileColor;
+import models.*;
+import models.enums.*;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
 	private static int turn;
-	private static Player[] players;
+	public static Player[] players;
 	private static Player currentPlayer;
 	private static boolean gameOver;
-	private static TileColor[] tiles;
+	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
 	private static Random rng = new Random();
-	// Add HashMap of lasting effects as stretch-goal. If not implemented, all effects are one-time.
-	// private static HashMap<Player, Integer> currentEffects;
-	//TODO talk to Mr. Krebs about getting away with no HashMap, or find a different way to incorporate it
-	private static HashMap<Player, Integer> currentEffects;
 	private static Dragon drago;
 	
 	public void initialize() {
@@ -36,8 +32,8 @@ public class Controller {
 	
 	public static void run() {
 		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
+		System.out.println("Drago initialized");
 		initBoard();
-		determineTurnOrder(players);
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -45,23 +41,19 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName();
-			players[p] = new Player();
+			PlayerInit.playerName(); // TODO change this such that bot initPlayers() methods have this
 		}
-//<<<<<<< HEAD
-//		
-//		determineTurnOrder(players);
-//=======
-//>>>>>>> Anna
+		System.out.println("Player Array made");
 	}
 	
 	public static void initPlayers(ArrayList<String> playerNames) {
 		int numOfPlayers = playerNames.size();
-		players = new Player[numOfPlayers];
 		for(int i = 0; i<numOfPlayers; i++) {
 			Player player = new Player(playerNames.get(i));
 			players[i] = player;
 		}
+		System.out.println("Players made and added to array");
+		determineTurnOrder(players);
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
@@ -69,8 +61,8 @@ public class Controller {
 		Player[] orderedPlayers = new Player[players.length];
 		
 		do {
-			order = Wheel.spinWheel(numOfPlayers);
-			if(order != 0 && players[order] != null) {
+			order = Wheel.spinWheel(numOfPlayers) - 1;
+			if(order >= 0 && order < numOfPlayers && players[order] != null) {
 				orderedPlayers[spin] = players[order];
 				players[order] = null;
 				numOfPlayers -= 1;
@@ -85,35 +77,71 @@ public class Controller {
 		}
 		
 		players = orderedPlayers;
-		System.out.println("test");
+		System.out.println("Turn order made");
+		
+		changeTurn();
+		System.out.println("Turn changed");
 	}
 
-		
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
-		tiles = new TileColor[100];
 		int nextSpecial = 0;
+		// These are the white tiles on the board, including the start and end tiles.
 		int[] specials = new int[] {0, 11, 22, 36, 44, 51, 61, 68, 80, 92, 98, 99};
+		TileDirection currentDirection = TileDirection.RIGHT;
+		TileColor currentColor = null;
+		int offset = 0;
 		
-		for(int t = 0; t < tiles.length; t++) {
+		for(int t = 0; t < 100; t++) {
 			if(t == specials[nextSpecial]) {
-				tiles[t] = TileColor.SPECIAL;
+				currentColor = TileColor.SPECIAL;
 				nextSpecial++;
 			} else {
 				switch(t % 3) {
 					case 1:
-						tiles[t] = TileColor.GREEN;
+						currentColor = TileColor.GREEN;
 						break;
 					case 2:
-						tiles[t] = TileColor.BLUE;
+						currentColor = TileColor.BLUE;
 						break;
 					case 0:
-						tiles[t] = TileColor.RED;
+						currentColor = TileColor.RED;
+						break;
 				}
 			}
-//			System.out.println(tiles[t]);
+			if(t == 13) {
+				currentDirection = TileDirection.UP;
+			} else if(t >= 15) {
+				if(t == 98) {
+					tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
+				}
+				switch((t - 14 + offset) % 17) {
+					case 7:
+						currentDirection = TileDirection.LEFT;
+						break;
+					case 9:
+						currentDirection = TileDirection.DOWN;
+						break;
+					case 15:
+						currentDirection = TileDirection.LEFT;
+						break;
+					case 0:
+						currentDirection = TileDirection.UP;
+						offset += 1;
+						break;
+				}
+			}
+			
+			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+			
 		}
+		
+		
+		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
+			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
+		}
+		System.out.println("Board Initialized");
 	}
 	
 	private static void sellFamily(int familyMem) {
@@ -128,6 +156,7 @@ public class Controller {
 				if(familyMemTypeExists) {
 					currentPlayer.getChars().remove(sons.get(0));					
 				}
+				System.out.println("Son sold");
 				break;
 			case 2:
 				ArrayList<PlayerChar> daughters = new ArrayList<>();
@@ -136,6 +165,7 @@ public class Controller {
 				if(familyMemTypeExists) {
 					currentPlayer.getChars().remove(daughters.get(0));					
 				}
+				System.out.println("Daughter sold");
 				break;
 			case 3:
 				ArrayList<PlayerChar> spouses = new ArrayList<>();
@@ -144,34 +174,40 @@ public class Controller {
 				if(familyMemTypeExists) {
 					currentPlayer.getChars().remove(spouses.get(0));					
 				}
+				System.out.println("Spouse sold");
 				break;
 		}
 		
 		if(familyMemTypeExists) {
 			PlayerChar currentChar = currentPlayer.getChars().get(0);
-			currentChar.setShekels(currentChar.getShekels() + (isMale ? (rng.nextInt(71) + 20) : (rng.nextInt(66) + 15)));			
+			currentChar.setShekels(currentChar.getShekels() + (isMale ? (rng.nextInt(71) + 20) : (rng.nextInt(66) + 15)));
+			System.out.println("Successfully sold family member");
 		}
 	}
 	
 	public static void checkForFam() {
-		System.out.println("Fam checked");
+		System.out.println("Checking fam");
 		if(currentPlayer.getChars().size() > 1) {
 			SellFamily.sellFamily();
 		} else {
 			SellFamily.familyError();
 		}
+		System.out.println("Fam checked");
 	}
 	
 	public static void sellSon() {
 		sellFamily(1);
+		System.out.println("Selling son");
 	}
 	
 	public static void sellDaughter() {
 		sellFamily(2);
+		System.out.println("Selling daughter");
 	}
 	
 	public static void sellSpouse() {
 		sellFamily(3);
+		System.out.println("Selling spouse");
 	}
 	
 	public static void giveUp() {
@@ -188,6 +224,7 @@ public class Controller {
 	public static boolean checkForWin() {
 		boolean allTurnsAreFin = true;
 		
+		// If there is one player who is not at the end and is alive, there is one turn that's not finished.
 		for(Player p : players) {
 			if(p.getChars().get(0).getOccupiedTile() != 99 && p.getChars().get(0).getWellness() > 0) {
 				allTurnsAreFin = false;
@@ -195,37 +232,109 @@ public class Controller {
 		}
 		
 		if(allTurnsAreFin) {
-			Player temp = null;
-			for(int i = 0; i < players.length - 1; i++) {
-				for(int j = i + 1; j < players.length; j++) {
-					PlayerChar charI = players[i].getChars().get(0);
-					PlayerChar charJ = players[j].getChars().get(0);
-					if(charI.getPrestige() + charI.getShekels()  > charJ.getPrestige() + charJ.getShekels()) {
-						temp = players[j];
-						players[j] = players[i];
-						players[i] = temp;
+			// Map players to their scores
+			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> playersToScores = new ArrayList<>();
+//			HashMap<Player, Integer> playersToScores = new HashMap<>();
+						
+			for(int p = 0; p < players.length; p++) {
+				PlayerChar pChar = players[p].getChars().get(0);
+				
+				// Derive scores from PlayerChar prestige and shekels.
+				playersToScores.add(new AbstractMap.SimpleEntry<Player, Integer>(players[p], pChar.getPrestige() + pChar.getShekels()));
+			}
+			
+			// Resolve duplicates and sort the players based on their scores.
+			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> sortedPScores = resolveDups(playersToScores);
+
+			//			LinkedHashMap<Player, Integer> sortedPlayers = playersToScores.entrySet().stream().sorted(Entry.comparingByValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			
+			// Update the player array to reflect the sort.
+			for(int orderedP = 0; orderedP < sortedPScores.size(); orderedP++) {
+				players[orderedP] = sortedPScores.get(orderedP).getKey();
+			}
+		}
+		
+		System.out.println("Checked for win");
+		return !allTurnsAreFin;
+	}
+	
+	private static ArrayList<AbstractMap.SimpleEntry<Player, Integer>> resolveDups(ArrayList<AbstractMap.SimpleEntry<Player, Integer>> arrayToDedup) {
+		// ArrayList of Integers already found and checked for duplication
+		ArrayList<Integer> intsIndexed = new ArrayList<>();
+		
+		// Temporary value used to swap array elements
+		AbstractMap.SimpleEntry<Player, Integer> temp = null;
+		
+		// Check each value in the array, except the last one, against all following values 
+		for(Integer s = 0; s < arrayToDedup.size() - 1; s++) {
+			if(!intsIndexed.contains(arrayToDedup.get(s).getValue())) {
+				intsIndexed.add(s);
+				for(Integer t = s + 1; s < arrayToDedup.size(); t++) {
+					
+					// If two values are the same, then have the players spin to see who gets to go first
+					if(arrayToDedup.get(s).getValue().equals(arrayToDedup.get(t).getValue())) {
+						int sSpin = -1;
+						int tSpin = -1;
+						while(sSpin == tSpin) {
+							sSpin = spinWheel();
+							tSpin = spinWheel();
+						}
+						//TODO G.U.I. message about who won spin
+						if(sSpin < tSpin) {
+							temp = arrayToDedup.get(t);
+							arrayToDedup.set(t, arrayToDedup.get(s));
+							arrayToDedup.set(s, temp);
+						}
 					}
 				}
 			}
 		}
 		
-		return !allTurnsAreFin;
+		System.out.println("Not too sure what this does but cool on you");
+		return arrayToDedup;
 	}
 	
 	private static boolean checkForLife() {
 		boolean allCharsAreDead = false;
 		
-		if(currentPlayer.getChars().get(0).getWellness() == 0) {
+		// If the current character's wellness is zero, then make his heir the current character, assuming he has one.
+		if(currentPlayer.getChars().get(0).getWellness() <= 0) {
+			
+			// Does the player have more than one character? If not, doesn't have an heir.
 			if(currentPlayer.getChars().size() > 1) {
-				currentPlayer.getChars().remove(0);
+				PlayerChar heir = null;
+				int numOfHeirs = 0;
+				
+				// Make the first spouse or child found the next heir and count the number of heirs so that the current character's money can be divided later.
+				for(int pc = 1; pc < currentPlayer.getChars().size() && heir == null; pc++) {
+					String role = currentPlayer.getChars().get(pc).getRole();
+					if(heir == null && (role.equals("son") || role.equals("daughter") || role.equals("spouse"))) {
+						heir = currentPlayer.getChars().get(pc);
+					}
+					numOfHeirs++;
+				}
+				
+				// If an heir has been found, give him his portion of the inheritance and make him the current character with no family.
+				if(heir != null) {
+					int shekels = currentPlayer.getChars().get(0).getShekels() / numOfHeirs;
+					ArrayList<PlayerChar> resetChars = new ArrayList<>();
+					resetChars.add(heir);
+					resetChars.get(0).setShekels(shekels);
+					currentPlayer.setChars(resetChars);
+				} else {
+					currentPlayer.getChars().remove(0);
+				}
+				
 				//TODO include G.U.I. message about character being removed and successor's role
 				
 			} else {
+				currentPlayer.getChars().remove(0);
 				allCharsAreDead = true;
 				//TODO include G.U.I. message about all characters being dead and the player losing
 			}
 		}
 		
+		System.out.println("Life checked");
 		return allCharsAreDead;
 	}
 	
@@ -248,16 +357,7 @@ public class Controller {
 		
 		checkForLife();
 		rankUpChar(currentPlayer);
-	}
-	
-	private static void updateView() {
-		playerName.setText(currentPlayer.NAME);
-		shekels.setText(String.valueOf(currentPlayer.getChars().get(0).getShekels()));
-		prestige.setText("");
-		wellness.setText("");
-		limbsRemaining.setText("");
-		family.setText("");
-		position.setText("");
+		System.out.println("Turn changed");
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
@@ -266,56 +366,53 @@ public class Controller {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
-//		Useless to check because we're only upgrading if they have the right number of shekels or prestige points
-//		if(pc.getPrestige() < 500 && pc.getShekels() < 500) {
-//			
-//		}
-		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			RankUp.rankUpBoth();
 			charChoice = null;
 		} else if(pc.getPrestige() >= 500) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else {
+		} else if (pc.getShekels() >= 500) {
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
-				
+		
 		switch(charChoice) {
-			case DUKE:
-				pc.setShekels(pc.getShekels() + 100);
-				break;
-			case MERCHANT:
-				pc.setShekels(pc.getShekels() + 100);
-				break;
-			case PRIEST:
-				pc.setPrestige(pc.getPrestige() + 100);
-				if(playerToRankUp.getChars().size() > 1) {
-					//TODO G.U.I. message that priest's aren't allowed to have wives and children
-					boolean trashFam = true; //TODO prompt for whether to throw away family
-					if(trashFam) {
-						for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-							playerToRankUp.getChars().remove(f);
-						}
-						
-						//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
+		case DUKE:
+			pc.setShekels(pc.getShekels() + 100);
+			break;
+		case MERCHANT:
+			pc.setShekels(pc.getShekels() + 100);
+			break;
+		case PRIEST:
+			pc.setPrestige(pc.getPrestige() + 100);
+			if(playerToRankUp.getChars().size() > 1) {
+				//TODO G.U.I. message that priest's aren't allowed to have wives and children
+				boolean trashFam = true; //TODO prompt for whether to throw away family
+				if(trashFam) {
+					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
+						playerToRankUp.getChars().remove(f);
 					}
+					
+					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
 				}
-				break;
-			case KNIGHT:
-				pc.setPrestige(pc.getPrestige() + 200);
-				break;
-		}
+			}
+			break;
+		case KNIGHT:
+			pc.setPrestige(pc.getPrestige() + 200);
+			break;
+	}
 		
 		pc.setCharClass(charChoice);
+		System.out.println("Rank up finished");
 	}
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
 	private static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
-		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
+		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
+		System.out.println("Card drawn");
 	}
 	
 	public static int spinWheel() {
@@ -324,37 +421,7 @@ public class Controller {
 	}
 	
 	public static int spinWheel(int numOfPlayers) {
+		System.out.println("Wheel spun, but with more info");
 		return Wheel.spinWheel(numOfPlayers);
 	}
-	
-	//FXML Controls
-    @FXML
-    private static Label playerName;
-
-    @FXML
-    private static Label shekels;
-
-    @FXML
-    private static Label prestige;
-
-    @FXML
-    private static Label wellness;
-
-    @FXML
-    private static Label limbsRemaining;
-
-    @FXML
-    private static Label family;
-
-    @FXML
-    private static Label position;
-
-    @FXML
-    private static Button spinWheel;
-    
-    @FXML
-    private static Button sellFamily;
-
-    @FXML
-    private static Button giveUp;
 }
