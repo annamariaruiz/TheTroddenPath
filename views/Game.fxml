@@ -188,7 +188,6 @@
                   <Circle fill="DODGERBLUE" layoutX="113.0" layoutY="109.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Pane>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00d34e" height="40.0" layoutX="432.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Circle fx:id="player1" fill="#000dff" layoutX="462.0" layoutY="417.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Circle fx:id="player2" fill="#ff00b6" layoutX="442.0" layoutY="437.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Circle fx:id="player3" fill="#d8ff13" layoutX="442.0" layoutY="417.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />

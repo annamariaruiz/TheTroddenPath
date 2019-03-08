@@ -4,14 +4,13 @@ import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import models.Player;
 import models.Wheel;
+import models.enums.TileDirection;
 import views.enums.NextTileDirection;
 
 public class Connection {
@@ -66,16 +65,13 @@ public class Connection {
 		// animation to move that many spaces
 		Tile t = new Tile(NextTileDirection.RIGHT);
 		animateWheel(1);
-		for(int i = 0; i<4; i++) {
-			animatePiece(t, 2);
+		for(int i = 0; i<spunNumber; i++) {
+			animatePiece();
 		}
 
 	}
 
 	public void animateWheel(int spinAmount) {
-		if(counter < 1) {
-			movePivot(spinner, 0, -10);
-		}
 		counter++;
 		RotateTransition transition = new RotateTransition(Duration.seconds(2.5), spinner);
 		transition.setByAngle(44);
@@ -98,11 +94,13 @@ public class Connection {
 	private static double player4X = 0;
 	private static double player4Y = 0;
 	
-	public void animatePiece(Tile currentTile, int playerNum) {
+	public void animatePiece() {
 		Player currentPlayer = Controller.currentPlayer;
+		int playerNum = currentPlayer.getPlayerID();
+		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
+		TileDirection ntd = Controller.TILES.get(occupiedTile).getValue();
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
-		NextTileDirection ntd = currentTile.getNtd();
 		
 		
 		transition.setNode(player1);
@@ -143,16 +141,6 @@ public class Connection {
 		case RIGHT:
 			transition.setToX(currentY + 40);
 			currentY += 40;
-			break;
-		case LAST:
-			transition.setToX(currentX + 20);
-			transition.setToY(currentY + 20);
-			transition.setToX(currentX - 20);
-			transition.setToY(currentY - 20);
-			transition.setToX(currentX + 10);
-			transition.setToY(currentY + 10);
-			transition.setToX(currentX - 10);
-			transition.setToY(currentY - 10);
 			break;
 		}
 		transition.play();
