@@ -2,19 +2,12 @@ package controllers;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import models.*;
 import models.enums.*;
-import views.Main;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import views.PlayerInit;
+import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
@@ -31,7 +24,6 @@ public class Controller {
 	}
 	
 	public static void run() {
-		initCharacters();
 		initBoard();
 //		determineTurnOrder(players);
 	}
