@@ -48,27 +48,33 @@ public class Controller {
 	}
 	
 	public static void determineTurnOrder(Player[] players) {
-		int order, spin = 0, numOfPlayers = players.length;
-		Player[] orderedPlayers = new Player[players.length];
+//		int order, spin = 0, numOfPlayers = players.length;
+//		Player[] orderedPlayers = new Player[players.length];
+//		
+//		
+//		do {
+//			order = Wheel.spinWheel(numOfPlayers) - 1;
+//			if(order >= 0 && order < numOfPlayers && players[order] != null) {
+//				orderedPlayers[spin] = players[order];
+//				players[order] = null;
+//				numOfPlayers -= 1;
+//				spin += 1;
+//			}
+//		}while(numOfPlayers > 1);
+//		
+//		for(Player player : players) {
+//			if(player != null) {
+//				orderedPlayers[players.length - 1] = player;
+//			}
+//		}
+//		
+//		players = orderedPlayers;
+//		System.out.println("test");
 		
-		do {
-			order = Wheel.spinWheel(numOfPlayers) - 1;
-			if(order >= 0 && order < numOfPlayers && players[order] != null) {
-				orderedPlayers[spin] = players[order];
-				players[order] = null;
-				numOfPlayers -= 1;
-				spin += 1;
-			}
-		}while(numOfPlayers > 1);
+		// Remove a player from playersToSpin as they are called
+		Player[] playersToSpin = players.clone();
 		
-		for(Player player : players) {
-			if(player != null) {
-				orderedPlayers[players.length - 1] = player;
-			}
-		}
-		
-		players = orderedPlayers;
-		System.out.println("test");
+		for(int i = 0; i < playersToSpin; )
 		
 		changeTurn();
 	}
