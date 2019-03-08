@@ -32,6 +32,9 @@ public class Player {
 		this.chars = chars;
 	}
 
+	public static int getPlayerNum() {
+		return playerNum;
+	}
 
 	@Override
 	public String toString() {
