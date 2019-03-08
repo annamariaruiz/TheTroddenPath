@@ -12,6 +12,7 @@ import views.SellFamily;
 public class Controller {
 	private static int turn;
 	public static Player[] players;
+	private static ArrayList<Player> skippedPlayers = new ArrayList<>();
 	private static Player currentPlayer;
 	private static boolean gameOver;
 	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
@@ -24,6 +25,14 @@ public class Controller {
 	
 	public static void run() {
 		initBoard();
+	}
+	
+	public static void skipTurn(Player player) {
+		skippedPlayers.add(player);
+	}
+	
+	public static void addTurn() {
+		turn++;
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -321,7 +330,9 @@ public class Controller {
 	
 	public static void giveUp() {
 		System.out.println("Giving up");
-		gameOver = true;
+		while(currentPlayer.getChars().size() > 0) {
+			currentPlayer.getChars().remove(0);
+		}
 	}
 	
 	public static boolean hasGivenUp() {
@@ -465,15 +476,19 @@ public class Controller {
 			//TODO add G.U.I. message that everyone has died.
 		}
 		
-		checkForLife();
-		System.out.println("Turn changed");
+		if(skippedPlayers.contains(currentPlayer)) {
+			skippedPlayers.remove(skippedPlayers.indexOf(currentPlayer));
+		} else {
+			checkForLife();
+			System.out.println("Turn changed");			
+		}
+		
 	}
 	
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
-		CharClass charChoice = pc.getCharClass();
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			RankUp.rankUpBoth();
