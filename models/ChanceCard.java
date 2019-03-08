@@ -9,7 +9,8 @@ import models.enums.TileColor;
 public class ChanceCard {
 	public final TileColor TILECOLOR;
 	private int effectIndex;
-	private String effectString;
+	private String effectString, classMod; //classMod contains a string related to card modifications based on class,
+													//or if the card had no effect
 	private String[] yValues = {"dysentary.", "measels.", "typhoid fever.", "polio.", "smallpox.", 
 			"cholera.", "the Black Death.", "got kicked by a horse.", "got spit on by a peon.", 
 			"got a splinter."}; //this holds the collection of the random possible Strings
@@ -31,6 +32,7 @@ public class ChanceCard {
 		setRepeatTurn(false);
 		setSkipTurn(false);
 		setPlayer(player);
+		setClassMod("");
 		
 		//from the tile color, determine the effect related to the type of effect (positive, neutral, negative, or random).
 		//this logic is to determine the effect based on its index in the overall array.
@@ -52,10 +54,6 @@ public class ChanceCard {
 	//this is the logic to find the specific string for the effect
 	public void findEffect() {
 		//the logic below is to determine the specific numerical values and random strings
-				if((effectIndex >= 0 && effectIndex <= 3) || (effectIndex >= 8 && effectIndex <= 11) || (effectIndex >= 16 && effectIndex <= 19)) {
-					x = rng.nextInt(20) + 1;
-				}
-				
 				if(effectIndex == 11) {
 					y = rng.nextInt(3) + 7;
 					if(y == 7) {
@@ -65,10 +63,10 @@ public class ChanceCard {
 					}else {
 						x = 5;
 					}
-				}
-				
-				if(effectIndex == 12) {
+				}else if(effectIndex == 12) {
 					y = rng.nextInt(7);
+				}else {
+					x = rng.nextInt(20) + 1;					
 				}
 		
 		String[] effects = {
@@ -83,9 +81,9 @@ public class ChanceCard {
 				"Gain " + (x * 3) + " shekels",
 				"Gain " + (x * 3) + " prestige",
 				"You got in a bar fight and lost. Lose " + x + " wellness and " + (x * 2) + " prestige.",
-				"You " + yValues[y] + " Lose " + x + " wellness.", /////////////
+				"You " + yValues[y] + " Lose " + x + " wellness.",
 				"Oops! You have contracted " + yValues[y], 
-				"Your spouse is declared a witch and is burned at the stake. Lose your spose.", 
+				"Your spouse is declared a witch and is burned at the stake. Lose your spouse.", 
 				"You forgot one of your children at the last town. Lose a child.", 
 				"Uh oh, you got tarred and feathered. Lose your next turn.",
 				"You were mugged. Lose " + (x * 2) + " shekels.",
@@ -108,8 +106,10 @@ public class ChanceCard {
 		if(classType.equals(CharClass.MERCHANT) || classType.equals(CharClass.DUKE)) {
 			if(gain) {
 				x *= 2;
+				setClassMod("Because of your class, you gain twice as many shekels.");
 			}else {
 				x /= 2;
+				setClassMod("Because of your class, you lose half as many shekels.");
 			}
 		}
 		if(!gain) {
@@ -126,8 +126,10 @@ public class ChanceCard {
 		if(classType.equals(CharClass.DUKE) || classType.equals(CharClass.PRIEST)) {
 			if(gain) {
 				x *= 2;
+				setClassMod("Because of your class, you gain twice as much prestige.");
 			}else {
 				x /= 2;
+				setClassMod("Because of your class, you lose half as much prestige.");
 			}
 		}
 		if(!gain) {
@@ -144,11 +146,13 @@ public class ChanceCard {
 		if(classType.equals(CharClass.PRIEST)) {
 			if(gain) {
 				x *= 2;
+				setClassMod("Because of your class, you gain twice as much wellness.");
 			}
 		}
 		if(classType.equals(CharClass.KNIGHT)) {
 			if(!gain) {
 				x /= 2;
+				setClassMod("Because of your class, you lose half as much wellness.");
 			}
 		}
 		if(!gain) {
@@ -185,7 +189,7 @@ public class ChanceCard {
 			if(!has && pChar.getCharClass() != CharClass.PRIEST) {
 				addFamily("spouse");
 			}else {
-				setEffectString("Your card had no effect.");
+				setClassMod("Your card had no effect.");
 			}
 			break;
 		case 6:
@@ -251,7 +255,7 @@ public class ChanceCard {
 			if(has) {
 				removeFamily("spouse");
 			}else {
-				setEffectString("Your card had no effect.");
+				setClassMod("Your card had no effect.");
 			}
 			break;
 		case 14:
@@ -263,7 +267,7 @@ public class ChanceCard {
 				if(has) {
 					removeFamily("daughter");
 				}else {
-					setEffectString("Your card had no effect.");
+					setClassMod("Your card had no effect.");
 				}
 			}
 			break;
@@ -287,7 +291,7 @@ public class ChanceCard {
 				addFamily(role);
 				editPrestige(pChar, false, (x * 3));				
 			}else {
-				setEffectString("Your card had no effect.");
+				setClassMod("Your card had no effect.");
 			}
 			break;
 		case 19:
@@ -296,7 +300,7 @@ public class ChanceCard {
 				removeFamily("son");
 				editShekels(pChar, true, (x * 3));
 			}else {
-				setEffectString("Your card had no effect.");
+				setClassMod("Your card had no effect.");
 			}
 			break;
 		case 20:
@@ -306,7 +310,7 @@ public class ChanceCard {
 				editShekels(pChar, true, (x * 3));
 				editPrestige(pChar, true, (x * 3));
 			}else {
-				setEffectString("Your card had no effect.");
+				setClassMod("Your card had no effect.");
 			}
 			break;
 		case 21:
@@ -315,7 +319,7 @@ public class ChanceCard {
 				editPrestige(pChar, true, (x * 5));
 			}else {
 				editWellness(pChar, false, x);
-				editPrestige(pChar, false, (x * 3));			
+				editPrestige(pChar, true, (x * 3));			
 			}
 			break;
 		}
@@ -416,10 +420,19 @@ public class ChanceCard {
 		this.skipTurn = skipTurn;
 	}
 	
+	public String getClassMod() {
+		return classMod;
+	}
+	
+	public void setClassMod(String classMod) {
+		this.classMod = classMod;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(player.NAME).append(" draws a card.\n").append(getEffectString());
+		builder.append(player.NAME).append(" draws a card.\n").append(getEffectString())
+		.append("\n").append(getClassMod());
 		return builder.toString();
 	}
 }
