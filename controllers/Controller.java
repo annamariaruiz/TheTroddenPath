@@ -84,7 +84,10 @@ public class Controller {
 		ArrayList<Player> orderedPlayers = new ArrayList<>();
 		
 		while(playersToSpin.size() > 0) {
-			int spin = Wheel.spinWheel(playersToSpin.size());
+			int spin = 0;
+			while(spin == 0) {
+				spin = Wheel.spinWheel(playersToSpin.size());
+			}
 			orderedPlayers.add(playersToSpin.get(spin - 1));
 			playersToSpin.remove(spin - 1);
 		}
