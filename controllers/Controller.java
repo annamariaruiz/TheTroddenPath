@@ -4,8 +4,14 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
 
-import models.*;
-import models.enums.*;
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
+import models.enums.TileDirection;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
@@ -451,8 +457,8 @@ public class Controller {
 
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-	private static void rankUpChar(Player playerToRankUp) {
-		PlayerChar pc = playerToRankUp.getChars().get(0);
+	private static void rankUpChar() {
+		PlayerChar pc = currentPlayer.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
@@ -475,12 +481,12 @@ public class Controller {
 			break;
 		case PRIEST:
 			pc.setPrestige(pc.getPrestige() + 100);
-			if(playerToRankUp.getChars().size() > 1) {
+			if(currentPlayer.getChars().size() > 1) {
 				//TODO G.U.I. message that priest's aren't allowed to have wives and children
 				boolean trashFam = true; //TODO prompt for whether to throw away family
 				if(trashFam) {
-					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-						playerToRankUp.getChars().remove(f);
+					for(int f = 1; f < currentPlayer.getChars().size(); f++) {
+						currentPlayer.getChars().remove(f);
 					}
 					
 					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."

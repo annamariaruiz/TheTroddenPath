@@ -24,15 +24,6 @@ public class Dragon extends BoardChar {
 		
 		return dragonTiles;
 	}
-
-	public int[] getDragonTiles() {
-		int[] dragonTiles = new int[5];
-		for(int i = 0; i < dragonTiles.length; i++) {
-			dragonTiles[i] = getOccupiedTile() + i - 2;
-		}
-		
-		return dragonTiles;
-	}
 	
 	@Override
 	public void setOccupiedTile(int occupiedTile) {
