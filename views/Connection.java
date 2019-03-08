@@ -63,7 +63,6 @@ public class Connection {
 	public void spinWheel() {
 		int spunNumber = Wheel.spinWheel();
 		// animation to move that many spaces
-		Tile t = new Tile(NextTileDirection.RIGHT);
 		animateWheel(1);
 		for(int i = 0; i<spunNumber; i++) {
 			animatePiece();
