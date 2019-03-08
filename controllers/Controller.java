@@ -132,24 +132,7 @@ public class Controller {
 			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
 		}
 	}
-	
-//	//logic for what a player would need to do during their turn
-//	private static void playGame() {
-//		do {
-//			changeTurn();
-//			// Options - give up / declare self witch/warlock, sell family, spin
-//			int menuInput = 0; //TODO return menu input from G.U.I.
-//			switch(menuInput) {
-//				case 0:
-//					// spin wheel
-//				case 1:
-//					// sell family
-//				case
-//					// give up
-//			}
-//		} while(!gameOver);
-//	}
-	
+		
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
