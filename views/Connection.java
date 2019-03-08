@@ -185,10 +185,4 @@ public class Connection {
 	public void giveUp() {
 		controllers.Controller.giveUp();
 	}
-
-	private void movePivot(Node node, double x, double y) {
-		node.getTransforms().add(new Translate(-x, -y));
-		node.setTranslateX(x);
-		node.setTranslateY(y);
-	}
 }
