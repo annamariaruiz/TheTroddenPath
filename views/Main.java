@@ -2,19 +2,21 @@ package views;
 	
 import java.io.IOException;
 import java.util.ArrayList;
-import views.PlayerInit;
+
 import controllers.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import views.enums.NextTileDirection;
 
 public class Main extends Application {
 	
-	private Stage window = new Stage();
+	private static Stage window = new Stage();
 	private Scene startScene, boardGame;
 	private ArrayList<Tile> tiles = new ArrayList<>();
 	
@@ -37,11 +39,10 @@ public class Main extends Application {
 	
 	public void startGame() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
-		boardGame = new Scene(root, 1300, 700);
+		boardGame = new Scene(root, 1200, 700);
 		window.setResizable(false);
 		window.setScene(boardGame);
 		window.show();
-		Controller.run();
 		Controller.initPlayers(PlayerInit.getNames());
 	}
 	
@@ -137,5 +138,18 @@ public class Main extends Application {
 		//99 TIles
 		
 		Tile last = new Tile(NextTileDirection.LAST);
+	}
+
+	public static void winScreen() {
+		window.close();
+		Stage winScreen = new Stage();
+		winScreen.initModality(Modality.APPLICATION_MODAL);
+		winScreen.setTitle("Game Over!");
+		Text label = new Text();
+		label.setText("Game Completed");
+		VBox layout = new VBox(30);
+		Scene scene = new Scene(layout, 300, 100);
+		winScreen.setScene(scene);
+		winScreen.show();
 	}
 }

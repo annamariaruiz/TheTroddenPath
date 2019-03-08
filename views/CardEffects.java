@@ -1,5 +1,6 @@
 package views;
 
+import controllers.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -18,7 +19,10 @@ public class CardEffects {
 		Text text = new Text();
 		text.setText(chanceCard.getEffectString());
 		Button button = new Button("Okay");
-		button.setOnAction(e -> stage.close());
+		button.setOnAction(e -> {
+			stage.close();
+			Controller.rankUpChar(Controller.currentPlayer);
+		});
 		
 		VBox layout = new VBox(15);
 		layout.getChildren().addAll(text, button);
