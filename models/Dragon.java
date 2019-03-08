@@ -5,11 +5,16 @@ public class Dragon extends BoardChar {
 	private int turn;
 	
 	public Dragon() {
-		setOccupiedTile(49);
+		setTurn(0);
+//		setOccupiedTile(49);
 	}
 	
 	public int getTurn() {
 		return turn;
+	}
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
 	}
 
 	public void increaseTurn() {
@@ -27,7 +32,7 @@ public class Dragon extends BoardChar {
 	
 	@Override
 	public void setOccupiedTile(int occupiedTile) {
-		if(occupiedTile < 4 || occupiedTile > 94) {
+		if(occupiedTile < 5 || occupiedTile > 95) {
 			throw new IllegalArgumentException("Error: The dragon may only occupy a tile at least five spaces away from the start and the end.");
 		}
 		

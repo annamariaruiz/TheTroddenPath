@@ -170,12 +170,12 @@ public class PlayerChar extends BoardChar {
 				StringBuilder builder = new StringBuilder();
 		builder.append("Player Character: ")
 		.append("\nName: ").append(CHARNAME)
-		.append("\nRole: ").append(role)
-		.append("\nClass: ").append(charClass)
-		.append("\nWellness: ").append(wellness)
-		.append("\nShekels: ").append(shekels)
-		.append("\nPrestige: ").append(prestige)
-		.append("\nPlayer number: ").append(playerNum);
+		.append("\nRole: ").append(getRole())
+		.append("\nClass: ").append(getCharClass())
+		.append("\nWellness: ").append(getWellness())
+		.append("\nShekels: ").append(getShekels())
+		.append("\nPrestige: ").append(getPrestige())
+		.append("\nPlayer number: ").append(getPlayerNum());
 		return builder.toString();
 	}
 }
