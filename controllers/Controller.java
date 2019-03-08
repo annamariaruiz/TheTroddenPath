@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,8 +22,7 @@ public class Controller {
 	public static Player[] players;
 	private static Player currentPlayer;
 	private static boolean gameOver;
-//	private static TileColor[] tiles;
-	private static Map.Entry<TileColor, TileDirection>[] tiles;
+	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
@@ -77,17 +77,19 @@ public class Controller {
 		
 		players = orderedPlayers;
 		System.out.println("test");
+		
+		changeTurn();
 	}
 
 	//create the board with its tiles. Set dragon's location?, if that is added
 	private static void initBoard() {
 		turn = 0;
-		LinkedHashMap<TileColor, TileDirection> mappedTiles = new LinkedHashMap<>();
 		int nextSpecial = 0;
 		// These are the white tiles on the board, including the start and end tiles.
 		int[] specials = new int[] {0, 11, 22, 36, 44, 51, 61, 68, 80, 92, 98, 99};
 		TileDirection currentDirection = TileDirection.RIGHT;
 		TileColor currentColor = null;
+		int offset = 0;
 		
 		for(int t = 0; t < 100; t++) {
 			if(t == specials[nextSpecial]) {
@@ -103,14 +105,39 @@ public class Controller {
 						break;
 					case 0:
 						currentColor = TileColor.RED;
+						break;
 				}
 			}
 			if(t == 13) {
 				currentDirection = TileDirection.UP;
-			} else {
-				(t - 14) %  
+			} else if(t >= 15) {
+				if(t == 98) {
+					tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
+				}
+				switch((t - 14 + offset) % 17) {
+					case 7:
+						currentDirection = TileDirection.LEFT;
+						break;
+					case 9:
+						currentDirection = TileDirection.DOWN;
+						break;
+					case 15:
+						currentDirection = TileDirection.LEFT;
+						break;
+					case 0:
+						currentDirection = TileDirection.UP;
+						offset += 1;
+						break;
+				}
 			}
-			System.out.println(tiles[t]);
+			
+			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+			
+		}
+		
+		
+		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
+			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
 		}
 	}
 	
@@ -195,50 +222,45 @@ public class Controller {
 		
 		if(allTurnsAreFin) {
 			// Map players to their scores
-			HashMap<Player, Integer> playersToScores = new HashMap<>();
+			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> playersToScores = new ArrayList<>();
+//			HashMap<Player, Integer> playersToScores = new HashMap<>();
 						
 			for(int p = 0; p < players.length; p++) {
 				PlayerChar pChar = players[p].getChars().get(0);
 				
 				// Derive scores from PlayerChar prestige and shekels.
-				playersToScores.put(players[p], pChar.getPrestige() + pChar.getShekels());
+				playersToScores.add(new AbstractMap.SimpleEntry<Player, Integer>(players[p], pChar.getPrestige() + pChar.getShekels()));
 			}
 			
-			// Create an array from the hashmap so that it's orderable.
-			Map.Entry<Player, Integer>[] pScoresToSort = (Entry<Player, Integer>[]) playersToScores.entrySet().toArray();
-			
 			// Resolve duplicates and sort the players based on their scores.
-			Map.Entry<Player, Integer>[] sortedPScores = resolveDups(pScoresToSort);
+			ArrayList<AbstractMap.SimpleEntry<Player, Integer>> sortedPScores = resolveDups(playersToScores);
 
 			//			LinkedHashMap<Player, Integer> sortedPlayers = playersToScores.entrySet().stream().sorted(Entry.comparingByValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 			
 			// Update the player array to reflect the sort.
-			for(int orderedP = 0; orderedP < sortedPScores.length; orderedP++) {
-				players[orderedP] = sortedPScores[orderedP].getKey();
+			for(int orderedP = 0; orderedP < sortedPScores.size(); orderedP++) {
+				players[orderedP] = sortedPScores.get(orderedP).getKey();
 			}
 		}
 		
 		return !allTurnsAreFin;
 	}
 	
-	private static Map.Entry<Player, Integer>[] resolveDups(Map.Entry<Player, Integer>[] arrayToDedup) {
+	private static ArrayList<AbstractMap.SimpleEntry<Player, Integer>> resolveDups(ArrayList<AbstractMap.SimpleEntry<Player, Integer>> arrayToDedup) {
 		// ArrayList of Integers already found and checked for duplication
 		ArrayList<Integer> intsIndexed = new ArrayList<>();
 		
-		// Deep copy of array so that the original array is not modified
-		Map.Entry<Player, Integer>[] dedupedArray = arrayToDedup.clone();
-		
 		// Temporary value used to swap array elements
-		Map.Entry<Player, Integer> temp = null;
+		AbstractMap.SimpleEntry<Player, Integer> temp = null;
 		
 		// Check each value in the array, except the last one, against all following values 
-		for(Integer s = 0; s < dedupedArray.length - 1; s++) {
-			if(!intsIndexed.contains(dedupedArray[s].getValue())) {
+		for(Integer s = 0; s < arrayToDedup.size() - 1; s++) {
+			if(!intsIndexed.contains(arrayToDedup.get(s).getValue())) {
 				intsIndexed.add(s);
-				for(Integer t = s + 1; s < dedupedArray.length; t++) {
+				for(Integer t = s + 1; s < arrayToDedup.size(); t++) {
 					
 					// If two values are the same, then have the players spin to see who gets to go first
-					if(dedupedArray[s].getValue().equals(dedupedArray[t].getValue())) {
+					if(arrayToDedup.get(s).getValue().equals(arrayToDedup.get(t).getValue())) {
 						int sSpin = -1;
 						int tSpin = -1;
 						while(sSpin == tSpin) {
@@ -247,16 +269,16 @@ public class Controller {
 						}
 						//TODO G.U.I. message about who won spin
 						if(sSpin < tSpin) {
-							temp = dedupedArray[t];
-							dedupedArray[t] = dedupedArray[s];
-							dedupedArray[s] = temp;
+							temp = arrayToDedup.get(t);
+							arrayToDedup.set(t, arrayToDedup.get(s));
+							arrayToDedup.set(s, temp);
 						}
 					}
 				}
 			}
 		}
 		
-		return dedupedArray;
+		return arrayToDedup;
 	}
 	
 	private static boolean checkForLife() {
@@ -388,7 +410,7 @@ public class Controller {
 			//(enum TileColor)
 	private static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
-		ChanceCard chanceCard = new ChanceCard(tiles[currentPlayer.getChars().get(0).getOccupiedTile()], currentPlayer);
+		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 	}
 	
 	public static int spinWheel() {
