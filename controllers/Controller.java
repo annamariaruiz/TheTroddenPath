@@ -461,7 +461,7 @@ public class Controller {
 		} else if(pc.getPrestige() >= 500) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else {
+		} else if (pc.getShekels() >= 500) {
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
