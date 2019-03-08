@@ -1,10 +1,10 @@
 package views;
 
+import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -32,29 +32,30 @@ public class Connection {
 	@FXML
 	private Pane spinner;
 
-	@FXML
-	private Button spinWheel;
+    @FXML
+    private static Label playerName = new Label();
 
-	@FXML
-	private Label playerName;
+    @FXML
+    private static Label shekels = new Label();
 
-	@FXML
-	private Label shekels;
+    @FXML
+    private static Label prestige = new Label();
 
-	@FXML
-	private Label prestige;
+    @FXML
+    private static Label wellness = new Label();
 
-	@FXML
-	private Label wellness;
+    @FXML
+    private static Label limbsRemaining = new Label();
 
-	@FXML
-	private Label limbsRemaining;
+    @FXML
+    private static Label family = new Label();
 
-	@FXML
-	private Label family;
-
-	@FXML
-	private Label position;
+    @FXML
+    private static Label position = new Label();
+    
+    public static void updateView() {
+    	playerName.setText(Controller.currentPlayer.toString());
+    }
 
 	public void spinWheel() {
 		int spunNumber = Wheel.spinWheel();
