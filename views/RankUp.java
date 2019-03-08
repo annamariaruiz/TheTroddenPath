@@ -10,6 +10,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RankUp {
+	
+	public static void rankUpDuke() {
+		//logic to rank up to duke
+	}
 
 	public static void rankUpBoth() {
 		String name ="";
@@ -26,11 +30,10 @@ public class RankUp {
 		});
 		Button priest = new Button("Priest");
 		Button merchant = new Button("Merchant");
-		Button duke = new Button("Duke");
 		Label question = new Label("Choose your path");
 		
 		HBox buttons = new HBox(20);
-		buttons.getChildren().addAll(knight, priest, merchant, duke);
+		buttons.getChildren().addAll(knight, priest, merchant);
 		VBox layout = new VBox(15);
 		layout.getChildren().addAll(label, buttons, question);
 		Scene scene = new Scene(layout, 300, 300);
@@ -71,7 +74,7 @@ public class RankUp {
 		prompt.setTitle("Rank Up");
 		
 		Text label = new Text();
-		label.setText("Congrats! You now have at least 50 to your name! Time to rank up");
+		label.setText("Congrats! You now have at least 50 shekels to your name! Time to rank up");
 		Button duke = new Button("Duke");
 		duke.setOnAction(e ->{
 			
