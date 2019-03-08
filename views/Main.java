@@ -36,11 +36,106 @@ public class Main extends Application {
 	}
 	
 	public void startGame() throws IOException {
-		Controller.initPlayers(PlayerInit.getNames());
 		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 		boardGame = new Scene(root, 1300, 700);
 		window.setResizable(false);
 		window.setScene(boardGame);
 		window.show();
+		Controller.run();
+		Controller.initPlayers(PlayerInit.getNames());
+	}
+	
+	private static void createTileArrayList() {
+		// 0 Tiles
+		for(int i = 0; i<13; i++) {
+			Tile right = new Tile(NextTileDirection.RIGHT);
+		}
+		// 13 Tiles
+		for(int i = 0; i<8; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		// 21 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 23 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile down = new Tile(NextTileDirection.DOWN);
+		}
+		// 29 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 31 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		// 37 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 39 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile down = new Tile(NextTileDirection.DOWN);
+		}
+		// 45 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 47 TIles
+		for(int i = 0; i<6; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		// 53 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 55 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile down = new Tile(NextTileDirection.DOWN);
+		}
+		// 61 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 63 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		// 69 TIles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 71 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile down = new Tile(NextTileDirection.DOWN);
+		}
+		// 77 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 79 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		// 85 tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 87 Tiles
+		for(int i = 0; i<6; i++) {
+			Tile down = new Tile(NextTileDirection.DOWN);
+		}
+		// 93 Tiles
+		for(int i = 0; i<2; i++) {
+			Tile left = new Tile(NextTileDirection.LEFT);
+		}
+		// 95 Tiles
+		for(int i = 0; i<4; i++) {
+			Tile up = new Tile(NextTileDirection.UP);
+		}
+		//99 TIles
+		
+		Tile last = new Tile(NextTileDirection.LAST);
 	}
 }

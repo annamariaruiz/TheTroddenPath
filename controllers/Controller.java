@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -55,26 +56,37 @@ public class Controller {
 	}
 	
 	public static void determineTurnOrder() {
-		int order, spin = 0, numOfPlayers = players.length;
-		Player[] orderedPlayers = new Player[players.length];
+//		int order, spin = 0, numOfPlayers = players.length;
+//		Player[] orderedPlayers = new Player[players.length];
+//		
+//		do {
+//			order = Wheel.spinWheel(numOfPlayers) - 1;
+//			if(order >= 0 && order < numOfPlayers && players[order] != null) {
+//				orderedPlayers[spin] = players[order];
+//				players[order] = null;
+//				numOfPlayers -= 1;
+//				spin += 1;
+//			}
+//		}while(numOfPlayers > 1);
 		
-		do {
-			order = Wheel.spinWheel(numOfPlayers) - 1;
-			if(order >= 0 && order < numOfPlayers && players[order] != null) {
-				orderedPlayers[spin] = players[order];
-				players[order] = null;
-				numOfPlayers -= 1;
-				spin += 1;
-			}
-		}while(numOfPlayers > 1);
+		// Remove a player from playersToSpin as they are called
+		ArrayList<Player> playersToSpin = new ArrayList<>();
 		
-		for(Player player : players) {
-			if(player != null) {
-				orderedPlayers[players.length - 1] = player;
-			}
+		for(int p = 0; p < players.length; p++) {
+			playersToSpin.add(players[p]);
 		}
 		
-		players = orderedPlayers;
+		ArrayList<Player> orderedPlayers = new ArrayList<>();
+		
+		while(playersToSpin.size() > 0) {
+			int spin = Wheel.spinWheel(playersToSpin.size());
+			orderedPlayers.add(playersToSpin.get(spin - 1));
+			playersToSpin.remove(spin - 1);
+		}
+		
+		for(int p = 0; p < players.length; p++) {
+			players[p] = orderedPlayers.get(p);
+		}
 		System.out.println("Turn order made");
 		
 		changeTurn();
