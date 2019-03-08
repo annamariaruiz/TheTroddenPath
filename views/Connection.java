@@ -95,17 +95,17 @@ public class Connection {
 	public void animatePiece() {
 		
 		Player currentPlayer = Controller.currentPlayer;
-		currentPlayer.getChars().get(0).changeTile(1);
 		int playerNum = currentPlayer.getPlayerID();
 		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
 		TileDirection ntd = Controller.TILES.get(occupiedTile).getValue();
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
+		currentPlayer.getChars().get(0).changeTile(1);
 		
 		
-		transition.setNode(player1);
-		double currentX = player1X;
-		double currentY = player1Y;
+		
+		double currentX;
+		double currentY;
 		
 		switch (playerNum) {
 		case 2:
@@ -123,20 +123,24 @@ public class Connection {
 			currentX = player4X;
 			currentY = player4Y;
 			break;
+		default:
+			transition.setNode(player1);
+			currentX = player1X;
+			currentY = player1Y;
 		}
 
 		switch (ntd) {
-		case UP:
-			transition.setToY(currentY + 40);
-			currentX += 40;
-			break;
 		case DOWN:
+			transition.setToY(currentY + 40);
+			currentY += 40;
+			break;
+		case UP:
 			transition.setToY(currentY - 40);
-			currentX -= 40;
+			currentY -= 40;
 			break;
 		case LEFT:
 			transition.setToX(currentX - 40);
-			currentY -= 40;
+			currentX -= 40;
 			break;
 		case RIGHT:
 			transition.setToX(currentX + 40);
