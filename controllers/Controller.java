@@ -47,9 +47,14 @@ public class Controller {
 	
 	public static void initPlayers(ArrayList<String> playerNames) {
 		int numOfPlayers = playerNames.size();
-		for(int i = 0; i<numOfPlayers; i++) {
-			Player player = new Player(playerNames.get(i));
-			players[i] = player;
+		for(int i = 0; i < numOfPlayers; i++) {
+			if(playerNames.get(i).trim().isEmpty()) {
+				Player player = new Player();
+				players[i] = player;
+			} else {
+				Player player = new Player(playerNames.get(i));
+				players[i] = player;				
+			}
 		}
 		System.out.println("Players made and added to array");
 		determineTurnOrder();
