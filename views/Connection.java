@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+import models.Player;
 import models.Wheel;
 import views.enums.NextTileDirection;
 
@@ -57,6 +58,9 @@ public class Connection {
     	playerName.setText(Controller.currentPlayer.toString());
     }
 
+    
+    
+    
 	public void spinWheel() {
 		int spunNumber = Wheel.spinWheel();
 		// animation to move that many spaces
@@ -95,6 +99,7 @@ public class Connection {
 	private static double player4Y = 0;
 	
 	public void animatePiece(Tile currentTile, int playerNum) {
+		Player currentPlayer = Controller.currentPlayer;
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
 		NextTileDirection ntd = currentTile.getNtd();
