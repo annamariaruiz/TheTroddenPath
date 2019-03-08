@@ -71,7 +71,7 @@ public class RankUp {
 		prompt.setTitle("Rank Up");
 		
 		Text label = new Text();
-		label.setText("Congrats! You now have at least 50 to your name! Time to rank up");
+		label.setText("Congrats! You now have at least 50 shekels to your name! Time to rank up");
 		Button duke = new Button("Duke");
 		duke.setOnAction(e ->{
 			
