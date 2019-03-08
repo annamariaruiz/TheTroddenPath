@@ -8,6 +8,7 @@ import models.*;
 import models.enums.*;
 import views.Main;
 import views.PlayerInit;
+import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
@@ -30,7 +31,7 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName("Player", "What is your name?");
+			PlayerInit.playerName();
 			String name = PlayerInit.getName();
 			
 			if(name.trim().isEmpty()) {
@@ -40,10 +41,10 @@ public class Controller {
 			}
 		}		
 		
-		determineTurnOrder(players);
+		determineTurnOrder();
 	}
 	
-	public static void determineTurnOrder(Player[] players) {
+	public static void determineTurnOrder() {
 		int order, spin = 0, numOfPlayers = players.length;
 		Player[] orderedPlayers = new Player[players.length];
 		
@@ -363,19 +364,19 @@ public class Controller {
 		wellness = pChar.getWellness();
 		pChar.setWellness(wellness - damage);
 	}
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
+	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass," and 
 			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
+		if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
 			RankUp.rankUpBoth();
 			charChoice = null;
-		} else if(pc.getPrestige() >= 500) {
+		} else if(pc.getPrestige() >= 50) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else {
+		} else if(pc.getShekels() >= 50){
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
@@ -383,6 +384,7 @@ public class Controller {
 		switch(charChoice) {
 		case DUKE:
 			pc.setShekels(pc.getShekels() + 100);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 		case MERCHANT:
 			pc.setShekels(pc.getShekels() + 100);
@@ -402,7 +404,7 @@ public class Controller {
 			}
 			break;
 		case KNIGHT:
-			pc.setPrestige(pc.getPrestige() + 200);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 	}
 		
