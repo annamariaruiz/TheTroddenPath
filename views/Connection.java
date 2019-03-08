@@ -7,16 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import models.Player;
 import models.Wheel;
 import models.enums.TileDirection;
-import views.enums.NextTileDirection;
 
 public class Connection {
 
 	private int counter = 0;
-	
+
 	@FXML
 	private Circle player1;
 
@@ -32,39 +32,37 @@ public class Connection {
 	@FXML
 	private Pane spinner;
 
-    @FXML
-    private static Label playerName = new Label();
+	@FXML
+	private Text playerName = new Text();
 
-    @FXML
-    private static Label shekels = new Label();
+	@FXML
+	private Text shekels = new Text();
 
-    @FXML
-    private static Label prestige = new Label();
+	@FXML
+	private Text prestige = new Text();
 
-    @FXML
-    private static Label wellness = new Label();
+	@FXML
+	private Text wellness = new Text();
 
-    @FXML
-    private static Label limbsRemaining = new Label();
+	@FXML
+	private Text limbsRemaining = new Text();
 
-    @FXML
-    private static Label family = new Label();
+	@FXML
+	private Text family = new Text();
 
-    @FXML
-    private static Label position = new Label();
-    
-    public static void updateView() {
+	@FXML
+	private Text position = new Text();
+
+	public static void updateView() {
 //    	playerName.setText(Controller.currentPlayer.toString());
-    }
+	}
 
-    
-    
-    
 	public void spinWheel() {
+
 		int spunNumber = Wheel.spinWheel();
 		// animation to move that many spaces
 		animateWheel(1);
-		for(int i = 0; i<spunNumber; i++) {
+		for (int i = 0; i < spunNumber; i++) {
 			animatePiece();
 		}
 		Controller.drawCard();
@@ -91,9 +89,9 @@ public class Connection {
 	private static double player3Y = 0;
 	private static double player4X = 0;
 	private static double player4Y = 0;
-	
+
 	public void animatePiece() {
-		
+
 		Player currentPlayer = Controller.currentPlayer;
 		int playerNum = currentPlayer.getPlayerID();
 		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
@@ -101,12 +99,10 @@ public class Connection {
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
 		currentPlayer.getChars().get(0).changeTile(1);
-		
-		
-		
+
 		double currentX;
 		double currentY;
-		
+
 		switch (playerNum) {
 		case 2:
 			transition.setNode(player2);
@@ -148,7 +144,7 @@ public class Connection {
 			break;
 		}
 		transition.play();
-		
+
 		switch (playerNum) {
 		case 1:
 			player1X = currentX;
@@ -167,6 +163,20 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
+
+		// updating the view because no other choice
+		playerName.setText(currentPlayer.NAME);
+		// CharName playerName.setText(currentPlayer.getChars().get(0).CHARNAME);
+		shekels.setText("Shekels: " + currentPlayer.getChars().get(0).getShekels());
+		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getShekels());
+		wellness.setText("Wellness: " + currentPlayer.getChars().get(0).getWellness());
+		limbsRemaining.setText("Limbs Remaining: " + currentPlayer.getChars().get(0).getLimbs().size());
+		StringBuilder sb = new StringBuilder();
+		for (int i = 1; i < currentPlayer.getChars().size(); i++) {
+			sb.append(currentPlayer.getChars().get(i).getRole() + ": " + currentPlayer.getChars().get(i).CHARNAME);
+		}
+		family.setText(sb.toString());
+
 	}
 
 	public void sellFamily() {
