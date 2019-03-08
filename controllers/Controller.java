@@ -2,16 +2,7 @@ package controllers;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import models.*;
 import models.enums.*;
 import views.PlayerInit;
@@ -40,7 +31,7 @@ public class Controller {
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName(); // TODO change this such that bot initPlayers() methods have this
+			PlayerInit.playerName();
 		}
 		System.out.println("Player Array made");
 	}
@@ -245,24 +236,7 @@ public class Controller {
 		}
 		System.out.println("Board Initialized");
 	}
-	
-//	//logic for what a player would need to do during their turn
-//	private static void playGame() {
-//		do {
-//			changeTurn();
-//			// Options - give up / declare self witch/warlock, sell family, spin
-//			int menuInput = 0; //TODO return menu input from G.U.I.
-//			switch(menuInput) {
-//				case 0:
-//					// spin wheel
-//				case 1:
-//					// sell family
-//				case
-//					// give up
-//			}
-//		} while(!gameOver);
-//	}
-	
+		
 	private static void rankUpKnight() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
 	}
@@ -503,43 +477,13 @@ public class Controller {
 		
 		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
 			RankUp.rankUpBoth();
-			charChoice = null;
+			
 		} else if(pc.getPrestige() >= 500) {
 			RankUp.rankUpPrestige();
-			charChoice = null;
+			
 		} else if (pc.getShekels() >= 500) {
 			RankUp.rankUpShekels();
-			charChoice = null;
 		}
-		
-		switch(charChoice) {
-		case DUKE:
-			pc.setShekels(pc.getShekels() + 100);
-			break;
-		case MERCHANT:
-			pc.setShekels(pc.getShekels() + 100);
-			break;
-		case PRIEST:
-			pc.setPrestige(pc.getPrestige() + 100);
-			if(playerToRankUp.getChars().size() > 1) {
-				//TODO G.U.I. message that priest's aren't allowed to have wives and children
-				boolean trashFam = true; //TODO prompt for whether to throw away family
-				if(trashFam) {
-					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-						playerToRankUp.getChars().remove(f);
-					}
-					
-					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
-				}
-			}
-			break;
-		case KNIGHT:
-			pc.setPrestige(pc.getPrestige() + 200);
-			break;
-	}
-		
-		pc.setCharClass(charChoice);
-		System.out.println("Rank up finished");
 	}
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
