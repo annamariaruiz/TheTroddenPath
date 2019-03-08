@@ -13,7 +13,7 @@ public class Controller {
 	private static int turn;
 	public static Player[] players;
 	private static ArrayList<Player> skippedPlayers = new ArrayList<>();
-	private static Player currentPlayer;
+	public static Player currentPlayer;
 	private static boolean gameOver;
 	public final static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static Random rng = new Random();
