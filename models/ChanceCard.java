@@ -17,7 +17,6 @@ public class ChanceCard {
 	private PlayerChar pChar;
 	private Player player;
 	private ArrayList<PlayerChar> playerChars;
-	private boolean repeatTurn, skipTurn;
 	private static Random rng = new Random();
 
 	private int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
@@ -29,8 +28,6 @@ public class ChanceCard {
 		pChar = playerChars.get(0);
 		this.TILECOLOR = tileColor;
 		setPlayerChar(pChar);
-		setRepeatTurn(false);
-		setSkipTurn(false);
 		setPlayer(player);
 		setClassMod("");
 		
@@ -73,7 +70,7 @@ public class ChanceCard {
 				"Gain " + (x * 3) + " shekels",
 				"Gain " + (x * 3) + " prestige", 
 				"You found bandages for your wounds. Gain " + x + " wellness", 
-				"Take another turn.",
+				"Your card had no effect.",
 				"You got treatment for your disease. Gain " + (x * 2) + " wellness.", 
 				"You got married.",
 				"You had a baby girl.",
@@ -85,7 +82,7 @@ public class ChanceCard {
 				"Oops! You have contracted " + yValues[y], 
 				"Your spouse is declared a witch and is burned at the stake. Lose your spouse.", 
 				"You forgot one of your children at the last town. Lose a child.", 
-				"Uh oh, you got tarred and feathered. Lose your next turn.",
+				"Your card had no effect.",
 				"You were mugged. Lose " + (x * 2) + " shekels.",
 				"You did something naughty. Lose " + (x * 2) + " prestige.",
 				"You had too much fun at the local tavern and have ended up with a child. Lose " + (x * 3) + " prestige, but gain a child.", 
@@ -178,9 +175,6 @@ public class ChanceCard {
 		case 2:
 			editWellness(pChar, true, x);
 			break;
-		case 3:
-			setRepeatTurn(true);
-			break;
 		case 4:
 			editWellness(pChar, true, (x * 2));
 			break;
@@ -270,9 +264,6 @@ public class ChanceCard {
 					setClassMod("Your card had no effect.");
 				}
 			}
-			break;
-		case 15:
-			setSkipTurn(true);
 			break;
 		case 16:
 			editShekels(pChar, false, (x * 2));
@@ -402,22 +393,6 @@ public class ChanceCard {
 	
 	public void setPlayer(Player player) {
 		this.player = player;
-	}
-	
-	public boolean repeatTurn() {
-		return repeatTurn;
-	}
-	
-	public void setRepeatTurn(boolean repeatTurn) {
-		this.repeatTurn = repeatTurn;
-	}
-	
-	public boolean skipTurn() {
-		return skipTurn;
-	}
-	
-	public void setSkipTurn(boolean skipTurn) {
-		this.skipTurn = skipTurn;
 	}
 	
 	public String getClassMod() {
