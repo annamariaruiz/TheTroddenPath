@@ -29,31 +29,20 @@ public class Main extends Application {
 		Parent start = FXMLLoader.load(getClass().getResource("Start.fxml"));
 		
 		startScene = new Scene(start, 600, 300);
+		window.setResizable(false);
 		window.setScene(startScene);
-		window.show();
-	}
-	
-	public void startGame() throws IOException {
-		if(Controller.checkForWin()) {
-			Parent winner = FXMLLoader.load(getClass().getResource("Game.fxml"));
-			window.setScene(new Scene(winner, 400, 300));
-			window.show();
-		}
-		
-		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
-		boardGame = new Scene(root, 1300, 700);
-		window.setScene(boardGame);
 		window.show();
 		PlayerInit.playerNum();
 	}
 	
-	public void changeInfo() {
-		Label playerName = new Label();
-		Label wellness = new Label();
-		Label limbsRemaining = new Label();
-		Label shekels = new Label();
-		Label prestige = new Label();
-		Label family = new Label();
+	public void startGame() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
+		boardGame = new Scene(root, 1300, 700);
+		window.setResizable(false);
+		window.setScene(boardGame);
+		window.show();
+		Controller.run();
+		Controller.initPlayers(PlayerInit.getNames());
 	}
 	
 	private static void createTileArrayList() {
@@ -148,5 +137,5 @@ public class Main extends Application {
 		//99 TIles
 		
 		Tile last = new Tile(NextTileDirection.LAST);
-		}
 	}
+}

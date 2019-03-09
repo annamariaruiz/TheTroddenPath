@@ -10,6 +10,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RankUp {
+	
+	public static void rankUpDuke() {
+		//logic to rank up to duke
+	}
 
 	public static void rankUpBoth() {
 		String name ="";
@@ -19,7 +23,7 @@ public class RankUp {
 		prompt.setTitle("Rank Up");
 		
 		Text label = new Text();
-		label.setText("Congrats! You now have 500 shekels in your possesion and 500 prestige to your name! Time to rank up");
+		label.setText("Congrats! You now have at least 50 shekels in your possesion and at least 50 prestige to your name! Time to rank up");
 		Button knight = new Button("Knight");
 		knight.setOnAction(e ->{
 			
@@ -45,7 +49,7 @@ public class RankUp {
 		prompt.setTitle("Rank Up");
 		
 		Text label = new Text();
-		label.setText("Congrats! You now have 500 prestige to your name! Time to rank up");
+		label.setText("Congrats! You now have at least 50 prestige to your name! Time to rank up");
 		Button knight = new Button("Knight");
 		knight.setOnAction(e ->{
 			
@@ -70,7 +74,7 @@ public class RankUp {
 		prompt.setTitle("Rank Up");
 		
 		Text label = new Text();
-		label.setText("Congrats! You now have 500 shekels to your name! Time to rank up");
+		label.setText("Congrats! You now have at least 50 shekels to your name! Time to rank up");
 		Button duke = new Button("Duke");
 		duke.setOnAction(e ->{
 			

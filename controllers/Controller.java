@@ -1,7 +1,9 @@
 package controllers;
 
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,28 +15,43 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import models.*;
 import models.enums.*;
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
+import models.enums.TileDirection;
+import views.CardEffects;
+import views.Connection;
+import views.DragonPopups;
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
+	public static final ArrayList<SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static int turn;
 	public static Player[] players;
-	private static Player currentPlayer;
+	public static Player currentPlayer;
 	private static boolean gameOver;
 	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
-	public void initialize() {
-		run();
-	}
+
+    @FXML
+    private static Button spinWheel;
 	
 	public static void run() {
-		drago = new Dragon(new int[] {1, 1, 2, 1, 1});
-		System.out.println("Drago initialized");
+		drago = new Dragon();
 		initBoard();
 	}
+	
+	public static void skipTurn(Player player) {
+		//skippedPlayers.add(player);
+		}
 	
 	public static void initPlayers(int playerNum) {
 		int numOfPlayers = playerNum;
@@ -48,42 +65,145 @@ public class Controller {
 	
 	public static void initPlayers(ArrayList<String> playerNames) {
 		int numOfPlayers = playerNames.size();
-		for(int i = 0; i<numOfPlayers; i++) {
-			Player player = new Player(playerNames.get(i));
-			players[i] = player;
+		for(int i = 0; i < numOfPlayers; i++) {
+			if(playerNames.get(i).trim().isEmpty()) {
+				Player player = new Player();
+				players[i] = player;
+			} else {
+				Player player = new Player(playerNames.get(i));
+				players[i] = player;				
+			}
 		}
 		System.out.println("Players made and added to array");
-		determineTurnOrder(players);
+		determineTurnOrder();
 	}
 	
-	public static void determineTurnOrder(Player[] players) {
-		int order, spin = 0, numOfPlayers = players.length;
-		Player[] orderedPlayers = new Player[players.length];
+	public static void determineTurnOrder() {
+//		int order, spin = 0, numOfPlayers = players.length;
+//		Player[] orderedPlayers = new Player[players.length];
+//		
+//		do {
+//			order = Wheel.spinWheel(numOfPlayers) - 1;
+//			if(order >= 0 && order < numOfPlayers && players[order] != null) {
+//				orderedPlayers[spin] = players[order];
+//				players[order] = null;
+//				numOfPlayers -= 1;
+//				spin += 1;
+//			}
+//		}while(numOfPlayers > 1);
 		
-		do {
-			order = Wheel.spinWheel(numOfPlayers) - 1;
-			if(order >= 0 && order < numOfPlayers && players[order] != null) {
-				orderedPlayers[spin] = players[order];
-				players[order] = null;
-				numOfPlayers -= 1;
-				spin += 1;
-			}
-		}while(numOfPlayers > 1);
+		// Remove a player from playersToSpin as they are called
+		ArrayList<Player> playersToSpin = new ArrayList<>();
 		
-		for(Player player : players) {
-			if(player != null) {
-				orderedPlayers[players.length - 1] = player;
-			}
+		for(int p = 0; p < players.length; p++) {
+			playersToSpin.add(players[p]);
 		}
 		
-		players = orderedPlayers;
+		ArrayList<Player> orderedPlayers = new ArrayList<>();
+		
+		while(playersToSpin.size() > 0) {
+			int spin = Wheel.spinWheel(playersToSpin.size());
+			orderedPlayers.add(playersToSpin.get(spin - 1));
+			playersToSpin.remove(spin - 1);
+		}
+		
+		for(int p = 0; p < players.length; p++) {
+			players[p] = orderedPlayers.get(p);
+		}
 		System.out.println("Turn order made");
 		
 		changeTurn();
-		System.out.println("Turn changed");
+		System.out.println(currentPlayer.NAME);
 	}
 
-	//create the board with its tiles. Set dragon's location?, if that is added
+	private static void dragonTurn() {
+		drago.setOccupiedTile(rng.nextInt(90) + 5);
+		dragonAttack();
+	}
+	
+	private static void dragonAttack() {
+		int[] dragonTiles = drago.getDragonTiles();
+		PlayerChar pChar;
+		
+		for(Player player : players) {
+			pChar = player.getChars().get(0);
+			for(int tile : dragonTiles) {
+				if(tile == pChar.getOccupiedTile()) {
+					dragonAttackMenu(pChar);					
+				}
+			}
+		}
+	}
+	
+	private static void dragonAttackMenu(PlayerChar pChar){
+		int chance;
+		boolean runaway = true;
+		//if runaway == false, inform the player that they failed to
+				//escape and were attacked by the dragon
+		//if runaway == true, inform the player that they succeeded
+				//in running away
+		
+		chance = rng.nextInt(2);
+		if(chance == 1) {
+			runaway = false;
+			dragonAttackDamage(pChar);
+		}
+		
+		//if included, give the player the option to choose their
+				//class-specific dragon-related action
+		//otherwise, it's just a 50- 50 chance to run away
+		
+	}
+	
+	private static void dragonAttackDamage(PlayerChar pChar) {
+		int count = 0;
+
+		if(drago.getOccupiedTile() == pChar.getOccupiedTile()) {
+			do {
+				applyDamage(pChar);
+			}while(count < 2);
+		}else {
+			applyDamage(pChar);
+		}
+	}
+	
+	private static int availableLimbs(PlayerChar pChar) {
+		int limbIndex = 0;
+		boolean limb = true;
+		ArrayList<Boolean> limbs = pChar.getLimbs();
+		
+		for(int i = 0; i < limbs.size(); i++) {
+			if(limbs.get(i) == true) {
+				limbIndex = i;
+				limbs.get(i).equals(false);
+				i = limbs.size();
+			}
+		}
+		
+		return limbIndex;
+	}
+		
+	public static int determineDamage(int limbIndex) {
+		int limbDamage = 0;
+		
+		if(limbIndex == 0) {
+			limbDamage = 10;
+		}else {
+			limbDamage = determineDamage(limbIndex - 1) * 2;
+		}
+		
+		return limbDamage;
+	}
+	
+	public static void applyDamage(PlayerChar pChar) {
+		int limbIndex, damage, wellness;
+		
+		limbIndex = availableLimbs(pChar);
+		damage = determineDamage(limbIndex);
+		wellness = pChar.getWellness();
+		pChar.setWellness(wellness - damage);
+	}
+
 	private static void initBoard() {
 		turn = 0;
 		int nextSpecial = 0;
@@ -133,7 +253,7 @@ public class Controller {
 				}
 			}
 			
-			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+		TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
 			
 		}
 		
@@ -144,6 +264,39 @@ public class Controller {
 		System.out.println("Board Initialized");
 	}
 	
+//	//logic for what a player would need to do during their turn
+//	private static void playGame() {
+//		do {
+//			changeTurn();
+//			// Options - give up / declare self witch/warlock, sell family, spin
+//			int menuInput = 0; //TODO return menu input from G.U.I.
+//			switch(menuInput) {
+//				case 0:
+//					// spin wheel
+//				case 1:
+//					// sell family
+//				case
+//					// give up
+//			}
+//		} while(!gameOver);
+//	}
+	
+	private static void rankUpKnight() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
+	}
+	
+	private static void rankUpPriest() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.PRIEST);
+	}
+	
+	private static void rankUpMerchant() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.MERCHANT);
+	}
+	
+	private static void rankUpDuke() {
+		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
+	}
+
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
@@ -340,6 +493,7 @@ public class Controller {
 	
 	//change the turn. If a player is dead or has reached the end of the board, skip them
 	private static void changeTurn() {
+		dragonTurn();
 		turn++;
 		int cycle = 0;
 		currentPlayer = players[(turn - 1) % players.length];
@@ -366,13 +520,16 @@ public class Controller {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
 		
-		if(pc.getPrestige() >= 500 && pc.getShekels() >= 500) {
+		if(pc.getPrestige() >= 200 && pc.getShekels() >= 200) {
+			RankUp.rankUpDuke();
+			charChoice = null;
+		}else if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
 			RankUp.rankUpBoth();
 			charChoice = null;
-		} else if(pc.getPrestige() >= 500) {
+		} else if(pc.getPrestige() >= 50) {
 			RankUp.rankUpPrestige();
 			charChoice = null;
-		} else if (pc.getShekels() >= 500) {
+		} else if (pc.getShekels() >= 50) {
 			RankUp.rankUpShekels();
 			charChoice = null;
 		}
@@ -380,6 +537,7 @@ public class Controller {
 		switch(charChoice) {
 		case DUKE:
 			pc.setShekels(pc.getShekels() + 100);
+			pc.setPrestige(pc.getPrestige() + 100);
 			break;
 		case MERCHANT:
 			pc.setShekels(pc.getShekels() + 100);
@@ -409,10 +567,14 @@ public class Controller {
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
-	private static void drawCard() {
+	public static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
+
+		rankUpChar(currentPlayer);
+		changeTurn();
+		CardEffects.message(chanceCard);
 	}
 	
 	public static int spinWheel() {

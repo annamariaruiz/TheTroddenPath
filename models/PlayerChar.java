@@ -108,6 +108,10 @@ public class PlayerChar extends BoardChar {
 	}
 
 	public void setShekels(int shekels) {
+		if(shekels < 0) {
+			shekels = 0;
+		}
+		
 		this.shekels = shekels;
 	}
 
@@ -116,6 +120,10 @@ public class PlayerChar extends BoardChar {
 	}
 
 	public void setPrestige(int prestige) {
+		if(prestige < 0) {
+			prestige = 0;
+		}
+		
 		this.prestige = prestige;
 	}
 
@@ -162,11 +170,12 @@ public class PlayerChar extends BoardChar {
 				StringBuilder builder = new StringBuilder();
 		builder.append("Player Character: ")
 		.append("\nName: ").append(CHARNAME)
-		.append("\nRole: ").append(role)
-		.append("\nWellness: ").append(wellness)
-		.append("\nShekels: ").append(shekels)
-		.append("\nPrestige: ").append(prestige)
-		.append("\nPlayer number: ").append(playerNum);
+		.append("\nRole: ").append(getRole())
+		.append("\nClass: ").append(getCharClass())
+		.append("\nWellness: ").append(getWellness())
+		.append("\nShekels: ").append(getShekels())
+		.append("\nPrestige: ").append(getPrestige())
+		.append("\nPlayer number: ").append(getPlayerNum());
 		return builder.toString();
 	}
 }

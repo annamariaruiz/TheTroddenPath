@@ -8,7 +8,6 @@ public class Wheel {
 
 	private static Random rng = new Random();
 	
-	
 	//Determine who goes first
 	public static int spinWheel(int numOfPlayers) {
 		//Player 1 turn
@@ -55,9 +54,7 @@ public class Wheel {
 		//Tie, returns 0, should be logic in the controller to repeat this method
 		else {
 			return 0;
-		}
-
-		
+		}		
 	}
 
 	//Spin on player's turn
