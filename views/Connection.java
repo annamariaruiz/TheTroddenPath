@@ -4,6 +4,7 @@ import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -51,9 +52,6 @@ public class Connection {
 
 	@FXML
 	private Text position = new Text();
-	
-	@FXML
-	private Text charName = new Text();
 
 	public static void updateView() {
 //    	playerName.setText(Controller.currentPlayer.toString());
@@ -168,7 +166,7 @@ public class Connection {
 
 		// updating the view because no other choice
 		playerName.setText(currentPlayer.NAME);
-		charName.setText("Character Name: " + currentPlayer.getChars().get(0).CHARNAME);
+		// CharName playerName.setText(currentPlayer.getChars().get(0).CHARNAME);
 		shekels.setText("Shekels: " + currentPlayer.getChars().get(0).getShekels());
 		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getShekels());
 		wellness.setText("Wellness: " + currentPlayer.getChars().get(0).getWellness());

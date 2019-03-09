@@ -488,47 +488,47 @@ public class Controller {
 		
 		if(pc.getPrestige() >= 200 && pc.getShekels() >= 200) {
 			RankUp.rankUpDuke();
-		
+			charChoice = null;
 		}else if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
 			RankUp.rankUpBoth();
-		
+			charChoice = null;
 		} else if(pc.getPrestige() >= 50) {
 			RankUp.rankUpPrestige();
-
+			charChoice = null;
 		} else if (pc.getShekels() >= 50) {
 			RankUp.rankUpShekels();
 		}
+		
+		switch(charChoice) {
+		case DUKE:
+			pc.setShekels(pc.getShekels() + 100);
+			pc.setPrestige(pc.getPrestige() + 100);
+			break;
+		case MERCHANT:
+			pc.setShekels(pc.getShekels() + 100);
+			break;
+		case PRIEST:
+			pc.setPrestige(pc.getPrestige() + 100);
+			if(playerToRankUp.getChars().size() > 1) {
+				//TODO G.U.I. message that priest's aren't allowed to have wives and children
+				boolean trashFam = true; //TODO prompt for whether to throw away family
+				if(trashFam) {
+					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
+						playerToRankUp.getChars().remove(f);
+					}
+					
+					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
+				}
+			}
+			break;
+		case KNIGHT:
+			pc.setPrestige(pc.getPrestige() + 200);
+			break;
 	}
-//		switch(charChoice) {
-//		case DUKE:
-//			pc.setShekels(pc.getShekels() + 100);
-//			pc.setPrestige(pc.getPrestige() + 100);
-//			break;
-//		case MERCHANT:
-//			pc.setShekels(pc.getShekels() + 100);
-//			break;
-//		case PRIEST:
-//			pc.setPrestige(pc.getPrestige() + 100);
-//			if(playerToRankUp.getChars().size() > 1) {
-//				//TODO G.U.I. message that priest's aren't allowed to have wives and children
-//				boolean trashFam = true; //TODO prompt for whether to throw away family
-//				if(trashFam) {
-//					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-//						playerToRankUp.getChars().remove(f);
-//					}
-//					
-//					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
-//				}
-//			}
-//			break;
-//		case KNIGHT:
-//			pc.setPrestige(pc.getPrestige() + 200);
-//			break;
-//	}
-//		
-//		pc.setCharClass(charChoice);
-//		System.out.println("Rank up finished");
-//	}
+		
+		pc.setCharClass(charChoice);
+		System.out.println("Rank up finished");
+	}
 	
 	public static void drawCard() {
 		ChanceCard chanceCard = new ChanceCard(TILES.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
