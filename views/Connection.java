@@ -168,7 +168,7 @@ public class Connection {
 		playerName.setText(currentPlayer.NAME);
 		// CharName playerName.setText(currentPlayer.getChars().get(0).CHARNAME);
 		shekels.setText("Shekels: " + currentPlayer.getChars().get(0).getShekels());
-		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getShekels());
+		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getPrestige());
 		wellness.setText("Wellness: " + currentPlayer.getChars().get(0).getWellness());
 		limbsRemaining.setText("Limbs Remaining: " + currentPlayer.getChars().get(0).getLimbs().size());
 		StringBuilder sb = new StringBuilder();
