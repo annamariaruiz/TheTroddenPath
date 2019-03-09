@@ -198,6 +198,10 @@
                   <Font name="Berlin Sans FB Demi Bold" size="53.0" />
                </font>
             </Label>
+<<<<<<< HEAD
+=======
+            <Polygon fill="DODGERBLUE" layoutX="137.0" layoutY="382.0" points="18.0, -35.0, -10.0, -35.0, 2.0, 43.0" stroke="BLACK" strokeType="INSIDE" />
+>>>>>>> parent of 6c591f7... Updated all labels for the GUI
          </children>
       </Pane>
       <Line endX="44.353546142578125" endY="-17.9141845703125" layoutX="98.0" layoutY="537.0" startX="137.5" startY="12.0" />
@@ -219,6 +223,7 @@
       </Button>
       <VBox layoutX="513.0" layoutY="466.0" prefHeight="190.0" prefWidth="100.0">
          <children>
+<<<<<<< HEAD
             <Label fx:id="playerName" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="shekels" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="prestige" prefHeight="17.0" prefWidth="102.0" text="Placehold" />
@@ -226,6 +231,19 @@
             <Label fx:id="limbsRemaining" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="family" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
+=======
+            <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="shekels" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="prestige" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="wellness" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="limbsRemaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="family" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+               </children>
+            </VBox>
+>>>>>>> parent of 6c591f7... Updated all labels for the GUI
          </children>
       </VBox>
    </children>

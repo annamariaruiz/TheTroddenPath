@@ -9,13 +9,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-<<<<<<< HEAD
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import models.*;
 import models.enums.*;
-=======
 import models.ChanceCard;
 import models.Dragon;
 import models.Player;
@@ -27,7 +25,6 @@ import models.enums.TileDirection;
 import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
