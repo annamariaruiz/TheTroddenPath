@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,19 +31,18 @@ import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
+	public static final ArrayList<SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static int turn;
 	public static Player[] players;
-	private static Player currentPlayer;
+	public static Player currentPlayer;
 	private static boolean gameOver;
 	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
-	public void initialize() {
-		run();
-<<<<<<< HEAD
-=======
-	}
+
+    @FXML
+    private static Button spinWheel;
 	
 	public static void run() {
 		drago = new Dragon();
@@ -50,13 +50,8 @@ public class Controller {
 	}
 	
 	public static void skipTurn(Player player) {
-		skippedPlayers.add(player);
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
-	}
-	
-	public static void run() {
-		initBoard();
-	}
+		//skippedPlayers.add(player);
+		}
 	
 	public static void initPlayers(int playerNum) {
 		int numOfPlayers = playerNum;
@@ -258,11 +253,7 @@ public class Controller {
 				}
 			}
 			
-<<<<<<< HEAD
-			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
-=======
-			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+		TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
 			
 		}
 		
@@ -522,11 +513,9 @@ public class Controller {
 		System.out.println("Turn changed");
 	}
 	
-<<<<<<< HEAD
 	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
 			//"class" to "charClass" as Java already does its own thing with "class"
-=======
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
@@ -578,16 +567,14 @@ public class Controller {
 	
 	//draw a chance card after the player makes their movement. Chance card is related to the tile color
 			//(enum TileColor)
-	private static void drawCard() {
+	public static void drawCard() {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
-<<<<<<< HEAD
-=======
+
 		rankUpChar(currentPlayer);
 		changeTurn();
 		CardEffects.message(chanceCard);
->>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 	}
 	
 	public static int spinWheel() {

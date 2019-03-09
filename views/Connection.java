@@ -1,122 +1,69 @@
 package views;
 
+import controllers.Controller;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.shape.Circle;
-<<<<<<< HEAD
 import javafx.scene.shape.Polygon;
-=======
->>>>>>> parent of 6c591f7... Updated all labels for the GUI
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import models.Player;
 import models.Wheel;
-<<<<<<< HEAD
-=======
 import models.enums.TileDirection;
->>>>>>> parent of 6c591f7... Updated all labels for the GUI
-import views.enums.NextTileDirection;
 
 public class Connection {
-	
-	 @FXML
-	    private Circle player1;
 
-<<<<<<< HEAD
-	    @FXML
-	    private Circle player2;
-
-	    @FXML
-	    private Circle player3;
-=======
 	private int counter = 0;
-	
 	@FXML
 	private Circle player1;
->>>>>>> parent of 6c591f7... Updated all labels for the GUI
 
-	    @FXML
-	    private Circle player4;
+	@FXML
+	private Circle player2;
 
-	    @FXML
-	    private Polygon spinner;
+	@FXML
+	private Circle player3;
 
-	    @FXML
-	    private Button spinWheel;
+	@FXML
+	private Circle player4;
 
-	    @FXML
-	    private Label playerName;
+	@FXML
+	private Polygon spinner;
 
-<<<<<<< HEAD
-	    @FXML
-	    private Label shekels;
+	@FXML
+	private Button spinWheel;
 
-	    @FXML
-	    private Label prestige;
+	@FXML
+	private static Text playerName = new Text();
 
-	    @FXML
-	    private Label wellness;
+	@FXML
+	private static Text shekels = new Text();
 
-	    @FXML
-	    private Label limbsRemaining;
+	@FXML
+	private static Text prestige = new Text();
 
-	    @FXML
-	    private Label family;
+	@FXML
+	private static Text wellness = new Text();
 
-	    @FXML
-	    private Label position;
-	
-	
-	
-	public int spinWheel() {
-		int spunNumber = Wheel.spinWheel();
-		return spunNumber;
-		//animation to move that many spaces
-		
+	@FXML
+	private static Text limbsRemaining = new Text();
+
+	@FXML
+	private static Text family = new Text();
+
+	@FXML
+	private static Text position = new Text();
+
+	public static void updateView() {
+		playerName.setText(Controller.currentPlayer.toString());
 	}
-	
-	public void animatePiece1(int currentX, int currentY, Tile currentTile, int playerNum) {
-		TranslateTransition transition = new TranslateTransition();
-		transition.setDuration(Duration.millis(2000));
-		NextTileDirection ntd = currentTile.getNtd();
-	
-		
-		transition.setNode(player1);
-		switch(playerNum) {
-=======
-    @FXML
-    private static Label playerName = new Label();
 
-    @FXML
-    private static Label shekels = new Label();
-
-    @FXML
-    private static Label prestige = new Label();
-
-    @FXML
-    private static Label wellness = new Label();
-
-    @FXML
-    private static Label limbsRemaining = new Label();
-
-    @FXML
-    private static Label family = new Label();
-
-    @FXML
-    private static Label position = new Label();
-    
-    public static void updateView() {
-//    	playerName.setText(Controller.currentPlayer.toString());
-    }
-
-    
-    
-    
 	public void spinWheel() {
 		int spunNumber = Wheel.spinWheel();
-		// animation to move that many spaces
+	// animation to move that many spaces
 		animateWheel(1);
-		for(int i = 0; i<spunNumber; i++) {
+		for (int i = 0; i < spunNumber; i++) {
 			animatePiece();
 		}
 		Controller.drawCard();
@@ -143,9 +90,9 @@ public class Connection {
 	private static double player3Y = 0;
 	private static double player4X = 0;
 	private static double player4Y = 0;
-	
+
 	public void animatePiece() {
-		
+
 		Player currentPlayer = Controller.currentPlayer;
 		int playerNum = currentPlayer.getPlayerID();
 		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
@@ -153,53 +100,44 @@ public class Connection {
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
 		currentPlayer.getChars().get(0).changeTile(1);
-		
-		
-		
-		double currentX;
-		double currentY;
-		
+
+		double currentX = player1X;
+		double currentY = player1Y;
 		switch (playerNum) {
->>>>>>> parent of 6c591f7... Updated all labels for the GUI
 		case 2:
 			transition.setNode(player2);
+			currentX = player2X;
+			currentY = player2Y;
 			break;
 		case 3:
 			transition.setNode(player3);
+			currentX = player3X;
+			currentY = player3Y;
 			break;
 		case 4:
 			transition.setNode(player4);
+			currentX = player4X;
+			currentY = player4Y;
 			break;
 		}
-		
-		switch(ntd) {
+
+		switch (ntd) {
 		case UP:
-			transition.setToY(currentY+40);
+			transition.setToY(currentY + 40);
 			break;
 		case DOWN:
-			transition.setToY(currentY-40);
+			transition.setToY(currentY - 40);
 			break;
 		case LEFT:
-			transition.setToX(currentX-40);
+			transition.setToX(currentX - 40);
 			break;
 		case RIGHT:
-			transition.setToX(currentY+40);
+			transition.setToX(currentY + 40);
 			break;
-		case LAST:
-			transition.setToX(currentX+20);
-			transition.setToY(currentY+20);
-			transition.setToX(currentX-20);
-			transition.setToY(currentY-20);
-			transition.setToX(currentX+10);
-			transition.setToY(currentY+10);
-			transition.setToX(currentX-10);
-			transition.setToY(currentY-10);
-		
+
 		}
 		transition.play();
-		
-<<<<<<< HEAD
-=======
+
 		switch (playerNum) {
 		case 1:
 			player1X = currentX;
@@ -218,12 +156,12 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
->>>>>>> parent of 6c591f7... Updated all labels for the GUI
 	}
+
 	public void sellFamily() {
 		controllers.Controller.checkForFam();
 	}
-	
+
 	public void giveUp() {
 		controllers.Controller.giveUp();
 	}
