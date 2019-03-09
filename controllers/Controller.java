@@ -9,7 +9,28 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-
+<<<<<<< HEAD
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import models.*;
+import models.enums.*;
+=======
+import models.ChanceCard;
+import models.Dragon;
+import models.Player;
+import models.PlayerChar;
+import models.Wheel;
+import models.enums.CharClass;
+import models.enums.TileColor;
+import models.enums.TileDirection;
+import views.CardEffects;
+import views.Connection;
+import views.DragonPopups;
+<<<<<<< HEAD
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+=======
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
@@ -25,7 +46,13 @@ public class Controller {
 	
 	public void initialize() {
 		run();
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 	}
+	
 	public static void run() {
 		drago = new Dragon();
 		initBoard();
@@ -33,6 +60,11 @@ public class Controller {
 	
 	public static void skipTurn(Player player) {
 		skippedPlayers.add(player);
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+	}
+	
+	public static void run() {
+		initBoard();
 	}
 	
 	public static void initPlayers(int playerNum) {
@@ -235,11 +267,15 @@ public class Controller {
 				}
 			}
 			
-		
-			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
-
+<<<<<<< HEAD
+<<<<<<< HEAD
 			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
-
+=======
+			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+=======
+			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 			
 		}
 		
@@ -499,8 +535,6 @@ public class Controller {
 		System.out.println("Turn changed");
 	}
 	
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
-			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
 		CharClass charChoice = pc.getCharClass();
@@ -556,11 +590,15 @@ public class Controller {
 		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
 		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
-
-
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 		rankUpChar(currentPlayer);
 		changeTurn();
 		CardEffects.message(chanceCard);
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 	}
 	
 	public static int spinWheel() {
