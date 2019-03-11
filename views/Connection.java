@@ -4,55 +4,23 @@ import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Button;
 import javafx.scene.shape.Circle;
-<<<<<<< HEAD
-import javafx.scene.text.Text;
-=======
 import javafx.scene.shape.Polygon;
->>>>>>> parent of 66858f4... Fixing stuff ig idc
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import models.Player;
 import models.Wheel;
-<<<<<<< HEAD
 import models.enums.TileDirection;
-=======
-import views.enums.NextTileDirection;
->>>>>>> parent of 66858f4... Fixing stuff ig idc
 
 public class Connection {
 
-<<<<<<< HEAD
 	private int counter = 0;
-
 	@FXML
 	private Circle player1;
 
 	@FXML
 	private Circle player2;
-=======
-	    @FXML
-	    private Circle player2;
-
-	    @FXML
-	    private Circle player3;
-
-	    @FXML
-	    private Circle player4;
-
-	    @FXML
-	    private Polygon spinner;
-
-	    @FXML
-	    private Button spinWheel;
-
-	    @FXML
-	    private Label playerName;
-
-	    @FXML
-	    private Label shekels;
->>>>>>> parent of 66858f4... Fixing stuff ig idc
 
 	@FXML
 	private Circle player3;
@@ -61,38 +29,39 @@ public class Connection {
 	private Circle player4;
 
 	@FXML
-	private Pane spinner;
+	private Polygon spinner;
 
 	@FXML
-	private Text playerName = new Text();
-
-<<<<<<< HEAD
-	@FXML
-	private Text shekels = new Text();
+	private Button spinWheel;
 
 	@FXML
-	private Text prestige = new Text();
+	private static Text playerName = new Text();
 
 	@FXML
-	private Text wellness = new Text();
+	private static Text shekels = new Text();
 
 	@FXML
-	private Text limbsRemaining = new Text();
+	private static Text prestige = new Text();
 
 	@FXML
-	private Text family = new Text();
+	private static Text wellness = new Text();
 
 	@FXML
-	private Text position = new Text();
+	private static Text limbsRemaining = new Text();
+
+	@FXML
+	private static Text family = new Text();
+
+	@FXML
+	private static Text position = new Text();
 
 	public static void updateView() {
-//    	playerName.setText(Controller.currentPlayer.toString());
+		playerName.setText(Controller.currentPlayer.toString());
 	}
 
 	public void spinWheel() {
-
 		int spunNumber = Wheel.spinWheel();
-		// animation to move that many spaces
+	// animation to move that many spaces
 		animateWheel(1);
 		for (int i = 0; i < spunNumber; i++) {
 			animatePiece();
@@ -132,32 +101,9 @@ public class Connection {
 		transition.setDuration(Duration.millis(1000));
 		currentPlayer.getChars().get(0).changeTile(1);
 
-		double currentX;
-		double currentY;
-
+		double currentX = player1X;
+		double currentY = player1Y;
 		switch (playerNum) {
-=======
-	    @FXML
-	    private Label position;
-	
-	
-	
-	public int spinWheel() {
-		int spunNumber = Wheel.spinWheel();
-		return spunNumber;
-		//animation to move that many spaces
-		
-	}
-	
-	public void animatePiece1(int currentX, int currentY, Tile currentTile, int playerNum) {
-		TranslateTransition transition = new TranslateTransition();
-		transition.setDuration(Duration.millis(2000));
-		NextTileDirection ntd = currentTile.getNtd();
-	
-		
-		transition.setNode(player1);
-		switch(playerNum) {
->>>>>>> parent of 66858f4... Fixing stuff ig idc
 		case 2:
 			transition.setNode(player2);
 			currentX = player2X;
@@ -173,36 +119,24 @@ public class Connection {
 			currentX = player4X;
 			currentY = player4Y;
 			break;
-		default:
-			transition.setNode(player1);
-			currentX = player1X;
-			currentY = player1Y;
 		}
 
 		switch (ntd) {
-		case DOWN:
-			transition.setToY(currentY + 40);
-			currentY += 40;
-			break;
 		case UP:
+			transition.setToY(currentY + 40);
+			break;
+		case DOWN:
 			transition.setToY(currentY - 40);
-			currentY -= 40;
 			break;
 		case LEFT:
 			transition.setToX(currentX - 40);
-			currentX -= 40;
 			break;
 		case RIGHT:
-			transition.setToX(currentX + 40);
-			currentX += 40;
+			transition.setToX(currentY + 40);
 			break;
-<<<<<<< HEAD
-		
-=======
->>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
+
 		}
 		transition.play();
-<<<<<<< HEAD
 
 		switch (playerNum) {
 		case 1:
@@ -222,23 +156,6 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
-
-		// updating the view because no other choice
-		playerName.setText(currentPlayer.NAME);
-		// CharName playerName.setText(currentPlayer.getChars().get(0).CHARNAME);
-		shekels.setText("Shekels: " + currentPlayer.getChars().get(0).getShekels());
-		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getShekels());
-		wellness.setText("Wellness: " + currentPlayer.getChars().get(0).getWellness());
-		limbsRemaining.setText("Limbs Remaining: " + currentPlayer.getChars().get(0).getLimbs().size());
-		StringBuilder sb = new StringBuilder();
-		for (int i = 1; i < currentPlayer.getChars().size(); i++) {
-			sb.append(currentPlayer.getChars().get(i).getRole() + ": " + currentPlayer.getChars().get(i).CHARNAME);
-		}
-		family.setText(sb.toString());
-
-=======
-		
->>>>>>> parent of 66858f4... Fixing stuff ig idc
 	}
 
 	public void sellFamily() {

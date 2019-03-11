@@ -119,93 +119,102 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="792.0" layoutY="127.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="912.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="FIREBRICK" height="40.0" layoutX="392.0" layoutY="167.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
-            <Pane fx:id="spinner" layoutX="30.0" layoutY="414.0" prefHeight="218.0" prefWidth="226.0">
-               <children>
-                  <Circle layoutX="113.0" layoutY="109.0" radius="100.0" stroke="BLACK" strokeType="INSIDE">
-                     <fill>
-                        <RadialGradient centerX="0.49444444444444446" centerY="0.4714285714285714" radius="0.6395348837209303">
-                           <stops>
-                              <Stop color="#4e6172" />
-                              <Stop color="WHITE" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                  </Circle>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="14.0" prefHeight="36.0" prefWidth="40.0" text="1" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="39.0" prefHeight="36.0" prefWidth="40.0" text="2" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="168.0" layoutY="81.0" prefHeight="36.0" prefWidth="40.0" text="3" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="122.0" prefHeight="36.0" prefWidth="40.0" text="4" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="147.0" prefHeight="36.0" prefWidth="40.0" text="5" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="73.0" layoutY="147.0" prefHeight="36.0" prefWidth="40.0" text="6" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="81.0" prefHeight="36.0" prefWidth="40.0" text="8" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="46.0" prefHeight="36.0" prefWidth="40.0" text="9" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="14.0" prefHeight="36.0" prefWidth="40.0" text="10" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="122.0" prefHeight="36.0" prefWidth="40.0" text="7" textFill="#44037c">
-                     <font>
-                        <Font name="Freestyle Script" size="36.0" />
-                     </font>
-                  </Label>
-                  <Line endX="108.0" endY="-192.0" layoutX="3.0" layoutY="201.0" startX="108.0" startY="8.0" />
-                  <Line endX="69.0" endY="-103.0" layoutX="104.0" layoutY="132.0" startX="-52.0" startY="55.0" />
-                  <Line endX="4.0" endY="-201.0" layoutX="48.0" layoutY="232.0" startX="122.0" startY="-42.0" />
-                  <Line endX="201.0" endY="-91.0" layoutX="6.0" layoutY="173.0" startX="15.0" startY="-32.0" />
-                  <Line endX="99.70709228515625" endY="49.70709228515625" layoutX="108.0" layoutY="92.0" startX="-87.70709228515625" startY="-10.70709228515625" />
-                  <Circle fill="DODGERBLUE" layoutX="113.0" layoutY="109.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-               </children>
-            </Pane>
+            <Circle layoutX="138.0" layoutY="523.0" radius="100.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <RadialGradient centerX="0.49444444444444446" centerY="0.4714285714285714" radius="0.6395348837209303">
+                     <stops>
+                        <Stop color="#4e6172" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </RadialGradient>
+               </fill>
+            </Circle>
+            <Line endX="104.20712280273438" endY="99.20709228515625" layoutX="38.0" layoutY="423.0" startX="26.5" startY="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00d34e" height="40.0" layoutX="432.0" layoutY="407.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
             <Circle fx:id="player1" fill="#000dff" layoutX="462.0" layoutY="417.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Circle fx:id="player2" fill="#ff00b6" layoutX="442.0" layoutY="437.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Circle fx:id="player3" fill="#d8ff13" layoutX="442.0" layoutY="417.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Circle fx:id="player4" fill="#1ba422" layoutX="462.0" layoutY="437.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="142.0" layoutY="417.0" prefHeight="36.0" prefWidth="40.0" text="1" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="192.0" layoutY="457.0" prefHeight="36.0" prefWidth="40.0" text="2" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="199.0" layoutY="498.0" prefHeight="36.0" prefWidth="40.0" text="3" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="192.0" layoutY="541.0" prefHeight="36.0" prefWidth="40.0" text="4" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="574.0" prefHeight="36.0" prefWidth="40.0" text="5" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="102.0" layoutY="580.0" prefHeight="36.0" prefWidth="40.0" text="6" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="506.0" prefHeight="36.0" prefWidth="40.0" text="8" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="447.0" prefHeight="36.0" prefWidth="40.0" text="9" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="417.0" prefHeight="36.0" prefWidth="40.0" text="10" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="52.0" layoutY="549.0" prefHeight="36.0" prefWidth="40.0" text="7" textFill="#44037c">
+               <font>
+                  <Font name="Freestyle Script" size="36.0" />
+               </font>
+            </Label>
+            <Line endX="107.0" endY="-195.0" layoutX="31.0" layoutY="617.0" startX="108.20712280273438" startY="-98.62127685546875" />
+            <Line endX="80.5" endY="-97.0" layoutX="124.0" layoutY="549.0" startX="12.5" startY="-26.0" />
+            <Line endX="152.64645385742188" endY="-99.62127685546875" layoutX="-11.0" layoutY="618.0" startX="243.5" startY="-120.0" />
+            <Line endX="63.646453857421875" endY="-122.62127685546875" layoutX="78.0" layoutY="641.0" startX="127.5" startY="-46.5" />
+            <Line endX="32.2071533203125" endY="-138.20709228515625" layoutX="107.0" layoutY="658.0" startX="38.5" startY="-35.0" />
+            <Line endX="106.5" endY="-119.5" layoutX="35.0" layoutY="641.0" startX="7.0" startY="-142.5" />
+            <Line endX="201.50003051757812" endY="-101.9141845703125" layoutX="-63.0" layoutY="621.0" startX="109.5" startY="-65.0" />
+            <Line endX="133.29287719726562" endY="-111.70709228515625" layoutX="3.0" layoutY="637.0" startX="79.5" startY="-33.5" />
+            <Polygon fx:id="spinner" fill="DODGERBLUE" layoutX="130.0" layoutY="496.0" points="3.5, 32.0, 14.5, 32.0, 3.5, -7.0" stroke="BLACK" strokeType="INSIDE" />
             <Label alignment="CENTER" layoutX="312.0" layoutY="3.0" prefHeight="69.0" prefWidth="589.0" text="The Trodden Path" textFill="#a1a1a1">
                <font>
                   <Font name="Berlin Sans FB Demi Bold" size="53.0" />
                </font>
             </Label>
-<<<<<<< HEAD
             <Polygon fill="DODGERBLUE" layoutX="137.0" layoutY="382.0" points="18.0, -35.0, -10.0, -35.0, 2.0, 43.0" stroke="BLACK" strokeType="INSIDE" />
-            <Text fx:id="family" layoutX="661.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-=======
->>>>>>> parent of 66858f4... Fixing stuff ig idc
+            <VBox layoutX="482.0" layoutY="449.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="shekels" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="prestige" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="wellness" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="limbsRemaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+               </children>
+            </VBox>
+            <Text fx:id="family" layoutX="611.0" layoutY="463.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
          </children>
       </Pane>
-      <Button fx:id="spinWheel" layoutX="261.0" layoutY="496.0" mnemonicParsing="false" onAction="#spinWheel" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
+      <Line endX="44.353546142578125" endY="-17.9141845703125" layoutX="98.0" layoutY="537.0" startX="137.5" startY="12.0" />
+      <Line endX="100.0" layoutX="14.0" startX="-100.0" />
+      <Button fx:id="spinWheel" layoutX="261.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
          <font>
             <Font name="Calibri" size="12.0" />
          </font>
@@ -220,28 +229,5 @@
             <Font name="Calibri" size="12.0" />
          </font>
       </Button>
-      <VBox layoutX="513.0" layoutY="461.0" prefHeight="190.0" prefWidth="100.0">
-         <children>
-<<<<<<< HEAD
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="shekels" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="prestige" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="wellness" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="limbsRemaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-               </children>
-            </VBox>
-=======
-            <Label fx:id="playerName" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="shekels" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="prestige" prefHeight="17.0" prefWidth="102.0" text="Placehold" />
-            <Label fx:id="wellness" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="limbsRemaining" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="family" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
-            <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
->>>>>>> parent of 66858f4... Fixing stuff ig idc
-         </children>
-      </VBox>
    </children>
 </Pane>
