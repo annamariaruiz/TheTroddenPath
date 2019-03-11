@@ -25,6 +25,7 @@ public class Controller {
 	
 	public static void run() {
 		initBoard();
+		drago = new Dragon();
 	}
 	
 	public static void skipTurn(Player player) {
@@ -249,19 +250,19 @@ public class Controller {
 		System.out.println("Board Initialized");
 	}
 		
-	private static void rankUpKnight() {
+	public static void rankUpKnight() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
 	}
 	
-	private static void rankUpPriest() {
+	public static void rankUpPriest() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.PRIEST);
 	}
 	
-	private static void rankUpMerchant() {
+	public static void rankUpMerchant() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.MERCHANT);
 	}
 	
-	private static void rankUpDuke() {
+	public static void rankUpDuke() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
 	}
 
