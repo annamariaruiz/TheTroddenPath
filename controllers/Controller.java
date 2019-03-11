@@ -5,7 +5,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import models.*;
+import models.enums.*;
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 =======
 import models.ChanceCard;
 import models.Dragon;
@@ -18,8 +26,12 @@ import models.enums.TileDirection;
 import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
+<<<<<<< HEAD
 import views.Main;
 >>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
+=======
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;

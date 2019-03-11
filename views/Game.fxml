@@ -199,10 +199,13 @@
                </font>
             </Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Polygon fill="DODGERBLUE" layoutX="137.0" layoutY="382.0" points="18.0, -35.0, -10.0, -35.0, 2.0, 43.0" stroke="BLACK" strokeType="INSIDE" />
             <Text fx:id="family" layoutX="661.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
 =======
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
          </children>
       </Pane>
       <Button fx:id="spinWheel" layoutX="261.0" layoutY="496.0" mnemonicParsing="false" onAction="#spinWheel" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
@@ -223,6 +226,7 @@
       <VBox layoutX="513.0" layoutY="461.0" prefHeight="190.0" prefWidth="100.0">
          <children>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
@@ -233,6 +237,8 @@
                </children>
             </VBox>
 =======
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
             <Label fx:id="playerName" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="shekels" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="prestige" prefHeight="17.0" prefWidth="102.0" text="Placehold" />
@@ -240,7 +246,10 @@
             <Label fx:id="limbsRemaining" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="family" prefHeight="17.0" prefWidth="101.0" text="Placehold" />
             <Label fx:id="position" prefHeight="17.0" prefWidth="101.0" />
+<<<<<<< HEAD
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
          </children>
       </VBox>
    </children>

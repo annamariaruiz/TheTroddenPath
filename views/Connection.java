@@ -8,21 +8,29 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import javafx.scene.text.Text;
 =======
 import javafx.scene.shape.Polygon;
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
+=======
+import javafx.scene.shape.Polygon;
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 import javafx.util.Duration;
 import models.Player;
 import models.Wheel;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import models.enums.TileDirection;
 =======
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 import views.enums.NextTileDirection;
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
 
 public class Connection {
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	private int counter = 0;
 
@@ -32,6 +40,8 @@ public class Connection {
 	@FXML
 	private Circle player2;
 =======
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 	    @FXML
 	    private Circle player2;
 
@@ -66,6 +76,7 @@ public class Connection {
 	@FXML
 	private Text playerName = new Text();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	@FXML
 	private Text shekels = new Text();
@@ -137,6 +148,8 @@ public class Connection {
 
 		switch (playerNum) {
 =======
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 	    @FXML
 	    private Label position;
 	
@@ -157,7 +170,10 @@ public class Connection {
 		
 		transition.setNode(player1);
 		switch(playerNum) {
+<<<<<<< HEAD
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 		case 2:
 			transition.setNode(player2);
 			currentX = player2X;
@@ -203,6 +219,7 @@ public class Connection {
 		}
 		transition.play();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		switch (playerNum) {
 		case 1:
@@ -239,6 +256,9 @@ public class Connection {
 =======
 		
 >>>>>>> parent of 66858f4... Fixing stuff ig idc
+=======
+		
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 	}
 
 	public void sellFamily() {
