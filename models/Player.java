@@ -9,6 +9,7 @@ public class Player {
 	private static int playerNum = 0;
 	private int playerID = 0;
 	
+	
 	public Player(String name) {
 		playerNum += 1;
 		setPlayerID(playerNum);
@@ -33,9 +34,6 @@ public class Player {
 		this.chars = chars;
 	}
 
-	public static int getPlayerNum() {
-		return playerNum;
-	}
 
 	@Override
 	public String toString() {

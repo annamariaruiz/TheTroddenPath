@@ -4,9 +4,9 @@ import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Button;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import models.Player;
@@ -16,7 +16,6 @@ import models.enums.TileDirection;
 public class Connection {
 
 	private int counter = 0;
-
 	@FXML
 	private Circle player1;
 
@@ -30,37 +29,39 @@ public class Connection {
 	private Circle player4;
 
 	@FXML
-	private Pane spinner;
+	private Polygon spinner;
 
 	@FXML
-	private Text playerName = new Text();
+	private Button spinWheel;
 
 	@FXML
-	private Text shekels = new Text();
+	private static Text playerName = new Text();
 
 	@FXML
-	private Text prestige = new Text();
+	private static Text shekels = new Text();
 
 	@FXML
-	private Text wellness = new Text();
+	private static Text prestige = new Text();
 
 	@FXML
-	private Text limbsRemaining = new Text();
+	private static Text wellness = new Text();
 
 	@FXML
-	private Text family = new Text();
+	private static Text limbsRemaining = new Text();
 
 	@FXML
-	private Text position = new Text();
+	private static Text family = new Text();
+
+	@FXML
+	private static Text position = new Text();
 
 	public static void updateView() {
-//    	playerName.setText(Controller.currentPlayer.toString());
+		playerName.setText(Controller.currentPlayer.toString());
 	}
 
 	public void spinWheel() {
-
 		int spunNumber = Wheel.spinWheel();
-		// animation to move that many spaces
+	// animation to move that many spaces
 		animateWheel(1);
 		for (int i = 0; i < spunNumber; i++) {
 			animatePiece();
@@ -100,9 +101,8 @@ public class Connection {
 		transition.setDuration(Duration.millis(1000));
 		currentPlayer.getChars().get(0).changeTile(1);
 
-		double currentX;
-		double currentY;
-
+		double currentX = player1X;
+		double currentY = player1Y;
 		switch (playerNum) {
 		case 2:
 			transition.setNode(player2);
@@ -119,29 +119,22 @@ public class Connection {
 			currentX = player4X;
 			currentY = player4Y;
 			break;
-		default:
-			transition.setNode(player1);
-			currentX = player1X;
-			currentY = player1Y;
 		}
 
 		switch (ntd) {
-		case DOWN:
-			transition.setToY(currentY + 40);
-			currentY += 40;
-			break;
 		case UP:
+			transition.setToY(currentY + 40);
+			break;
+		case DOWN:
 			transition.setToY(currentY - 40);
-			currentY -= 40;
 			break;
 		case LEFT:
 			transition.setToX(currentX - 40);
-			currentX -= 40;
 			break;
 		case RIGHT:
-			transition.setToX(currentX + 40);
-			currentX += 40;
+			transition.setToX(currentY + 40);
 			break;
+
 		}
 		transition.play();
 
@@ -163,20 +156,6 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
-
-		// updating the view because no other choice
-		playerName.setText(currentPlayer.NAME);
-		// CharName playerName.setText(currentPlayer.getChars().get(0).CHARNAME);
-		shekels.setText("Shekels: " + currentPlayer.getChars().get(0).getShekels());
-		prestige.setText("Prestige: " + currentPlayer.getChars().get(0).getShekels());
-		wellness.setText("Wellness: " + currentPlayer.getChars().get(0).getWellness());
-		limbsRemaining.setText("Limbs Remaining: " + currentPlayer.getChars().get(0).getLimbs().size());
-		StringBuilder sb = new StringBuilder();
-		for (int i = 1; i < currentPlayer.getChars().size(); i++) {
-			sb.append(currentPlayer.getChars().get(i).getRole() + ": " + currentPlayer.getChars().get(i).CHARNAME);
-		}
-		family.setText(sb.toString());
-
 	}
 
 	public void sellFamily() {
