@@ -214,17 +214,17 @@
       </Pane>
       <Line endX="44.353546142578125" endY="-17.9141845703125" layoutX="98.0" layoutY="537.0" startX="137.5" startY="12.0" />
       <Line endX="100.0" layoutX="14.0" startX="-100.0" />
-      <Button fx:id="spinWheel" layoutX="261.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
+      <Button fx:id="spinWheel" layoutX="261.0" layoutY="496.0" mnemonicParsing="false" onAction="#spinWheel" prefHeight="45.0" prefWidth="100.0" text="Spin Wheel">
          <font>
             <Font name="Calibri" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="1009.0" layoutY="255.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Sell Family Member" textAlignment="CENTER" wrapText="true">
+      <Button layoutX="1009.0" layoutY="255.0" mnemonicParsing="false" onAction="#sellFamily" prefHeight="45.0" prefWidth="100.0" text="Sell Family Member" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="1009.0" layoutY="198.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Declare self Witch/Warlock" textAlignment="CENTER" wrapText="true">
+      <Button layoutX="1009.0" layoutY="198.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="45.0" prefWidth="100.0" text="Declare self Witch/Warlock" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri" size="12.0" />
          </font>
