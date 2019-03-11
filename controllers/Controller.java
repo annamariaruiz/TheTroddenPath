@@ -6,13 +6,19 @@ import java.util.Random;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import models.*;
 import models.enums.*;
+<<<<<<< HEAD
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
+=======
 >>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 =======
 import models.ChanceCard;
@@ -27,8 +33,12 @@ import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import views.Main;
 >>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
+=======
+>>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
+>>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
 =======
 >>>>>>> parent of 258da32... Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath
 >>>>>>> parent of 6220eb9... Fixing Pt 2, gonna be a lot of commits about nothing
