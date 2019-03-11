@@ -1,20 +1,12 @@
 package controllers;
 
 import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import models.*;
-import models.enums.*;
+<<<<<<< HEAD
+
+=======
 import models.ChanceCard;
 import models.Dragon;
 import models.Player;
@@ -26,39 +18,53 @@ import models.enums.TileDirection;
 import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
+import views.Main;
+>>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 import views.PlayerInit;
 import views.RankUp;
 import views.SellFamily;
 
 public class Controller {
-	public static final ArrayList<SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static int turn;
 	public static Player[] players;
+	private static ArrayList<Player> skippedPlayers = new ArrayList<>();
 	public static Player currentPlayer;
 	private static boolean gameOver;
-	private static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> tiles = new ArrayList<>();
+	public final static ArrayList<AbstractMap.SimpleEntry<TileColor, TileDirection>> TILES = new ArrayList<>();
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
-
-    @FXML
-    private static Button spinWheel;
-	
+<<<<<<< HEAD
+	public void initialize() {
+		run();
+	}
 	public static void run() {
 		drago = new Dragon();
+=======
+	public static void run() {
+		drago = new Dragon();
+		System.out.println("Drago born");
+>>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 		initBoard();
 	}
 	
 	public static void skipTurn(Player player) {
-		//skippedPlayers.add(player);
-		}
+		skippedPlayers.add(player);
+	}
 	
+<<<<<<< HEAD
+=======
+	public static void addTurn() {
+		turn++;
+	}
+	
+>>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 	public static void initPlayers(int playerNum) {
 		int numOfPlayers = playerNum;
 		
 		players = new Player[numOfPlayers];
 		for(int p = 0; p < numOfPlayers; p++) {
-			PlayerInit.playerName(); // TODO change this such that bot initPlayers() methods have this
+			PlayerInit.playerName();
 		}
 		System.out.println("Player Array made");
 	}
@@ -79,41 +85,29 @@ public class Controller {
 	}
 	
 	public static void determineTurnOrder() {
-//		int order, spin = 0, numOfPlayers = players.length;
-//		Player[] orderedPlayers = new Player[players.length];
-//		
-//		do {
-//			order = Wheel.spinWheel(numOfPlayers) - 1;
-//			if(order >= 0 && order < numOfPlayers && players[order] != null) {
-//				orderedPlayers[spin] = players[order];
-//				players[order] = null;
-//				numOfPlayers -= 1;
-//				spin += 1;
-//			}
-//		}while(numOfPlayers > 1);
+		int order, spin = 0, numOfPlayers = players.length;
+		Player[] orderedPlayers = new Player[players.length];
 		
-		// Remove a player from playersToSpin as they are called
-		ArrayList<Player> playersToSpin = new ArrayList<>();
+		do {
+			order = Wheel.spinWheel(numOfPlayers) - 1;
+			if(order >= 0 && order < numOfPlayers && players[order] != null) {
+				orderedPlayers[spin] = players[order];
+				players[order] = null;
+				numOfPlayers -= 1;
+				spin += 1;
+			}
+		}while(numOfPlayers > 1);
 		
-		for(int p = 0; p < players.length; p++) {
-			playersToSpin.add(players[p]);
+		for(Player player : players) {
+			if(player != null) {
+				orderedPlayers[players.length - 1] = player;
+			}
 		}
 		
-		ArrayList<Player> orderedPlayers = new ArrayList<>();
-		
-		while(playersToSpin.size() > 0) {
-			int spin = Wheel.spinWheel(playersToSpin.size());
-			orderedPlayers.add(playersToSpin.get(spin - 1));
-			playersToSpin.remove(spin - 1);
-		}
-		
-		for(int p = 0; p < players.length; p++) {
-			players[p] = orderedPlayers.get(p);
-		}
+		players = orderedPlayers;
 		System.out.println("Turn order made");
 		
 		changeTurn();
-		System.out.println(currentPlayer.NAME);
 	}
 
 	private static void dragonTurn() {
@@ -147,6 +141,7 @@ public class Controller {
 		if(chance == 1) {
 			runaway = false;
 			dragonAttackDamage(pChar);
+			DragonPopups.attackMessage(pChar);
 		}
 		
 		//if included, give the player the option to choose their
@@ -234,7 +229,7 @@ public class Controller {
 				currentDirection = TileDirection.UP;
 			} else if(t >= 15) {
 				if(t == 98) {
-					tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
+					TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(TileColor.BLUE, TileDirection.UP));
 				}
 				switch((t - 14 + offset) % 17) {
 					case 7:
@@ -253,50 +248,42 @@ public class Controller {
 				}
 			}
 			
-		TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+<<<<<<< HEAD
+		
+			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+
+			tiles.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+
+=======
+//			TILES.add(new AbstractMap.SimpleEntry<TileColor, TileDirection>(currentColor, currentDirection));
+>>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 			
 		}
 		
 		
-		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : tiles) {
+		for(AbstractMap.SimpleEntry<TileColor, TileDirection> tileEntry : TILES) {
 			System.out.println(tileEntry.getKey() + ", " + tileEntry.getValue());
 		}
 		System.out.println("Board Initialized");
 	}
+		
 	
-//	//logic for what a player would need to do during their turn
-//	private static void playGame() {
-//		do {
-//			changeTurn();
-//			// Options - give up / declare self witch/warlock, sell family, spin
-//			int menuInput = 0; //TODO return menu input from G.U.I.
-//			switch(menuInput) {
-//				case 0:
-//					// spin wheel
-//				case 1:
-//					// sell family
-//				case
-//					// give up
-//			}
-//		} while(!gameOver);
-//	}
-	
-	private static void rankUpKnight() {
+	public static void rankUpKnight() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
 	}
 	
-	private static void rankUpPriest() {
+	public static void rankUpPriest() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.PRIEST);
 	}
 	
-	private static void rankUpMerchant() {
+	public static void rankUpMerchant() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.MERCHANT);
 	}
 	
-	private static void rankUpDuke() {
+	public static void rankUpDuke() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
 	}
-
+	
 	private static void sellFamily(int familyMem) {
 		boolean isMale = false;
 		boolean familyMemTypeExists = false;
@@ -365,15 +352,15 @@ public class Controller {
 	
 	public static void giveUp() {
 		System.out.println("Giving up");
-		gameOver = true;
+		while(currentPlayer.getChars().size() > 0) {
+			currentPlayer.getChars().remove(0);
+		}
 	}
 	
 	public static boolean hasGivenUp() {
 		return gameOver;
 	}
 	
-	//to be run when all surviving players reach the end of the board, or only one remains
-	//declare the winner
 	public static boolean checkForWin() {
 		boolean allTurnsAreFin = true;
 		
@@ -405,6 +392,7 @@ public class Controller {
 			for(int orderedP = 0; orderedP < sortedPScores.size(); orderedP++) {
 				players[orderedP] = sortedPScores.get(orderedP).getKey();
 			}
+			Main.winScreen();
 		}
 		
 		System.out.println("Checked for win");
@@ -491,8 +479,7 @@ public class Controller {
 		return allCharsAreDead;
 	}
 	
-	//change the turn. If a player is dead or has reached the end of the board, skip them
-	private static void changeTurn() {
+	private static void changeTurn() {		
 		dragonTurn();
 		turn++;
 		int cycle = 0;
@@ -509,16 +496,18 @@ public class Controller {
 			//TODO add G.U.I. message that everyone has died.
 		}
 		
-		checkForLife();
-		System.out.println("Turn changed");
+		if(skippedPlayers.contains(currentPlayer)) {
+			skippedPlayers.remove(skippedPlayers.indexOf(currentPlayer));
+		} else {
+			checkForLife();
+			System.out.println("Turn changed");
+			System.out.println("Current Player: " + currentPlayer.NAME);
+		}
+		Connection.updateView();
 	}
 	
-	//note: changing "PlayerClass" to "CharClass" as there is no "PlayerClass, and 
-			//"class" to "charClass" as Java already does its own thing with "class"
-
-	private static void rankUpChar(Player playerToRankUp) {
+	public static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
-		CharClass charChoice = pc.getCharClass();
 		
 		if(pc.getPrestige() >= 200 && pc.getShekels() >= 200) {
 			RankUp.rankUpDuke();
@@ -531,7 +520,6 @@ public class Controller {
 			charChoice = null;
 		} else if (pc.getShekels() >= 50) {
 			RankUp.rankUpShekels();
-			charChoice = null;
 		}
 		
 		switch(charChoice) {
@@ -565,14 +553,15 @@ public class Controller {
 		System.out.println("Rank up finished");
 	}
 	
-	//draw a chance card after the player makes their movement. Chance card is related to the tile color
-			//(enum TileColor)
 	public static void drawCard() {
-		// Finds currentPlayer's currentChar's occupied tile number then uses that to find the tile color.
-		ChanceCard chanceCard = new ChanceCard(tiles.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
+		ChanceCard chanceCard = new ChanceCard(TILES.get(currentPlayer.getChars().get(0).getOccupiedTile()).getKey(), currentPlayer);
 		System.out.println("Card drawn");
+<<<<<<< HEAD
+
 
 		rankUpChar(currentPlayer);
+=======
+>>>>>>> parent of 06fe034... Revert "Merge branch 'master' of https://github.com/lilhappyburrito/TheTroddenPath"
 		changeTurn();
 		CardEffects.message(chanceCard);
 	}
