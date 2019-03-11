@@ -1,5 +1,6 @@
 package views;
 
+import controllers.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,10 +11,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RankUp {
-	
-	public static void rankUpDuke() {
-		//logic to rank up to duke
-	}
 
 	public static void rankUpBoth() {
 		String name ="";
@@ -26,10 +23,19 @@ public class RankUp {
 		label.setText("Congrats! You now have at least 50 shekels in your possesion and at least 50 prestige to your name! Time to rank up");
 		Button knight = new Button("Knight");
 		knight.setOnAction(e ->{
-			
+			Controller.rankUpKnight();
+			prompt.close();
 		});
 		Button priest = new Button("Priest");
+		priest.setOnAction(e -> {
+			Controller.rankUpPriest();
+			prompt.close();
+		});
 		Button merchant = new Button("Merchant");
+		merchant.setOnAction(e -> {
+			Controller.rankUpMerchant();
+			prompt.close();
+		});
 		Label question = new Label("Choose your path");
 		
 		HBox buttons = new HBox(20);
@@ -52,9 +58,14 @@ public class RankUp {
 		label.setText("Congrats! You now have at least 50 prestige to your name! Time to rank up");
 		Button knight = new Button("Knight");
 		knight.setOnAction(e ->{
-			
+			Controller.rankUpKnight();
+			prompt.close();
 		});
 		Button priest = new Button("Priest");
+		priest.setOnAction(e -> {
+			Controller.rankUpPriest();
+			prompt.close();
+		});
 		Label question = new Label("Choose your path");
 		
 		HBox buttons = new HBox(20);
@@ -67,26 +78,46 @@ public class RankUp {
 	}
 	
 	public static void rankUpShekels() {
-		String name ="";
 		Stage prompt = new Stage();
 		
 		prompt.initModality(Modality.APPLICATION_MODAL);
-		prompt.setTitle("Rank Up");
+		prompt.setTitle("Congratulations Merchant!");
 		
 		Text label = new Text();
 		label.setText("Congrats! You now have at least 50 shekels to your name! Time to rank up");
-		Button duke = new Button("Duke");
-		duke.setOnAction(e ->{
-			
+		Button ok = new Button("Cool!");
+		ok.setOnAction(e ->{
+			Controller.rankUpMerchant();
+			prompt.close();
 		});
 		
-		Button merchant = new Button("Priest");
-		Label question = new Label("Choose your path");
+		HBox buttons = new HBox(20);
+		buttons.getChildren().addAll(ok);
+		VBox layout = new VBox(15);
+		layout.getChildren().addAll(label, buttons);
+		Scene scene = new Scene(layout, 300, 300);
+		prompt.setScene(scene);
+		prompt.show();
+	}
+	
+	public static void rankUpDuke() {
+		Stage prompt = new Stage();
+		
+		prompt.initModality(Modality.APPLICATION_MODAL);
+		prompt.setTitle("Congratulations Duke!");
+		
+		Text label = new Text();
+		label.setText("Congrats! You have ");
+		Button ok = new Button("Cool!");
+		ok.setOnAction(e ->{
+			Controller.rankUpDuke();
+			prompt.close();
+		});
 		
 		HBox buttons = new HBox(20);
-		buttons.getChildren().addAll(duke, merchant);
+		buttons.getChildren().addAll(ok);
 		VBox layout = new VBox(15);
-		layout.getChildren().addAll(label, buttons, question);
+		layout.getChildren().addAll(label, buttons);
 		Scene scene = new Scene(layout, 300, 300);
 		prompt.setScene(scene);
 		prompt.show();

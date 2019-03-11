@@ -16,7 +16,8 @@ public class DragonPopups {
 		prompt.initModality(Modality.APPLICATION_MODAL);
 		
 		Text label = new Text();
-		label.setText(pChar.CHARNAME + ", you were attacked by Drago and couldn't escape");
+		label.setText("You were attacked by Drago and couldn't escape!");
+		label.wrappingWidthProperty();
 		Button button = new Button("Close");
 		
 		VBox layout = new VBox();

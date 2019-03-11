@@ -17,6 +17,7 @@ public class CardEffects {
 		
 		Text text = new Text();
 		text.setText(chanceCard.getEffectString());
+		text.wrappingWidthProperty();
 		Button button = new Button("Okay");
 		button.setOnAction(e -> stage.close());
 		

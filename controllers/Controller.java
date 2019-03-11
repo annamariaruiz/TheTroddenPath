@@ -40,10 +40,6 @@ public class Controller {
 	private static Random rng = new Random();
 	private static Dragon drago;
 	
-
-    @FXML
-    private static Button spinWheel;
-	
 	public static void run() {
 		drago = new Dragon();
 		initBoard();
@@ -281,19 +277,19 @@ public class Controller {
 //		} while(!gameOver);
 //	}
 	
-	private static void rankUpKnight() {
+	public static void rankUpKnight() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.KNIGHT);
 	}
 	
-	private static void rankUpPriest() {
+	public static void rankUpPriest() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.PRIEST);
 	}
 	
-	private static void rankUpMerchant() {
+	public static void rankUpMerchant() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.MERCHANT);
 	}
 	
-	private static void rankUpDuke() {
+	public static void rankUpDuke() {
 		currentPlayer.getChars().get(0).setCharClass(CharClass.DUKE);
 	}
 
@@ -518,50 +514,19 @@ public class Controller {
 			//"class" to "charClass" as Java already does its own thing with "class"
 	private static void rankUpChar(Player playerToRankUp) {
 		PlayerChar pc = playerToRankUp.getChars().get(0);
-		CharClass charChoice = pc.getCharClass();
 		
 		if(pc.getPrestige() >= 200 && pc.getShekels() >= 200) {
 			RankUp.rankUpDuke();
-			charChoice = null;
-		}else if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
-			RankUp.rankUpBoth();
-			charChoice = null;
-		} else if(pc.getPrestige() >= 50) {
-			RankUp.rankUpPrestige();
-			charChoice = null;
-		} else if (pc.getShekels() >= 50) {
-			RankUp.rankUpShekels();
-			charChoice = null;
 		}
-		
-		switch(charChoice) {
-		case DUKE:
-			pc.setShekels(pc.getShekels() + 100);
-			pc.setPrestige(pc.getPrestige() + 100);
-			break;
-		case MERCHANT:
-			pc.setShekels(pc.getShekels() + 100);
-			break;
-		case PRIEST:
-			pc.setPrestige(pc.getPrestige() + 100);
-			if(playerToRankUp.getChars().size() > 1) {
-				//TODO G.U.I. message that priest's aren't allowed to have wives and children
-				boolean trashFam = true; //TODO prompt for whether to throw away family
-				if(trashFam) {
-					for(int f = 1; f < playerToRankUp.getChars().size(); f++) {
-						playerToRankUp.getChars().remove(f);
-					}
-					
-					//TODO G.U.I. message, "Congratulations, you left your family to perish while you accept a lucrative position as a priest in a town that doesn't know you and can't blame you for past sins."
-				}
-			}
-			break;
-		case KNIGHT:
-			pc.setPrestige(pc.getPrestige() + 200);
-			break;
-	}
-		
-		pc.setCharClass(charChoice);
+		else if(pc.getPrestige() >= 50 && pc.getShekels() >= 50) {
+			RankUp.rankUpBoth();
+		} 
+		else if(pc.getPrestige() >= 50) {
+			RankUp.rankUpPrestige();
+		} 
+		else if (pc.getShekels() >= 50) {
+			RankUp.rankUpShekels();
+		}
 		System.out.println("Rank up finished");
 	}
 	

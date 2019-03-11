@@ -14,7 +14,7 @@ import views.enums.NextTileDirection;
 
 public class Main extends Application {
 	
-	private Stage window = new Stage();
+	private static Stage window = new Stage();
 	private Scene startScene, boardGame;
 	private ArrayList<Tile> tiles = new ArrayList<>();
 	

@@ -4,18 +4,19 @@ import controllers.Controller;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
-import models.Player;
 import models.Wheel;
-import models.enums.TileDirection;
+import views.enums.NextTileDirection;
 
 public class Connection {
 
 	private int counter = 0;
+	
 	@FXML
 	private Circle player1;
 
@@ -29,47 +30,48 @@ public class Connection {
 	private Circle player4;
 
 	@FXML
-	private Polygon spinner;
+	private Pane spinner;
 
-	@FXML
-	private Button spinWheel;
+    @FXML
+    private static Label playerName = new Label();
 
-	@FXML
-	private static Text playerName = new Text();
+    @FXML
+    private static Label shekels = new Label();
 
-	@FXML
-	private static Text shekels = new Text();
+    @FXML
+    private static Label prestige = new Label();
 
-	@FXML
-	private static Text prestige = new Text();
+    @FXML
+    private static Label wellness = new Label();
 
-	@FXML
-	private static Text wellness = new Text();
+    @FXML
+    private static Label limbsRemaining = new Label();
 
-	@FXML
-	private static Text limbsRemaining = new Text();
+    @FXML
+    private static Label family = new Label();
 
-	@FXML
-	private static Text family = new Text();
-
-	@FXML
-	private static Text position = new Text();
-
-	public static void updateView() {
-		playerName.setText(Controller.currentPlayer.toString());
-	}
+    @FXML
+    private static Label position = new Label();
+    
+    public static void updateView() {
+    	playerName.setText(Controller.currentPlayer.toString());
+    }
 
 	public void spinWheel() {
 		int spunNumber = Wheel.spinWheel();
-	// animation to move that many spaces
+		// animation to move that many spaces
+		Tile t = new Tile(NextTileDirection.RIGHT);
 		animateWheel(1);
-		for (int i = 0; i < spunNumber; i++) {
-			animatePiece();
+		for(int i = 0; i<4; i++) {
+			animatePiece(t, 2);
 		}
-		Controller.drawCard();
+
 	}
 
 	public void animateWheel(int spinAmount) {
+		if(counter < 1) {
+			movePivot(spinner, 0, -10);
+		}
 		counter++;
 		RotateTransition transition = new RotateTransition(Duration.seconds(2.5), spinner);
 		transition.setByAngle(44);
@@ -82,6 +84,7 @@ public class Connection {
 
 	}
 
+	
 	private static double player1X = 0;
 	private static double player1Y = 0;
 	private static double player2X = 0;
@@ -90,19 +93,17 @@ public class Connection {
 	private static double player3Y = 0;
 	private static double player4X = 0;
 	private static double player4Y = 0;
-
-	public void animatePiece() {
-
-		Player currentPlayer = Controller.currentPlayer;
-		int playerNum = currentPlayer.getPlayerID();
-		int occupiedTile = currentPlayer.getChars().get(0).getOccupiedTile();
-		TileDirection ntd = Controller.TILES.get(occupiedTile).getValue();
+	
+	public void animatePiece(Tile currentTile, int playerNum) {
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(1000));
-		currentPlayer.getChars().get(0).changeTile(1);
-
+		NextTileDirection ntd = currentTile.getNtd();
+		
+		
+		transition.setNode(player1);
 		double currentX = player1X;
 		double currentY = player1Y;
+		
 		switch (playerNum) {
 		case 2:
 			transition.setNode(player2);
@@ -124,20 +125,33 @@ public class Connection {
 		switch (ntd) {
 		case UP:
 			transition.setToY(currentY + 40);
+			currentX += 40;
 			break;
 		case DOWN:
 			transition.setToY(currentY - 40);
+			currentX -= 40;
 			break;
 		case LEFT:
 			transition.setToX(currentX - 40);
+			currentY -= 40;
 			break;
 		case RIGHT:
 			transition.setToX(currentY + 40);
+			currentY += 40;
 			break;
-
+		case LAST:
+			transition.setToX(currentX + 20);
+			transition.setToY(currentY + 20);
+			transition.setToX(currentX - 20);
+			transition.setToY(currentY - 20);
+			transition.setToX(currentX + 10);
+			transition.setToY(currentY + 10);
+			transition.setToX(currentX - 10);
+			transition.setToY(currentY - 10);
+			break;
 		}
 		transition.play();
-
+		
 		switch (playerNum) {
 		case 1:
 			player1X = currentX;
@@ -156,6 +170,7 @@ public class Connection {
 			player4Y = currentY;
 			break;
 		}
+
 	}
 
 	public void sellFamily() {
@@ -164,5 +179,11 @@ public class Connection {
 
 	public void giveUp() {
 		controllers.Controller.giveUp();
+	}
+
+	private void movePivot(Node node, double x, double y) {
+		node.getTransforms().add(new Translate(-x, -y));
+		node.setTranslateX(x);
+		node.setTranslateY(y);
 	}
 }
