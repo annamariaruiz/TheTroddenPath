@@ -1,438 +1,444 @@
-package models;
+/*     */ package models;
+/*     */ 
+/*     */ import java.util.ArrayList;
+/*     */ import java.util.Random;
+/*     */ import models.enums.CharClass;
+/*     */ import models.enums.TileColor;
+/*     */ 
+/*     */ public class ChanceCard
+/*     */ {
+/*     */   public final TileColor TILECOLOR;
+/*     */   private int effectIndex;
+/*     */   private String effectString;
+/*     */   private String classMod;
+/*  14 */   private String[] yValues = { "dysentary.", "measels.", "typhoid fever.", "polio.", "smallpox.", 
+/*  15 */     "cholera.", "the Black Death.", "got kicked by a horse.", "got spit on by a peon.", 
+/*  16 */     "got a splinter." };
+/*     */   private PlayerChar pChar;
+/*     */   private Player player;
+/*     */   private ArrayList<PlayerChar> playerChars;
+/*     */   private boolean repeatTurn;
+/*  21 */   private boolean skipTurn; private static Random rng = new Random();
+/*     */   
+/*  23 */   private int x = 0;
+/*  24 */   private int y = 0;
+/*     */   
+/*     */   public ChanceCard(TileColor tileColor, Player player)
+/*     */   {
+/*  28 */     this.playerChars = player.getChars();
+/*  29 */     this.pChar = ((PlayerChar)this.playerChars.get(0));
+/*  30 */     this.TILECOLOR = tileColor;
+/*  31 */     setPlayerChar(this.pChar);
+/*  32 */     setRepeatTurn(false);
+/*  33 */     setSkipTurn(false);
+/*  34 */     setPlayer(player);
+/*  35 */     setClassMod("");
+/*     */     
+/*     */ 
+/*     */ 
+/*     */ 
+/*  40 */     if (this.TILECOLOR == TileColor.GREEN) {
+/*  41 */       this.effectIndex = rng.nextInt(10);
+/*  42 */     } else if (this.TILECOLOR == TileColor.RED) {
+/*  43 */       this.effectIndex = (rng.nextInt(8) + 10);
+/*  44 */     } else if (this.TILECOLOR == TileColor.BLUE) {
+/*  45 */       this.effectIndex = (rng.nextInt(4) + 18);
+/*     */     } else {
+/*  47 */       this.effectIndex = rng.nextInt(22);
+/*     */     }
+/*     */     
+/*     */ 
+/*  51 */     findEffect();
+/*     */   }
+/*     */   
+/*     */ 
+/*     */   public void findEffect()
+/*     */   {
+/*  57 */     if (this.effectIndex == 11) {
+/*  58 */       this.y = (rng.nextInt(3) + 7);
+/*  59 */       if (this.y == 7) {
+/*  60 */         this.x = 15;
+/*  61 */       } else if (this.y == 8) {
+/*  62 */         this.x = 10;
+/*     */       } else {
+/*  64 */         this.x = 5;
+/*     */       }
+/*  66 */     } else if (this.effectIndex == 12) {
+/*  67 */       this.y = rng.nextInt(7);
+/*     */     } else {
+/*  69 */       this.x = (rng.nextInt(20) + 1);
+/*     */     }
+/*     */     
+/*  72 */     String[] effects = {
+/*  73 */       "Gain " + this.x * 3 + " shekels", 
+/*  74 */       "Gain " + this.x * 3 + " prestige", 
+/*  75 */       "You found bandages for your wounds. Gain " + this.x + " wellness", 
+/*  76 */       "Take another turn.", 
+/*  77 */       "You got treatment for your disease. Gain " + this.x * 2 + " wellness.", 
+/*  78 */       "You got married.", 
+/*  79 */       "You had a baby girl.", 
+/*  80 */       "You have a baby boy.", 
+/*  81 */       "Gain " + this.x * 3 + " shekels", 
+/*  82 */       "Gain " + this.x * 3 + " prestige", 
+/*  83 */       "You got in a bar fight and lost. Lose " + this.x + " wellness and " + this.x * 2 + " prestige.", 
+/*  84 */       "You " + this.yValues[this.y] + " Lose " + this.x + " wellness.", 
+/*  85 */       "Oops! You have contracted " + this.yValues[this.y], 
+/*  86 */       "Your spouse is declared a witch and is burned at the stake. Lose your spouse.", 
+/*  87 */       "You forgot one of your children at the last town. Lose a child.", 
+/*  88 */       "Uh oh, you got tarred and feathered. Lose your next turn.", 
+/*  89 */       "You were mugged. Lose " + this.x * 2 + " shekels.", 
+/*  90 */       "You did something naughty. Lose " + this.x * 2 + " prestige.", 
+/*  91 */       "You had too much fun at the local tavern and have ended up with a child. Lose " + this.x * 3 + " prestige, but gain a child.", 
+/*  92 */       "You sell your son off for work. Lose a son, but gain " + this.x * 3 + " shekels.", 
+/*  93 */       "You sell your daugther off for marriage. Lose a daughter, but gain " + this.x * 3 + " prestige and shekels.", 
+/*  94 */       "You got in a bar fight and won! Lose " + this.x + " wellness, but gain " + this.x * 3 + " prestige." };
+/*     */     
+/*  96 */     this.effectString = effects[this.effectIndex];
+/*  97 */     setEffectString(this.effectString);
+/*  98 */     applyEffect(this.pChar, this.effectIndex);
+/*     */   }
+/*     */   
+/*     */   private void editShekels(PlayerChar pChar, boolean gain, int x)
+/*     */   {
+/* 103 */     int shekels = pChar.getShekels();
+/* 104 */     CharClass classType = pChar.getCharClass();
+/*     */     
+/* 106 */     if ((classType.equals(CharClass.MERCHANT)) || (classType.equals(CharClass.DUKE))) {
+/* 107 */       if (gain) {
+/* 108 */         x *= 2;
+/* 109 */         setClassMod("Because of your class, you gain twice as many shekels.");
+/*     */       } else {
+/* 111 */         x /= 2;
+/* 112 */         setClassMod("Because of your class, you lose half as many shekels.");
+/*     */       }
+/*     */     }
+/* 115 */     if (!gain) {
+/* 116 */       x *= -1;
+/*     */     }
+/*     */     
+/* 119 */     pChar.setShekels(shekels + x);
+/*     */   }
+/*     */   
+/*     */   private void editPrestige(PlayerChar pChar, boolean gain, int x) {
+/* 123 */     int prestige = pChar.getPrestige();
+/* 124 */     CharClass classType = pChar.getCharClass();
+/*     */     
+/* 126 */     if ((classType.equals(CharClass.DUKE)) || (classType.equals(CharClass.PRIEST))) {
+/* 127 */       if (gain) {
+/* 128 */         x *= 2;
+/* 129 */         setClassMod("Because of your class, you gain twice as much prestige.");
+/*     */       } else {
+/* 131 */         x /= 2;
+/* 132 */         setClassMod("Because of your class, you lose half as much prestige.");
+/*     */       }
+/*     */     }
+/* 135 */     if (!gain) {
+/* 136 */       x *= -1;
+/*     */     }
+/*     */     
+/* 139 */     pChar.setPrestige(prestige + x);
+/*     */   }
+/*     */   
+/*     */   private void editWellness(PlayerChar pChar, boolean gain, int x) {
+/* 143 */     int wellness = pChar.getWellness();
+/* 144 */     CharClass classType = pChar.getCharClass();
+/*     */     
+/* 146 */     if ((classType.equals(CharClass.PRIEST)) && 
+/* 147 */       (gain)) {
+/* 148 */       x *= 2;
+/* 149 */       setClassMod("Because of your class, you gain twice as much wellness.");
+/*     */     }
+/*     */     
+/* 152 */     if ((classType.equals(CharClass.KNIGHT)) && 
+/* 153 */       (!gain)) {
+/* 154 */       x /= 2;
+/* 155 */       setClassMod("Because of your class, you lose half as much wellness.");
+/*     */     }
+/*     */     
+/* 158 */     if (!gain) {
+/* 159 */       x *= -1;
+/*     */     }
+/*     */     
+/* 162 */     pChar.setWellness(wellness + x);
+/*     */   }
+/*     */   
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */   public void applyEffect(PlayerChar pChar, int effectIndex)
+/*     */   {
+/* 171 */     switch (effectIndex) {
+/*     */     case 0: 
+/* 173 */       editShekels(pChar, true, this.x * 3);
+/* 174 */       break;
+/*     */     case 1: 
+/* 176 */       editPrestige(pChar, true, this.x * 3);
+/* 177 */       break;
+/*     */     case 2: 
+/* 179 */       editWellness(pChar, true, this.x);
+/* 180 */       break;
+/*     */     case 3: 
+/* 182 */       setRepeatTurn(true);
+/* 183 */       break;
+/*     */     case 4: 
+/* 185 */       editWellness(pChar, true, this.x * 2);
+/* 186 */       break;
+/*     */     case 5: 
+/* 188 */       boolean has = checkFamily("spouse");
+/* 189 */       if ((!has) && (pChar.getCharClass() != CharClass.PRIEST)) {
+/* 190 */         addFamily("spouse");
+/*     */       } else {
+/* 192 */         setClassMod("Your card had no effect.");
+/*     */       }
+/* 194 */       break;
+/*     */     case 6: 
+/* 196 */       if (pChar.getCharClass() != CharClass.PRIEST) {
+/* 197 */         addFamily("daughter");
+/*     */       }
+/* 199 */       break;
+/*     */     case 7: 
+/* 201 */       if (pChar.getCharClass() != CharClass.PRIEST) {
+/* 202 */         addFamily("son");
+/*     */       }
+/* 204 */       break;
+/*     */     case 8: 
+/* 206 */       editShekels(pChar, true, this.x * 3);
+/* 207 */       break;
+/*     */     case 9: 
+/* 209 */       editPrestige(pChar, true, this.x * 3);
+/* 210 */       break;
+/*     */     case 10: 
+/* 212 */       if (pChar.getCharClass() == CharClass.KNIGHT) {
+/* 213 */         setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + this.x * 5 + " prestige.");
+/* 214 */         editPrestige(pChar, true, this.x * 5);
+/*     */       } else {
+/* 216 */         editPrestige(pChar, false, this.x * 2);
+/* 217 */         editWellness(pChar, false, this.x);
+/*     */       }
+/* 219 */       break;
+/*     */     case 11: 
+/* 221 */       if (this.y == 7) {
+/* 222 */         editWellness(pChar, false, this.x);
+/* 223 */       } else if (this.y == 8) {
+/* 224 */         editWellness(pChar, false, this.x);
+/*     */       } else {
+/* 226 */         editWellness(pChar, false, this.x);
+/*     */       }
+/* 228 */       break;
+/*     */     case 12: 
+/* 230 */       if (this.y == 0) {
+/* 231 */         this.x = 5;
+/* 232 */         editWellness(pChar, false, 5);
+/* 233 */       } else if (this.y == 1) {
+/* 234 */         this.x = 10;
+/* 235 */         editWellness(pChar, false, 10);
+/* 236 */       } else if (this.y == 2) {
+/* 237 */         this.x = 15;
+/* 238 */         editWellness(pChar, false, 15);
+/* 239 */       } else if (this.y == 3) {
+/* 240 */         this.x = 20;
+/* 241 */         editWellness(pChar, false, 20);
+/* 242 */       } else if (this.y == 4) {
+/* 243 */         this.x = 30;
+/* 244 */         editWellness(pChar, false, 30);
+/* 245 */       } else if (this.y == 5) {
+/* 246 */         this.x = 40;
+/* 247 */         editWellness(pChar, false, 40);
+/* 248 */       } else if (this.y == 6) {
+/* 249 */         this.x = 50;
+/* 250 */         editWellness(pChar, false, 50);
+/*     */       }
+/* 252 */       break;
+/*     */     case 13: 
+/* 254 */       boolean has = checkFamily("spouse");
+/* 255 */       if (has) {
+/* 256 */         removeFamily("spouse");
+/*     */       } else {
+/* 258 */         setClassMod("Your card had no effect.");
+/*     */       }
+/* 260 */       break;
+/*     */     case 14: 
+/* 262 */       boolean has = checkFamily("son");
+/* 263 */       if (has) {
+/* 264 */         removeFamily("son");
+/*     */       } else {
+/* 266 */         has = checkFamily("daughter");
+/* 267 */         if (has) {
+/* 268 */           removeFamily("daughter");
+/*     */         } else {
+/* 270 */           setClassMod("Your card had no effect.");
+/*     */         }
+/*     */       }
+/* 273 */       break;
+/*     */     case 15: 
+/* 275 */       setSkipTurn(true);
+/* 276 */       break;
+/*     */     case 16: 
+/* 278 */       editShekels(pChar, false, this.x * 2);
+/* 279 */       break;
+/*     */     case 17: 
+/* 281 */       editPrestige(pChar, false, this.x * 2);
+/* 282 */       break;
+/*     */     case 18: 
+/* 284 */       if (pChar.getCharClass() != CharClass.PRIEST) {
+/* 285 */         int familyNum = rng.nextInt(2);
+/* 286 */         String role; String role; if (familyNum == 0) {
+/* 287 */           role = "son";
+/*     */         } else {
+/* 289 */           role = "daughter";
+/*     */         }
+/* 291 */         addFamily(role);
+/* 292 */         editPrestige(pChar, false, this.x * 3);
+/*     */       } else {
+/* 294 */         setClassMod("Your card had no effect.");
+/*     */       }
+/* 296 */       break;
+/*     */     case 19: 
+/* 298 */       boolean has = checkFamily("son");
+/* 299 */       if (has) {
+/* 300 */         removeFamily("son");
+/* 301 */         editShekels(pChar, true, this.x * 3);
+/*     */       } else {
+/* 303 */         setClassMod("Your card had no effect.");
+/*     */       }
+/* 305 */       break;
+/*     */     case 20: 
+/* 307 */       boolean has = checkFamily("daughter");
+/* 308 */       if (has) {
+/* 309 */         removeFamily("daughter");
+/* 310 */         editShekels(pChar, true, this.x * 3);
+/* 311 */         editPrestige(pChar, true, this.x * 3);
+/*     */       } else {
+/* 313 */         setClassMod("Your card had no effect.");
+/*     */       }
+/* 315 */       break;
+/*     */     case 21: 
+/* 317 */       if (pChar.getCharClass() == CharClass.KNIGHT) {
+/* 318 */         setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + this.x * 5 + " prestige.");
+/* 319 */         editPrestige(pChar, true, this.x * 5);
+/*     */       } else {
+/* 321 */         editWellness(pChar, false, this.x);
+/* 322 */         editPrestige(pChar, true, this.x * 3);
+/*     */       }
+/*     */       break;
+/*     */     }
+/*     */   }
+/*     */   
+/*     */   public void addFamily(String role) {
+/* 329 */     boolean gender = false;
+/*     */     
+/*     */ 
+/* 332 */     if (role.equals("son")) {
+/* 333 */       gender = true;
+/* 334 */     } else if (role.equals("daughter")) {
+/* 335 */       gender = false;
+/*     */     } else {
+/* 337 */       int genderNum = rng.nextInt(2);
+/* 338 */       if (genderNum == 0) {
+/* 339 */         gender = true;
+/*     */       }
+/*     */     }
+/* 342 */     PlayerChar newChar = new PlayerChar(gender, role);
+/* 343 */     this.playerChars.add(newChar);
+/* 344 */     this.player.setChars(this.playerChars);
+/*     */   }
+/*     */   
+/*     */   public void removeFamily(String role) {
+/* 348 */     for (int i = 0; i < this.playerChars.size(); i++) {
+/* 349 */       if (((PlayerChar)this.playerChars.get(i)).getRole().equals(role)) {
+/* 350 */         this.playerChars.remove(i);
+/* 351 */         this.player.setChars(this.playerChars);
+/* 352 */         i = this.playerChars.size();
+/*     */       }
+/*     */     }
+/*     */   }
+/*     */   
+/*     */   public boolean checkFamily(String role) {
+/* 358 */     boolean has = false;
+/* 359 */     String charRole = null;
+/*     */     
+/* 361 */     for (int i = 0; i < this.playerChars.size(); i++) {
+/* 362 */       charRole = ((PlayerChar)this.playerChars.get(i)).getRole();
+/* 363 */       if (charRole.equals(role)) {
+/* 364 */         has = true;
+/* 365 */         i = this.playerChars.size();
+/*     */       }
+/*     */     }
+/*     */     
+/* 369 */     return has;
+/*     */   }
+/*     */   
+/*     */   public String getEffectString() {
+/* 373 */     return this.effectString;
+/*     */   }
+/*     */   
+/*     */   public void setEffectString(String effectString) {
+/* 377 */     this.effectString = effectString;
+/*     */   }
+/*     */   
+/*     */   public int getEffectNum() {
+/* 381 */     return this.effectIndex;
+/*     */   }
+/*     */   
+/*     */   public void setEffectNum(int effectNum) {
+/* 385 */     if ((effectNum < 0) || (effectNum > 21)) {
+/* 386 */       throw new IllegalArgumentException("The value of effectNum must be between 0 and 19.");
+/*     */     }
+/* 388 */     this.effectIndex = effectNum;
+/*     */   }
+/*     */   
+/*     */   public PlayerChar getPlayerChar() {
+/* 392 */     return this.pChar;
+/*     */   }
+/*     */   
+/*     */   public void setPlayerChar(PlayerChar pChar) {
+/* 396 */     this.pChar = pChar;
+/*     */   }
+/*     */   
+/*     */   public Player getPlayer() {
+/* 400 */     return this.player;
+/*     */   }
+/*     */   
+/*     */   public void setPlayer(Player player) {
+/* 404 */     this.player = player;
+/*     */   }
+/*     */   
+/*     */   public boolean repeatTurn() {
+/* 408 */     return this.repeatTurn;
+/*     */   }
+/*     */   
+/*     */   public void setRepeatTurn(boolean repeatTurn) {
+/* 412 */     this.repeatTurn = repeatTurn;
+/*     */   }
+/*     */   
+/*     */   public boolean skipTurn() {
+/* 416 */     return this.skipTurn;
+/*     */   }
+/*     */   
+/*     */   public void setSkipTurn(boolean skipTurn) {
+/* 420 */     this.skipTurn = skipTurn;
+/*     */   }
+/*     */   
+/*     */   public String getClassMod() {
+/* 424 */     return this.classMod;
+/*     */   }
+/*     */   
+/*     */   public void setClassMod(String classMod) {
+/* 428 */     this.classMod = classMod;
+/*     */   }
+/*     */   
+/*     */   public String toString()
+/*     */   {
+/* 433 */     StringBuilder builder = new StringBuilder();
+/* 434 */     builder.append(this.player.NAME).append(" draws a card.\n").append(getEffectString())
+/* 435 */       .append("\n").append(getClassMod());
+/* 436 */     return builder.toString();
+/*     */   }
+/*     */ }
 
-import java.util.ArrayList;
-import java.util.Random;
 
-import models.enums.CharClass;
-import models.enums.TileColor;
-
-public class ChanceCard {
-	public final TileColor TILECOLOR;
-	private int effectIndex;
-	private String effectString, classMod; //classMod contains a string related to card modifications based on class,
-													//or if the card had no effect
-	private String[] yValues = {"dysentary.", "measels.", "typhoid fever.", "polio.", "smallpox.", 
-			"cholera.", "the Black Death.", "got kicked by a horse.", "got spit on by a peon.", 
-			"got a splinter."}; //this holds the collection of the random possible Strings
-	private PlayerChar pChar;
-	private Player player;
-	private ArrayList<PlayerChar> playerChars;
-	private boolean repeatTurn, skipTurn;
-	private static Random rng = new Random();
-
-	private int x = 0; //x refers to the random number generated to represent the amount gained that will be inserted into the effect String.
-	private int y = 0; //y refers to the random number generated to represent the string's index that is used in the effect String
-	
-	//add "repeatTurn" boolean, "skipTurn" boolean
-	public ChanceCard(TileColor tileColor, Player player) {
-		playerChars = player.getChars();
-		pChar = playerChars.get(0);
-		this.TILECOLOR = tileColor;
-		setPlayerChar(pChar);
-		setRepeatTurn(false);
-		setSkipTurn(false);
-		setPlayer(player);
-		setClassMod("");
-		
-		//from the tile color, determine the effect related to the type of effect (positive, neutral, negative, or random).
-		//this logic is to determine the effect based on its index in the overall array.
-		
-		if(TILECOLOR == TileColor.GREEN) {
-			effectIndex = rng.nextInt(10);
-		}else if(TILECOLOR == TileColor.RED) {
-			effectIndex = rng.nextInt(8) + 10;
-		}else if(TILECOLOR == TileColor.BLUE){
-			effectIndex = rng.nextInt(4) + 18;
-		}else {
-			effectIndex = rng.nextInt(22);
-		}
-		
-		//from the determined effect int, find the card the player will draw and return it as a string via...
-		findEffect();
-	}
-	
-	//this is the logic to find the specific string for the effect
-	public void findEffect() {
-		//the logic below is to determine the specific numerical values and random strings
-				if(effectIndex == 11) {
-					y = rng.nextInt(3) + 7;
-					if(y == 7) {
-						x = 15;
-					}else if(y == 8) {
-						x = 10;
-					}else {
-						x = 5;
-					}
-				}else if(effectIndex == 12) {
-					y = rng.nextInt(7);
-				}else {
-					x = rng.nextInt(20) + 1;					
-				}
-		
-		String[] effects = {
-				"Gain " + (x * 3) + " shekels",
-				"Gain " + (x * 3) + " prestige", 
-				"You found bandages for your wounds. Gain " + x + " wellness", 
-				"Take another turn.",
-				"You got treatment for your disease. Gain " + (x * 2) + " wellness.", 
-				"You got married.",
-				"You had a baby girl.",
-				"You have a baby boy.",
-				"Gain " + (x * 3) + " shekels",
-				"Gain " + (x * 3) + " prestige",
-				"You got in a bar fight and lost. Lose " + x + " wellness and " + (x * 2) + " prestige.",
-				"You " + yValues[y] + " Lose " + x + " wellness.",
-				"Oops! You have contracted " + yValues[y], 
-				"Your spouse is declared a witch and is burned at the stake. Lose your spouse.", 
-				"You forgot one of your children at the last town. Lose a child.", 
-				"Uh oh, you got tarred and feathered. Lose your next turn.",
-				"You were mugged. Lose " + (x * 2) + " shekels.",
-				"You did something naughty. Lose " + (x * 2) + " prestige.",
-				"You had too much fun at the local tavern and have ended up with a child. Lose " + (x * 3) + " prestige, but gain a child.", 
-				"You sell your son off for work. Lose a son, but gain " + (x * 3) + " shekels.", 
-				"You sell your daugther off for marriage. Lose a daughter, but gain " + (x * 3) + " prestige and shekels.",
-				"You got in a bar fight and won! Lose " + x + " wellness, but gain " + (x * 3) + " prestige."};
-		
-		effectString = effects[effectIndex];
-		setEffectString(effectString);
-		applyEffect(pChar, effectIndex);
-	}
-	
-	//boolean gain in the following methods indicates whether the character is gaining or losing the indicated stat
-	private void editShekels(PlayerChar pChar, boolean gain, int x) {
-		int shekels = pChar.getShekels();
-		CharClass classType = pChar.getCharClass();
-		
-		if(classType.equals(CharClass.MERCHANT) || classType.equals(CharClass.DUKE)) {
-			if(gain) {
-				x *= 2;
-				setClassMod("Because of your class, you gain twice as many shekels.");
-			}else {
-				x /= 2;
-				setClassMod("Because of your class, you lose half as many shekels.");
-			}
-		}
-		if(!gain) {
-			x *= -1;
-		}
-		
-		pChar.setShekels(shekels + x);
-	}
-	
-	private void editPrestige(PlayerChar pChar, boolean gain, int x) {
-		int prestige = pChar.getPrestige();
-		CharClass classType = pChar.getCharClass();
-		
-		if(classType.equals(CharClass.DUKE) || classType.equals(CharClass.PRIEST)) {
-			if(gain) {
-				x *= 2;
-				setClassMod("Because of your class, you gain twice as much prestige.");
-			}else {
-				x /= 2;
-				setClassMod("Because of your class, you lose half as much prestige.");
-			}
-		}
-		if(!gain) {
-			x *= -1;
-		}
-		
-		pChar.setPrestige(prestige + x);
-	}
-	
-	private void editWellness(PlayerChar pChar, boolean gain, int x) {
-		int wellness = pChar.getWellness();
-		CharClass classType = pChar.getCharClass();
-		
-		if(classType.equals(CharClass.PRIEST)) {
-			if(gain) {
-				x *= 2;
-				setClassMod("Because of your class, you gain twice as much wellness.");
-			}
-		}
-		if(classType.equals(CharClass.KNIGHT)) {
-			if(!gain) {
-				x /= 2;
-				setClassMod("Because of your class, you lose half as much wellness.");
-			}
-		}
-		if(!gain) {
-			x *= -1;
-		}
-		
-		pChar.setWellness(wellness + x);
-	}
-	
-	//this is applied when the card is "drawn" / created
-	public void applyEffect(PlayerChar pChar, int effectIndex) {
-		int familyNum;
-		String role;
-		boolean has;
-
-		switch(effectIndex) {
-		case 0:
-			editShekels(pChar, true, (x * 3));
-			break;
-		case 1:
-			editPrestige(pChar, true, (x * 3));
-			break;
-		case 2:
-			editWellness(pChar, true, x);
-			break;
-		case 3:
-			setRepeatTurn(true);
-			break;
-		case 4:
-			editWellness(pChar, true, (x * 2));
-			break;
-		case 5:
-			has = checkFamily("spouse");
-			if(!has && pChar.getCharClass() != CharClass.PRIEST) {
-				addFamily("spouse");
-			}else {
-				setClassMod("Your card had no effect.");
-			}
-			break;
-		case 6:
-			if(pChar.getCharClass() != CharClass.PRIEST) {
-				addFamily("daughter");				
-			}
-			break;
-		case 7:
-			if(pChar.getCharClass() != CharClass.PRIEST) {
-				addFamily("son");				
-			}
-			break;
-		case 8:
-			editShekels(pChar, true, (x * 3));
-			break;
-		case 9:
-			editPrestige(pChar, true, (x * 3));
-			break;
-		case 10:
-			if(pChar.getCharClass() == CharClass.KNIGHT) {
-				setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + (x * 5) + " prestige.");;
-				editPrestige(pChar, true, (x * 5));
-			}else {
-				editPrestige(pChar, false, (x * 2));
-				editWellness(pChar, false, x);
-			}
-			break;
-		case 11:
-			if(y == 7) {
-				editWellness(pChar, false, x);
-			}else if(y == 8) {
-				editWellness(pChar, false, x);
-			}else {
-				editWellness(pChar, false, x);
-			}
-			break;
-		case 12:
-			if(y == 0) {
-				x = 5;
-				editWellness(pChar, false, 5);
-			}else if(y == 1) {
-				x = 10;
-				editWellness(pChar, false, 10);
-			}else if(y == 2) {
-				x = 15;
-				editWellness(pChar, false, 15);
-			}else if(y == 3) {
-				x = 20;
-				editWellness(pChar, false, 20);
-			}else if(y == 4) {
-				x = 30;
-				editWellness(pChar, false, 30);
-			}else if(y == 5) {
-				x = 40;
-				editWellness(pChar, false, 40);
-			}else if(y == 6) {
-				x = 50;
-				editWellness(pChar, false, 50);
-			}
-			break;
-		case 13:
-			has = checkFamily("spouse");
-			if(has) {
-				removeFamily("spouse");
-			}else {
-				setClassMod("Your card had no effect.");
-			}
-			break;
-		case 14:
-			has = checkFamily("son");
-			if(has) {
-				removeFamily("son");
-			}else {
-				has = checkFamily("daughter");
-				if(has) {
-					removeFamily("daughter");
-				}else {
-					setClassMod("Your card had no effect.");
-				}
-			}
-			break;
-		case 15:
-			setSkipTurn(true);
-			break;
-		case 16:
-			editShekels(pChar, false, (x * 2));
-			break;
-		case 17:
-			editPrestige(pChar, false, (x * 2));
-			break;
-		case 18:
-			if(pChar.getCharClass() != CharClass.PRIEST) {
-				familyNum = rng.nextInt(2);
-				if(familyNum == 0) {
-					role = "son";
-				}else {
-					role = "daughter";
-				}
-				addFamily(role);
-				editPrestige(pChar, false, (x * 3));				
-			}else {
-				setClassMod("Your card had no effect.");
-			}
-			break;
-		case 19:
-			has = checkFamily("son");
-			if(has) {
-				removeFamily("son");
-				editShekels(pChar, true, (x * 3));
-			}else {
-				setClassMod("Your card had no effect.");
-			}
-			break;
-		case 20:
-			has = checkFamily("daughter");
-			if(has) {
-				removeFamily("daughter");
-				editShekels(pChar, true, (x * 3));
-				editPrestige(pChar, true, (x * 3));
-			}else {
-				setClassMod("Your card had no effect.");
-			}
-			break;
-		case 21:
-			if(pChar.getCharClass() == CharClass.KNIGHT) {
-				setEffectString("You got in a bar fight, and it was a flawless victory. Gain " + (x * 5) + " prestige.");
-				editPrestige(pChar, true, (x * 5));
-			}else {
-				editWellness(pChar, false, x);
-				editPrestige(pChar, true, (x * 3));			
-			}
-			break;
-		}
-	}
-	
-	public void addFamily(String role) {
-		boolean gender = false;
-		int genderNum;
-		
-		if(role.equals("son")) {
-			gender = true;
-		}else if(role.equals("daughter")){
-			gender = false;
-		}else {
-			genderNum = rng.nextInt(2);
-			if(genderNum == 0) {
-				gender = true;
-			}
-		}
-		PlayerChar newChar = new PlayerChar(gender, role);
-		playerChars.add(newChar);
-		player.setChars(playerChars);
-	}
-	
-	public void removeFamily(String role) {
-		for(int i = 0; i < playerChars.size(); i++) {
-			if(playerChars.get(i).getRole().equals(role)) {
-				playerChars.remove(i);
-				player.setChars(playerChars);
-				i = playerChars.size();
-			}
-		}
-	}
-	
-	public boolean checkFamily(String role) {
-		boolean has = false;
-		String charRole = null;
-		
-		for(int i = 0; i < playerChars.size(); i++) {
-			charRole = playerChars.get(i).getRole();
-			if(charRole.equals(role)) {
-				has = true;
-				i = playerChars.size();
-			}			
-		}
-		
-		return has;
-	}
-	
-	public String getEffectString() {
-		return effectString;
-	}
-	
-	public void setEffectString(String effectString) {
-		this.effectString = effectString;
-	}
-	
-	public int getEffectNum() {
-		return effectIndex;
-	}
-	
-	public void setEffectNum(int effectNum) {
-		if(effectNum < 0 || effectNum > 21) {
-			throw new IllegalArgumentException("The value of effectNum must be between 0 and 19.");
-		}
-		this.effectIndex = effectNum;
-	}
-	
-	public PlayerChar getPlayerChar() {
-		return pChar;
-	}
-	
-	public void setPlayerChar(PlayerChar pChar) {
-		this.pChar = pChar;
-	}
-	
-	public Player getPlayer() {
-		return player;
-	}
-	
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-	
-	public boolean repeatTurn() {
-		return repeatTurn;
-	}
-	
-	public void setRepeatTurn(boolean repeatTurn) {
-		this.repeatTurn = repeatTurn;
-	}
-	
-	public boolean skipTurn() {
-		return skipTurn;
-	}
-	
-	public void setSkipTurn(boolean skipTurn) {
-		this.skipTurn = skipTurn;
-	}
-	
-	public String getClassMod() {
-		return classMod;
-	}
-	
-	public void setClassMod(String classMod) {
-		this.classMod = classMod;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(player.NAME).append(" draws a card.\n").append(getEffectString())
-		.append("\n").append(getClassMod());
-		return builder.toString();
-	}
-}
+/* Location:              C:\Users\arbymont\Desktop\troddenpath.jar!\models\ChanceCard.class
+ * Java compiler version: 8 (52.0)
+ * JD-Core Version:       0.7.1
+ */
