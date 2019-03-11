@@ -12,7 +12,6 @@ import models.Wheel;
 import models.enums.CharClass;
 import models.enums.TileColor;
 import models.enums.TileDirection;
-import views.CardEffects;
 import views.Connection;
 import views.DragonPopups;
 import views.PlayerInit;
@@ -503,7 +502,7 @@ public class Controller {
 		System.out.println("Card drawn");
 		rankUpChar(currentPlayer);
 		changeTurn();
-		CardEffects.message(chanceCard);
+//		CardEffects.message(chanceCard);
 	}
 	
 	public static int spinWheel() {
